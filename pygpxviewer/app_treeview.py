@@ -1,15 +1,11 @@
 import pathlib
-import threading
-import time
 
 
-from gi.repository import Gio, Gtk, Gdk, GObject
+from gi.repository import Gio, Gtk, Gdk
 
 
-GObject.threads_init()
-
-
-from pygpxviewer.helper import get_gpx_info, set_gpx_info
+from pygpxviewer.helper import get_gpx_info
+from pygpxviewer.workers import WorkerGpxThread
 
 
 @Gtk.Template(resource_path="/fr/vcottineau/pygpxviewer/ui/app_treeview.glade")
@@ -80,6 +76,13 @@ class AppTreeView(Gtk.TreeView):
         return pathlib.Path(self.folder).glob("**/*.gpx")
 
     @Gtk.Template.Callback()
+    def on_app_treeview_button_press_event(self, widget, event):
+        if event.type == Gdk.EventType._2BUTTON_PRESS:
+            (model, iter) = self.app_tree_selection.get_selected()
+            value = self.app_tree_model.get_value(iter, AppTreeView.LST_COL_PATH)
+            Gio.AppInfo.launch_default_for_uri(pathlib.Path(value).as_uri())
+
+    @Gtk.Template.Callback()
     def on_row_activated(self, tree_view, path, column):
         if self.get_column(AppTreeView.TRV_COL_VIEW) == column:
             iter = self.app_tree_model.get_iter(path)
@@ -91,15 +94,3 @@ class AppTreeView(Gtk.TreeView):
     #     (model, iter) = tree_selection.get_selected()
     #     print(model.get_value(iter, 0))
     #     print(model.get_value(iter, 1))
-
-
-class WorkerGpxThread(threading.Thread):
-    def __init__(self, gpx_files, callback):
-        threading.Thread.__init__(self)
-        self.gpx_files = gpx_files
-        self.callback = callback
-
-    def run(self):
-        for gpx_file in self.gpx_files:
-            set_gpx_info(str(gpx_file))
-        GObject.idle_add(self.callback)

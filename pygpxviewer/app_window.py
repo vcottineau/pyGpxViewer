@@ -32,14 +32,12 @@ class AppWindow(Gtk.ApplicationWindow):
     def start_refresh(self):
         self.app_button_menu_popover.popdown()
         self.app_spinner.start()
-        self.app_treeview.set_sensitive(False)
-        self.app_header_bar.set_sensitive(False)
+        self.set_sensitive(False)
         self.app_treeview.refresh_treeview(self.stop_refresh)
 
     def stop_refresh(self):
         self.app_spinner.stop()
-        self.app_treeview.set_sensitive(True)
-        self.app_header_bar.set_sensitive(True)
+        self.set_sensitive(True)
 
     @Gtk.Template.Callback()
     def on_app_button_open_clicked(self,button):

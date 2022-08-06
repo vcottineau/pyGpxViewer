@@ -19,6 +19,7 @@
     <property name="can-focus">True</property>
     <property name="model">app_tree_model</property>
     <property name="enable-grid-lines">horizontal</property>
+    <signal name="button-press-event" handler="on_app_treeview_button_press_event" swapped="no"/>
     <signal name="row-activated" handler="on_row_activated" swapped="no"/>
     <child internal-child="selection">
       <object class="GtkTreeSelection" id="app_tree_selection"/>
