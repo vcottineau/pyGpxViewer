@@ -3,7 +3,8 @@
     <gresource prefix="/fr/vcottineau/pygpxviewer">
         <file>ui/app_window.glade</file>
         <file>ui/app_treeview.glade</file>
-        <file>ui/app_gpx_details.glade</file>
+        <file>ui/app_window_details.glade</file>
+        <file>ui/app_webview.glade</file>
         <file>style.css</file>
     </gresource>
 </gresources>

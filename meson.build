@@ -21,11 +21,11 @@ if not py_installation.language_version().version_compare('>= 3.7')
 endif
 
 # Constants
-PROJECT_RDNN_NAME = 'fr.vcottineau.pygpxviewer'
 APPLICATION_ID = 'fr.vcottineau.pygpxviewer'
+APPLICATION_NAME = 'pytreksviewer'
 PYTHON_DIR = py_installation.get_path('purelib')
-PKGDATA_DIR = join_paths(get_option('prefix'), get_option('datadir'), APPLICATION_ID)
-PKGLIB_DIR = join_paths(get_option('prefix'), get_option('libdir'), APPLICATION_ID)
+PKGDATA_DIR = join_paths(get_option('prefix'), get_option('datadir'), APPLICATION_NAME)
+PKGLIB_DIR = join_paths(get_option('prefix'), get_option('libdir'), APPLICATION_NAME)
 
 # Dependencies
 dependency('glib-2.0', version: '>= 2.72.3')
@@ -37,13 +37,18 @@ subdir('data')
 
 install_subdir(
     'pygpxviewer',
-    install_dir: py_installation.get_install_dir()
+    install_dir: PKGDATA_DIR
 )
+
+sources = [
+  'config.py'
+]
+install_data(sources, install_dir: PKGDATA_DIR)
 
 # Install the executable file
 bin_config = configuration_data()
 bin_config.set('application_id', APPLICATION_ID)
-bin_config.set('rdnn_name', PROJECT_RDNN_NAME)
+bin_config.set('application_name', APPLICATION_NAME)
 bin_config.set('pkgdatadir', PKGDATA_DIR)
 bin_config.set('pythondir', PYTHON_DIR)
 bin_config.set('schemasdir', PKGDATA_DIR)
@@ -60,7 +65,7 @@ configure_file(
 # Install the builddir executable
 local_config = configuration_data()
 local_config.set('application_id', APPLICATION_ID)
-local_config.set('rdnn_name', PROJECT_RDNN_NAME)
+local_config.set('application_name', APPLICATION_NAME)
 local_config.set('pkgdatadir', join_paths(meson.current_build_dir(), 'data'))
 local_config.set('pythondir', meson.current_source_dir())
 local_config.set('schemasdir', join_paths(meson.current_build_dir(), 'data'))

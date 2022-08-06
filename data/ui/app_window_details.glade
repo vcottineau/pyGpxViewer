@@ -2,12 +2,11 @@
 <!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
-  <requires lib="webkit2gtk" version="2.28"/>
-  <template class="app_gpx_details" parent="GtkWindow">
+  <template class="app_window_details" parent="GtkWindow">
     <property name="can-focus">False</property>
     <property name="window-position">center</property>
-    <property name="default-width">640</property>
-    <property name="default-height">740</property>
+    <property name="default-width">600</property>
+    <property name="default-height">800</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -26,6 +25,7 @@
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
@@ -39,7 +39,18 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="app_gpx_details_label_points">
+                      <object class="GtkLabel" id="app_window_details_label_points">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="app_window_details_label_length">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                       </object>
@@ -47,21 +58,9 @@
                         <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="pack-type">end</property>
-                        <property name="position">1</property>
+                        <property name="position">2</property>
                       </packing>
                     </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkListBoxRow">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <child>
-                  <object class="GtkBox">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
@@ -71,19 +70,8 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="app_gpx_details_label_length">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
                         <property name="pack-type">end</property>
-                        <property name="position">1</property>
+                        <property name="position">3</property>
                       </packing>
                     </child>
                   </object>
@@ -98,6 +86,7 @@
                   <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="homogeneous">True</property>
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
@@ -111,7 +100,18 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="app_gpx_details_label_up_hill">
+                      <object class="GtkLabel" id="app_window_details_label_up_hill">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="app_window_details_label_down_hill">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                       </object>
@@ -119,21 +119,9 @@
                         <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="pack-type">end</property>
-                        <property name="position">1</property>
+                        <property name="position">2</property>
                       </packing>
                     </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkListBoxRow">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <child>
-                  <object class="GtkBox">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
@@ -143,19 +131,8 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel" id="app_gpx_details_label_down_hill">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
                         <property name="pack-type">end</property>
-                        <property name="position">1</property>
+                        <property name="position">3</property>
                       </packing>
                     </child>
                   </object>
@@ -170,24 +147,12 @@
           </packing>
         </child>
         <child>
-          <object class="GtkScrolledWindow">
+          <object class="GtkScrolledWindow" id="app_window_details_webview">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="shadow-type">in</property>
             <child>
-              <object class="GtkViewport">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <child>
-                  <object class="WebKitWebView" type-func="webkit_web_view_get_type" id="app_gpx_details_webkit_webview">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <child>
-                      <placeholder/>
-                    </child>
-                  </object>
-                </child>
-              </object>
+              <placeholder/>
             </child>
           </object>
           <packing>
@@ -197,7 +162,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkScrolledWindow" id="app_gpx_details_scrolled_window">
+          <object class="GtkScrolledWindow" id="app_window_details_matplotlib">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="shadow-type">in</property>

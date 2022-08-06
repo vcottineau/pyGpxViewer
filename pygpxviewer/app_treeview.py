@@ -4,9 +4,9 @@ import pathlib
 from gi.repository import Gio, Gtk, Gdk
 
 
-from pygpxviewer.helper import get_gpx_info
+from pygpxviewer.utils import get_gpx_info
 from pygpxviewer.workers import WorkerGpxThread
-from pygpxviewer.app_gpx_details import AppGpxDetails
+from pygpxviewer.app_window_details import AppWindowDetails
 
 
 @Gtk.Template(resource_path="/fr/vcottineau/pygpxviewer/ui/app_treeview.glade")
@@ -87,7 +87,7 @@ class AppTreeView(Gtk.TreeView):
         if self.get_column(AppTreeView.TRV_COL_VIEW) == column:
             iter = self.app_tree_model.get_iter(path)
             value = self.app_tree_model.get_value(iter, AppTreeView.LST_COL_PATH)
-            app_gpx_details = AppGpxDetails(gpx_file=value)
-            app_gpx_details.show_all()
+            app_window_details = AppWindowDetails(gpx_file=value)
+            app_window_details.show_all()
 
 

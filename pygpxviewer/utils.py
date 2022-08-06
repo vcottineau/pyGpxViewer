@@ -6,19 +6,24 @@ import gpxpy.gpx
 import srtm
 
 
+def get_gpx_file(gpx_file):
+    return gpxpy.parse(open(gpx_file, 'r'))
+
+
+def get_gpx_bounds(gpx_file):
+    return get_gpx_file(gpx_file).get_bounds()    
+
 
 def get_gpx_points_data(gpx_file):
-    gpx = gpxpy.parse(open(gpx_file, 'r'))
-    return gpx.get_points_data()
+    return get_gpx_file(gpx_file).get_points_data()
 
 
 def get_gpx_elevation_extremes(gpx_file):
-    gpx = gpxpy.parse(open(gpx_file, 'r'))
-    return gpx.get_elevation_extremes()
+    return get_gpx_file(gpx_file).get_elevation_extremes()
 
 
 def get_gpx_info(gpx_file):
-    gpx = gpxpy.parse(open(gpx_file, 'r'))
+    gpx = get_gpx_file(gpx_file)
     return gpx.get_points_no(), gpx.length_3d() / 1000, gpx.get_uphill_downhill()[0], gpx.get_uphill_downhill()[1]
 
 
@@ -46,8 +51,8 @@ def set_gpx_info(gpx_file):
 
     tree.write(gpx_file, pretty_print=True)
 
-    gpx = gpxpy.parse(open(gpx_file, 'r'))
-
+    gpx = get_gpx_file(gpx_file)
+    
     gpx.schema_locations = [
         "http://www.topografix.com/GPX/1/1",
         "http://www.topografix.com/GPX/1/1/gpx.xsd"

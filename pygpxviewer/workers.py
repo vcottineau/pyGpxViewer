@@ -4,7 +4,7 @@ import threading
 from gi.repository import GObject
 
 
-from pygpxviewer.helper import set_gpx_info
+from pygpxviewer.utils import set_gpx_info
 
 
 class WorkerGpxThread(threading.Thread):

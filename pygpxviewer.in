@@ -5,12 +5,19 @@ import os
 import signal
 
 
+pkgdatadir = '@pkgdatadir@'
+
+
+sys.path.insert(1, pkgdatadir)
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+
 _LOCAL = @local_build@
 
 
 if _LOCAL:
     sys.path.insert(1, '@pythondir@')
-    os.environ["XDG_DATA_DIRS"] = '@schemasdir@:' + os.environ.get("XDG_DATA_DIRS", "/usr/share:/usr/share/local")
+    os.environ["XDG_DATA_DIRS"] = '@schemasdir@:' + os.environ.get("XDG_DATA_DIRS", "/usr/share:/usr/local/share")
 
 
 import gi
@@ -25,14 +32,13 @@ PKGDATA_DIR = '@pkgdatadir@'
 
 
 def set_resources():
-    resource = Gio.resource_load(os.path.join(PKGDATA_DIR, '@rdnn_name@.gresource'))
+    resource = Gio.resource_load(os.path.join(PKGDATA_DIR, '@application_id@.gresource'))
     Gio.Resource._register(resource)
 
 
 def run_application():
     from pygpxviewer.application import Application
     application = Application('@application_id@')
-    signal.signal(signal.SIGINT, signal.SIG_DFL)
     return application.run(sys.argv)
 
 

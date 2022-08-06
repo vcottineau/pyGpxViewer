@@ -2,6 +2,7 @@ from gi.repository import Gio, Gtk, Gdk, GLib
 
 
 from pygpxviewer.app_treeview import AppTreeView
+from config import Config
 
 
 @Gtk.Template(resource_path="/fr/vcottineau/pygpxviewer/ui/app_window.glade")
@@ -14,7 +15,7 @@ class AppWindow(Gtk.ApplicationWindow):
     app_spinner = Gtk.Template.Child()    
 
     def __init__(self, application):
-        super().__init__(application=application, title="pyGpxViewer")
+        super().__init__(application=application, title=Config.PROGRAM_NAME)
 
         self.css = Gtk.CssProvider()
         self.css.load_from_resource("/fr/vcottineau/pygpxviewer/style.css")
@@ -36,6 +37,7 @@ class AppWindow(Gtk.ApplicationWindow):
         self.app_treeview.refresh_treeview(self.stop_refresh)
 
     def stop_refresh(self):
+        self.app_treeview.update_treeview()
         self.app_spinner.stop()
         self.set_sensitive(True)
 

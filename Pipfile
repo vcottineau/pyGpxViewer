@@ -10,6 +10,7 @@ gpxpy = "*"
 lxml = "*"
 matplotlib = "*"
 numpy = "*"
+python-dotenv = "*"
 
 [dev-packages]
 meson = "*"

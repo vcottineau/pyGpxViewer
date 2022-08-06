@@ -8,6 +8,11 @@ build_root = environ.get("MESON_BUILD_ROOT")
 source_root = environ.get("MESON_SOURCE_ROOT")
 
 subprocess.call([
+    "chmod", "+x",
+    path.join(build_root, "pygpxviewer")
+])
+
+subprocess.call([
     "cp", "-R",
     path.join(source_root, "data", "icons"),
     path.join(build_root, "data")
