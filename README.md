@@ -21,7 +21,11 @@ ninja -C build
 ```
 
 ## Mapbox API
-
+A [Mapbox](https://www.mapbox.com/) account is required to render 3D terrain maps.
+```
+nano .env
+MAPBOX_API_KEY=$MAPBOX_API_KEY
+```
 
 ## Run
 To run locally the application:
