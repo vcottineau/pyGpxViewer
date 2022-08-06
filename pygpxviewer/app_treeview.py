@@ -1,10 +1,15 @@
 import pathlib
+import threading
+import time
 
 
-from gi.repository import Gio, Gtk, Gdk
+from gi.repository import Gio, Gtk, Gdk, GObject
 
 
-from pygpxviewer.helper import get_gpx_info
+GObject.threads_init()
+
+
+from pygpxviewer.helper import get_gpx_info, set_gpx_info
 
 
 @Gtk.Template(resource_path="/fr/vcottineau/pygpxviewer/ui/app_treeview.glade")
@@ -35,9 +40,10 @@ class AppTreeView(Gtk.TreeView):
     app_tree_cell_up_hill = Gtk.Template.Child()
     app_tree_cell_down_hill = Gtk.Template.Child()
 
-    def __init__(self, folder):
+    def __init__(self, app_window, folder):
         super().__init__()
 
+        self.app_window = app_window
         self.folder = folder
         self.props.activate_on_single_click = True
 
@@ -56,15 +62,22 @@ class AppTreeView(Gtk.TreeView):
         value = self.app_tree_model.get_value(iter, column)
         cell.set_property('text', str(round(value)))
 
+    def refresh_treeview(self, callback):
+        thread = WorkerGpxThread(self.get_gpx_files(), callback)
+        thread.start()
+
     def reset_treeview(self):
         self.app_tree_model.clear()
-        for file in pathlib.Path(self.folder).glob("**/*.gpx"):
-            self.app_tree_model.append([str(file), 0, 0, 0])
+        for gpx_file in self.get_gpx_files():
+            self.app_tree_model.append([str(gpx_file), 0, 0, 0])
         self.update_treeview()
 
     def update_treeview(self):
         for row in self.app_tree_model:
             row[AppTreeView.LST_COL_LENGTH], row[AppTreeView.LST_COL_UP_HILL], row[AppTreeView.LST_COL_DOWN_HILL] = get_gpx_info(row[AppTreeView.LST_COL_PATH])
+
+    def get_gpx_files(self):
+        return pathlib.Path(self.folder).glob("**/*.gpx")
 
     @Gtk.Template.Callback()
     def on_row_activated(self, tree_view, path, column):
@@ -78,3 +91,15 @@ class AppTreeView(Gtk.TreeView):
     #     (model, iter) = tree_selection.get_selected()
     #     print(model.get_value(iter, 0))
     #     print(model.get_value(iter, 1))
+
+
+class WorkerGpxThread(threading.Thread):
+    def __init__(self, gpx_files, callback):
+        threading.Thread.__init__(self)
+        self.gpx_files = gpx_files
+        self.callback = callback
+
+    def run(self):
+        for gpx_file in self.gpx_files:
+            set_gpx_info(str(gpx_file))
+        GObject.idle_add(self.callback)

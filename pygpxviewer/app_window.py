@@ -1,4 +1,4 @@
-from gi.repository import Gio, Gtk, Gdk
+from gi.repository import Gio, Gtk, Gdk, GLib
 
 
 from pygpxviewer.app_treeview import AppTreeView
@@ -8,6 +8,11 @@ from pygpxviewer.app_treeview import AppTreeView
 class AppWindow(Gtk.ApplicationWindow):
     __gtype_name__ = "app_window"
 
+    app_header_bar = Gtk.Template.Child()
+    app_window_scrolled_window = Gtk.Template.Child()
+    app_button_menu_popover = Gtk.Template.Child()
+    app_spinner = Gtk.Template.Child()    
+
     def __init__(self, application):
         super().__init__(application=application, title="pyGpxViewer")
 
@@ -15,13 +20,26 @@ class AppWindow(Gtk.ApplicationWindow):
         self.css.load_from_resource("/fr/vcottineau/pygpxviewer/style.css")
 
         self.set_icon_name(self.get_application().get_application_id())
-        self.app_treeview = AppTreeView(self.get_folder_path())
 
-        self.scrolled_window = Gtk.ScrolledWindow()
-        self.scrolled_window.add(self.app_treeview)
-        self.add(self.scrolled_window)
+        self.activity_mode = False
+        self.timeout_id = None
+
+        self.app_treeview = AppTreeView(self, self.get_folder_path())
+        self.app_window_scrolled_window.add(self.app_treeview)
 
         self.show_all()
+
+    def start_refresh(self):
+        self.app_button_menu_popover.popdown()
+        self.app_spinner.start()
+        self.app_treeview.set_sensitive(False)
+        self.app_header_bar.set_sensitive(False)
+        self.app_treeview.refresh_treeview(self.stop_refresh)
+
+    def stop_refresh(self):
+        self.app_spinner.stop()
+        self.app_treeview.set_sensitive(True)
+        self.app_header_bar.set_sensitive(True)
 
     @Gtk.Template.Callback()
     def on_app_button_open_clicked(self,button):
