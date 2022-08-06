@@ -1,5 +1,5 @@
 # pyGpxViewer
-![app_window.png](../master/resources/app_window.png) ![app_window_detals.png](../master/resources/app_window_details.png)
+<img src="../master/resources/app_window.png" width="425"/> <img src="../master/resources/app_window_details.png" width="425"/> 
 
 **pyGpxViewer** is a simple python applications based on [Gtk3](https://www.gtk.org/). Map services are provided by [Mapbox](https://www.mapbox.com/) to render 3D terrain.
 
