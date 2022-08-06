@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+
+import sys
+import os
+import signal
+
+
+_LOCAL = @local_build@
+
+
+if _LOCAL:
+    sys.path.insert(1, '@pythondir@')
+    os.environ["XDG_DATA_DIRS"] = '@schemasdir@:' + os.environ.get("XDG_DATA_DIRS", "/usr/share:/usr/share/local")
+
+
+import gi
+
+
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gio, Gtk
+
+
+PKGDATA_DIR = '@pkgdatadir@'
+
+
+def set_resources():
+    resource = Gio.resource_load(os.path.join(PKGDATA_DIR, '@rdnn_name@.gresource'))
+    Gio.Resource._register(resource)
+
+
+def run_application():
+    from pygpxviewer.application import Application
+    application = Application('@application_id@')
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
+    return application.run(sys.argv)
+
+
+def main():
+    set_resources()
+    return run_application()
+
+
+if __name__ == '__main__':
+    if _LOCAL:
+        print('Running from source tree, using local files.')
+    sys.exit(main())

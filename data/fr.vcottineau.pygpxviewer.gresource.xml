@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/fr/vcottineau/pygpxviewer">
+        <file>ui/app_window.glade</file>
+        <file>ui/app_treeview.glade</file>
+        <file>style.css</file>
+    </gresource>
+</gresources>

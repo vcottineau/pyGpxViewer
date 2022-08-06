@@ -1,0 +1,36 @@
+# Python
+__pycache__
+*.py[cod]
+
+#IDE
+.vscode
+*.code-workspace
+
+# Unit test
+.coverage
+
+# Build
+build
+build.sh
+
+# Logs
+logs
+
+# Alembic
+migrations
+
+# Pipenv
+*.lock
+
+# Glade
+*.glade~
+
+# Translations
+*.mo
+
+# SQLite databases
+*.sqlite
+*.db
+
+# Environment files
+.env

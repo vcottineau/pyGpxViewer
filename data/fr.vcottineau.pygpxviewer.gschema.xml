@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <schema id="fr.vcottineau.pygpxviewer" path="/fr/vcottineau/pygpxviewer/">
+        <key type="b" name="is-maximized">
+            <default>false</default>
+            <summary>Default window maximized state</summary>
+        </key>
+        <key type="s" name="folder-path">
+            <default>"/home/vcottineau/Documents/Voyages/Tracks/Gpx"</default>
+            <summary>Default folder path</summary>
+        </key>
+    </schema>
+</schemalist>
