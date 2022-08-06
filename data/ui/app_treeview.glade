@@ -84,7 +84,7 @@
         <property name="title" translatable="yes">Actions</property>
         <child>
           <object class="GtkCellRendererPixbuf" id="app_tree_cell_actions">
-            <property name="icon-name">dialog-information-symbolic</property>
+            <property name="icon-name">mark-location-symbolic</property>
             <property name="stock_size">4</property>
           </object>
         </child>

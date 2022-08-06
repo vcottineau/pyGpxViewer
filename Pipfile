@@ -8,6 +8,8 @@ pygobject = "*"
 gpxpy = "*"
 "srtm.py" = "*"
 lxml = "*"
+matplotlib = "*"
+numpy = "*"
 
 [dev-packages]
 meson = "*"

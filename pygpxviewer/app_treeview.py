@@ -6,6 +6,7 @@ from gi.repository import Gio, Gtk, Gdk
 
 from pygpxviewer.helper import get_gpx_info
 from pygpxviewer.workers import WorkerGpxThread
+from pygpxviewer.app_gpx_details import AppGpxDetails
 
 
 @Gtk.Template(resource_path="/fr/vcottineau/pygpxviewer/ui/app_treeview.glade")
@@ -36,10 +37,9 @@ class AppTreeView(Gtk.TreeView):
     app_tree_cell_up_hill = Gtk.Template.Child()
     app_tree_cell_down_hill = Gtk.Template.Child()
 
-    def __init__(self, app_window, folder):
+    def __init__(self, folder):
         super().__init__()
 
-        self.app_window = app_window
         self.folder = folder
         self.props.activate_on_single_click = True
 
@@ -70,7 +70,7 @@ class AppTreeView(Gtk.TreeView):
 
     def update_treeview(self):
         for row in self.app_tree_model:
-            row[AppTreeView.LST_COL_LENGTH], row[AppTreeView.LST_COL_UP_HILL], row[AppTreeView.LST_COL_DOWN_HILL] = get_gpx_info(row[AppTreeView.LST_COL_PATH])
+            _, row[AppTreeView.LST_COL_LENGTH], row[AppTreeView.LST_COL_UP_HILL], row[AppTreeView.LST_COL_DOWN_HILL] = get_gpx_info(row[AppTreeView.LST_COL_PATH])
 
     def get_gpx_files(self):
         return pathlib.Path(self.folder).glob("**/*.gpx")
@@ -87,10 +87,7 @@ class AppTreeView(Gtk.TreeView):
         if self.get_column(AppTreeView.TRV_COL_VIEW) == column:
             iter = self.app_tree_model.get_iter(path)
             value = self.app_tree_model.get_value(iter, AppTreeView.LST_COL_PATH)
-            print(value)
+            app_gpx_details = AppGpxDetails(gpx_file=value)
+            app_gpx_details.show_all()
 
-    # @Gtk.Template.Callback()
-    # def on_tree_selection_changed(self, tree_selection):
-    #     (model, iter) = tree_selection.get_selected()
-    #     print(model.get_value(iter, 0))
-    #     print(model.get_value(iter, 1))
+

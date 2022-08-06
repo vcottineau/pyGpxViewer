@@ -38,6 +38,36 @@ class Application(Gtk.Application):
 
     def on_about(self, action, param):
         about_dialog = Gtk.AboutDialog(transient_for=self.app_window, modal=True)
+        about_dialog.set_logo_icon_name(self.get_application_id())
+        about_dialog.set_program_name("pyGpxViewer")
+        about_dialog.set_authors(["Vincent Cottineau <perso@vcottineau.fr>"])
+        about_dialog.set_version("1.0")
+        about_dialog.set_comments("A simple Gtk3 application to plot gpx files.")
+        about_dialog.set_website("https://github.com/vcottineau/pyGpxViewer")
+        about_dialog.set_license(
+"""
+MIT License
+
+Copyright (c) 2022 Vincent Cottineau
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE."""
+        )
         about_dialog.present()
 
     def on_quit(self, action, param):

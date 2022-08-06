@@ -6,9 +6,20 @@ import gpxpy.gpx
 import srtm
 
 
+
+def get_gpx_points_data(gpx_file):
+    gpx = gpxpy.parse(open(gpx_file, 'r'))
+    return gpx.get_points_data()
+
+
+def get_gpx_elevation_extremes(gpx_file):
+    gpx = gpxpy.parse(open(gpx_file, 'r'))
+    return gpx.get_elevation_extremes()
+
+
 def get_gpx_info(gpx_file):
     gpx = gpxpy.parse(open(gpx_file, 'r'))
-    return gpx.length_3d() / 1000, gpx.get_uphill_downhill()[0], gpx.get_uphill_downhill()[1]
+    return gpx.get_points_no(), gpx.length_3d() / 1000, gpx.get_uphill_downhill()[0], gpx.get_uphill_downhill()[1]
 
 
 def set_gpx_info(gpx_file):

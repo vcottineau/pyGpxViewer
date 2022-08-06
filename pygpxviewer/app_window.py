@@ -24,7 +24,7 @@ class AppWindow(Gtk.ApplicationWindow):
         self.activity_mode = False
         self.timeout_id = None
 
-        self.app_treeview = AppTreeView(self, self.get_folder_path())
+        self.app_treeview = AppTreeView(self.get_folder_path())
         self.app_window_scrolled_window.add(self.app_treeview)
 
         self.show_all()
