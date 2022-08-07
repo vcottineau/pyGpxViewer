@@ -13,8 +13,6 @@ class Application(Gtk.Application):
         super().__init__(application_id=application_id, flags=Gio.ApplicationFlags.FLAGS_NONE)
 
         GLib.set_prgname(application_id)
-        self.settings = Gio.Settings.new(application_id)
-
         self.app_window = None
 
     def do_startup(self):

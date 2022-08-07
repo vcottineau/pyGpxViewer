@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schemalist>
-    <schema id="fr.vcottineau.pygpxviewer" path="/fr/vcottineau/pygpxviewer/">
+<schemalist gettext-domain="pygpxviewer">
+    <schema id="com.github.pygpxviewer.app.window" path="/com/github/pygpxviewer/app/window/">
         <key type="b" name="is-maximized">
             <default>false</default>
             <summary>Default window maximized state</summary>

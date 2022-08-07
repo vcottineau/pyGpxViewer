@@ -1,11 +1,11 @@
-from gi.repository import Gio, Gtk, Gdk, GLib
+from gi.repository import Gio, Gtk, Gdk
 
 
-from pygpxviewer.app_treeview import AppTreeView
 from config import Config
+from pygpxviewer.app_treeview import AppTreeView
 
 
-@Gtk.Template(resource_path="/fr/vcottineau/pygpxviewer/ui/app_window.glade")
+@Gtk.Template(resource_path="/com/github/pygpxviewer/ui/app_window.glade")
 class AppWindow(Gtk.ApplicationWindow):
     __gtype_name__ = "app_window"
 
@@ -17,13 +17,11 @@ class AppWindow(Gtk.ApplicationWindow):
     def __init__(self, application):
         super().__init__(application=application, title=Config.PROGRAM_NAME)
 
-        self.css = Gtk.CssProvider()
-        self.css.load_from_resource("/fr/vcottineau/pygpxviewer/style.css")
-
         self.set_icon_name(self.get_application().get_application_id())
+        self.settings = Gio.Settings.new("com.github.pygpxviewer.app.window")
 
-        self.activity_mode = False
-        self.timeout_id = None
+        self.css = Gtk.CssProvider()
+        self.css.load_from_resource("/com/github/pygpxviewer/style.css")
 
         self.app_treeview = AppTreeView(self.get_folder_path())
         self.app_window_scrolled_window.add(self.app_treeview)
@@ -41,6 +39,9 @@ class AppWindow(Gtk.ApplicationWindow):
         self.app_spinner.stop()
         self.set_sensitive(True)
 
+    def get_folder_path(self):
+        return self.settings.get_string("folder-path")
+
     @Gtk.Template.Callback()
     def on_app_button_open_clicked(self,button):
         dialog = Gtk.FileChooserDialog(
@@ -51,18 +52,14 @@ class AppWindow(Gtk.ApplicationWindow):
         dialog.add_buttons(
             Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, "Select", Gtk.ResponseType.OK
         )
-        dialog.set_default_size(640, 360)
 
         response = dialog.run()
         if response == Gtk.ResponseType.OK:
-            self.get_application().settings.set_string("folder-path", dialog.get_filename())
+            self.settings.set_string("folder-path", dialog.get_filename())
             self.app_treeview.folder = self.get_folder_path()
             self.app_treeview.reset_treeview()
 
         dialog.destroy()
-
-    def get_folder_path(self):
-        return self.get_application().settings.get_string("folder-path")
 
     @Gtk.Template.Callback()
     def on_window_state_event(self, widget, event):

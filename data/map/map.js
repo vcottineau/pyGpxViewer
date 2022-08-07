@@ -3,6 +3,8 @@ var map;
 function init(accessToken, minLongitude, maxLongitude, minLatitude, maxLatitude, locations) {
     mapboxgl.accessToken = accessToken
 
+    window.webkit.messageHandlers.test_callback.postMessage("")
+
     map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/outdoors-v11',

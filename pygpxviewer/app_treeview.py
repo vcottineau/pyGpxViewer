@@ -4,12 +4,12 @@ import pathlib
 from gi.repository import Gio, Gtk, Gdk
 
 
-from pygpxviewer.utils import get_gpx_info
+from pygpxviewer.gpx_helper import gpx_helper
 from pygpxviewer.workers import WorkerGpxThread
 from pygpxviewer.app_window_details import AppWindowDetails
 
 
-@Gtk.Template(resource_path="/fr/vcottineau/pygpxviewer/ui/app_treeview.glade")
+@Gtk.Template(resource_path="/com/github/pygpxviewer/ui/app_treeview.glade")
 class AppTreeView(Gtk.TreeView):
     __gtype_name__ = "app_treeview"
 
@@ -70,8 +70,10 @@ class AppTreeView(Gtk.TreeView):
 
     def update_treeview(self):
         for row in self.app_tree_model:
-            _, row[AppTreeView.LST_COL_LENGTH], row[AppTreeView.LST_COL_UP_HILL], row[AppTreeView.LST_COL_DOWN_HILL] = get_gpx_info(row[AppTreeView.LST_COL_PATH])
-
+            row[AppTreeView.LST_COL_LENGTH] = gpx_helper.get_gpx_length(row[AppTreeView.LST_COL_PATH])
+            row[AppTreeView.LST_COL_UP_HILL] = gpx_helper.get_gpx_up_hill(row[AppTreeView.LST_COL_PATH])
+            row[AppTreeView.LST_COL_DOWN_HILL] = gpx_helper.get_gpx_down_hill(row[AppTreeView.LST_COL_PATH])
+            
     def get_gpx_files(self):
         return pathlib.Path(self.folder).glob("**/*.gpx")
 

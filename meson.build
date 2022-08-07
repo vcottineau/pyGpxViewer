@@ -21,7 +21,7 @@ if not py_installation.language_version().version_compare('>= 3.7')
 endif
 
 # Constants
-APPLICATION_ID = 'fr.vcottineau.pygpxviewer'
+APPLICATION_ID = 'com.github.pygpxviewer'
 APPLICATION_NAME = 'pytreksviewer'
 PYTHON_DIR = py_installation.get_path('purelib')
 PKGDATA_DIR = join_paths(get_option('prefix'), get_option('datadir'), APPLICATION_NAME)

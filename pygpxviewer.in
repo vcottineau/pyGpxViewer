@@ -3,23 +3,6 @@
 import sys
 import os
 import signal
-
-
-pkgdatadir = '@pkgdatadir@'
-
-
-sys.path.insert(1, pkgdatadir)
-signal.signal(signal.SIGINT, signal.SIG_DFL)
-
-
-_LOCAL = @local_build@
-
-
-if _LOCAL:
-    sys.path.insert(1, '@pythondir@')
-    os.environ["XDG_DATA_DIRS"] = '@schemasdir@:' + os.environ.get("XDG_DATA_DIRS", "/usr/share:/usr/local/share")
-
-
 import gi
 
 
@@ -28,11 +11,17 @@ gi.require_version('WebKit2', '4.1')
 from gi.repository import Gio, Gtk
 
 
-PKGDATA_DIR = '@pkgdatadir@'
+sys.path.insert(1, '@pkgdatadir@')
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+
+
+if '@local_build@':
+    sys.path.insert(1, '@pythondir@')
+    os.environ["XDG_DATA_DIRS"] = '@schemasdir@:' + os.environ.get("XDG_DATA_DIRS", "/usr/share:/usr/local/share")
 
 
 def set_resources():
-    resource = Gio.resource_load(os.path.join(PKGDATA_DIR, '@application_id@.gresource'))
+    resource = Gio.resource_load(os.path.join('@pkgdatadir@', '@application_id@.gresource'))
     Gio.Resource._register(resource)
 
 
@@ -48,6 +37,4 @@ def main():
 
 
 if __name__ == '__main__':
-    if _LOCAL:
-        print('Running from source tree, using local files.')
     sys.exit(main())
