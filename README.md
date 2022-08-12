@@ -1,7 +1,8 @@
 # pyGpxViewer
-**pyGpxViewer** is a simple python applications based on [Gtk3](https://www.gtk.org/). Map services are provided by [Mapbox](https://www.mapbox.com/) to render 3D terrain.
+**pyGpxViewer** is a simple python applications based on [Gtk4](https://www.gtk.org/) to parse gpx files.
 <p align="center">
-  <img src="../master/resources/app_window_details.png" width="450"/>
+  <img src="../master/resources/app_window.png" width="500"/>
+  <img src="../master/resources/app_window_details.png" width="500"/>
 </p>
 
 ## Virtual Environments
