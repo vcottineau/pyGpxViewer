@@ -24,7 +24,6 @@ class Item(GObject.GObject):
         self.down_hill = down_hill
 
 
-#@Gtk.Template(resource_path="/com/github/pygpxviewer/ui/app_column_view.ui")
 class AppColumnView(Gtk.ColumnView):
     __gtype_name__ = "app_column_view"
 
@@ -65,6 +64,11 @@ class AppColumnView(Gtk.ColumnView):
 
             if column["bind"]:
                 signal_list_item_factory.connect("bind", column["bind"], column["property"])
+
+                # property_expression = Gtk.PropertyExpression.new(Item, None, column["property"])
+                # string_sorter = Gtk.StringSorter()
+                # string_sorter.set_expression(property_expression)
+                # column.set_sorter(string_sorter)
 
             column_view_column.set_factory(signal_list_item_factory)
             self.append_column(column_view_column)
