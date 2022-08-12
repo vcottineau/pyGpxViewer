@@ -2,25 +2,18 @@
 __pycache__
 *.py[cod]
 
-#IDE
+# Code
 .vscode
 *.code-workspace
-
-# Unit test
-.coverage
 
 # Build
 build
 build.sh
 
-# ToDo
+# Misc
 ToDo
-
-# Logs
+samples
 logs
-
-# Alembic
-migrations
 
 # Pipenv
 *.lock
@@ -31,9 +24,5 @@ migrations
 # Translations
 *.mo
 
-# SQLite databases
-*.sqlite
-*.db
-
-# Environment files
+# Env
 .env

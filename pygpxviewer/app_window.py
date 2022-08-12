@@ -1,67 +1,118 @@
-from gi.repository import Gio, Gtk, Gdk
+import pathlib
+import threading
 
 
+
+from gi.repository import Gio, Gtk, GObject
+
+
+from pygpxviewer.app_column_view import AppColumnView
+from pygpxviewer.helpers import sqlite_helper, gpx_helper
 from config import Config
-from pygpxviewer.app_treeview import AppTreeView
 
 
-@Gtk.Template(resource_path="/com/github/pygpxviewer/ui/app_window.glade")
 class AppWindow(Gtk.ApplicationWindow):
     __gtype_name__ = "app_window"
 
-    app_header_bar = Gtk.Template.Child()
-    app_window_scrolled_window = Gtk.Template.Child()
-    app_button_menu_popover = Gtk.Template.Child()
-    app_spinner = Gtk.Template.Child()    
+    folder_path = GObject.Property(type=str)
 
     def __init__(self, application):
-        super().__init__(application=application, title=Config.PROGRAM_NAME)
+        super().__init__(application=application)
 
-        self.set_icon_name(self.get_application().get_application_id())
+        self.css_provider = Gtk.CssProvider()
+        self.css_provider.load_from_resource("/com/github/pygpxviewer/style.css")
+        Gtk.StyleContext.add_provider_for_display(self.get_display(), self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+
         self.settings = Gio.Settings.new("com.github.pygpxviewer.app.window")
+        
+        self.set_size_request(300, 600)
 
-        self.css = Gtk.CssProvider()
-        self.css.load_from_resource("/com/github/pygpxviewer/style.css")
+        self.app_column_view = AppColumnView()
+        self.connect("notify::folder-path", self.app_column_view.on_folder_path_changed)
 
-        self.app_treeview = AppTreeView(self.get_folder_path())
-        self.app_window_scrolled_window.add(self.app_treeview)
+        self.scrolled_window = Gtk.ScrolledWindow()
+        # self.scrolled_window.set_vexpand(True)
+        self.scrolled_window.set_child(self.app_column_view)
 
-        self.show_all()
+        self.settings.bind("width", self, "default-width", Gio.SettingsBindFlags.DEFAULT)
+        self.settings.bind("height", self, "default-height", Gio.SettingsBindFlags.DEFAULT)
+        self.settings.bind("is-maximized", self, "maximized", Gio.SettingsBindFlags.DEFAULT)
+        self.settings.bind("is-fullscreen", self, "fullscreened", Gio.SettingsBindFlags.DEFAULT)
+        self.settings.bind("folder-path", self, "folder-path", Gio.SettingsBindFlags.DEFAULT)
 
-    def start_refresh(self):
-        self.app_button_menu_popover.popdown()
-        self.app_spinner.start()
-        self.set_sensitive(False)
-        self.app_treeview.refresh_treeview(self.stop_refresh)
+        self.set_header_bar()
+        self.set_child(self.scrolled_window)
 
-    def stop_refresh(self):
-        self.app_treeview.update_treeview()
-        self.app_spinner.stop()
-        self.set_sensitive(True)
+    def set_header_bar(self):
+        self.header_bar = Gtk.HeaderBar()
+        self.header_bar.set_show_title_buttons(True)
 
-    def get_folder_path(self):
-        return self.settings.get_string("folder-path")
+        self.button_open = Gtk.Button.new_from_icon_name("document-open-symbolic")
+        self.button_open.connect("clicked", self.on_button_open_clicked)
+        self.header_bar.pack_start(self.button_open)
 
-    @Gtk.Template.Callback()
-    def on_app_button_open_clicked(self,button):
-        dialog = Gtk.FileChooserDialog(
+        self.search_entry = Gtk.SearchEntry()
+        self.search_entry.connect("changed", self.app_column_view.on_search_entry_changed)
+        self.header_bar.pack_start(self.search_entry)
+
+        self.popover = Gtk.Popover()
+        self.menu_button = Gtk.MenuButton()
+        self.menu_button.set_icon_name("view-more-symbolic")
+        self.menu_button.set_popover(self.popover)
+        self.header_bar.pack_end(self.menu_button)
+
+        self.button_refresh = Gtk.Button.new_from_icon_name("view-refresh-symbolic")
+        self.button_refresh.connect("clicked", self.on_button_refresh_clicked)
+        self.header_bar.pack_end(self.button_refresh)
+
+        self.spinner = Gtk.Spinner()
+        self.header_bar.pack_end(self.spinner)
+
+        self.set_titlebar(self.header_bar)
+
+    def on_button_open_clicked(self, button):
+        self.file_chooser = Gtk.FileChooserNative.new(
             title="Select folder",
             parent=self,
-            action=Gtk.FileChooserAction.SELECT_FOLDER,
-        )
-        dialog.add_buttons(
-            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, "Select", Gtk.ResponseType.OK
-        )
+            action=Gtk.FileChooserAction.SELECT_FOLDER)
+        self.file_chooser.connect("response", self.on_file_chooser_response)
+        self.file_chooser.show()
 
-        response = dialog.run()
-        if response == Gtk.ResponseType.OK:
-            self.settings.set_string("folder-path", dialog.get_filename())
-            self.app_treeview.folder = self.get_folder_path()
-            self.app_treeview.reset_treeview()
+    def on_button_refresh_clicked(self, button):
+        self.update_records()
 
-        dialog.destroy()
+    def on_file_chooser_response(self, dialog, response):
+        if response == Gtk.ResponseType.ACCEPT:
+            self.folder_path = dialog.get_file().get_path()
+            self.update_records()
 
-    @Gtk.Template.Callback()
-    def on_window_state_event(self, widget, event):
-        if bool(widget.get_window().get_state() & Gdk.WindowState.MAXIMIZED):
-            print("is_maximized")
+    def update_records(self):
+        self.spinner.start()
+        self.set_sensitive(False)
+        thread = WorkerUpdateThread(self.folder_path, self.on_update_records_ended)
+        thread.start()
+
+    def on_update_records_ended(self):
+        self.app_column_view.reset_liststore()
+        self.set_sensitive(True)
+        self.spinner.stop()
+
+class WorkerUpdateThread(threading.Thread):
+    def __init__(self, folder_path, callback):
+        threading.Thread.__init__(self)
+        self.folder_path = folder_path
+        self.callback = callback
+
+    def run(self):
+        sqlite_helper.clear_records()
+        for file in pathlib.Path(self.folder_path).glob("**/*.gpx"):
+            gpx_helper.set_gpx(file)
+            record = (
+                str(file),
+                gpx_helper.get_gpx_points_nb(),
+                gpx_helper.get_gpx_length(),
+                gpx_helper.get_gpx_up_hill(),
+                gpx_helper.get_gpx_down_hill()
+            )
+            sqlite_helper.add_record(record)
+        GObject.idle_add(self.callback)

@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
     <gresource prefix="/com/github/pygpxviewer">
-        <file>map/map.html</file>
-        <file>map/map.js</file>
-        <file>ui/app_window.glade</file>
-        <file>ui/app_treeview.glade</file>
-        <file>ui/app_window_details.glade</file>
-        <file>ui/app_webview.glade</file>
+        <file>ui/app_column_view.ui</file>
         <file>xslt/stylesheet.xslt</file>
         <file>style.css</file>
     </gresource>

@@ -1,56 +1,134 @@
 import os
 
 
-from gi.repository import Gio, Gtk, Gdk, GLib
-from matplotlib.backends.backend_gtk3agg import FigureCanvasGTK3Agg
+
+from matplotlib.backends.backend_gtk4 import (NavigationToolbar2GTK4 as NavigationToolbar)
+from matplotlib.backends.backend_gtk4agg import (FigureCanvasGTK4Agg as FigureCanvas)
 from matplotlib.figure import Figure
 
 
-from pygpxviewer.gpx_helper import gpx_helper
-from pygpxviewer.app_webview import AppWebView
+from gi.repository import Gio, Gtk, Shumate
 
 
-@Gtk.Template(resource_path="/com/github/pygpxviewer/ui/app_window_details.glade")
+from pygpxviewer.helpers import gpx_helper
+
+
 class AppWindowDetails(Gtk.Window):
     __gtype_name__ = "app_window_details"
-
-    app_window_details_label_points = Gtk.Template.Child()
-    app_window_details_label_length = Gtk.Template.Child()
-    app_window_details_label_up_hill = Gtk.Template.Child()
-    app_window_details_label_down_hill = Gtk.Template.Child()
-    app_window_details_webview = Gtk.Template.Child()
-    app_window_details_matplotlib = Gtk.Template.Child()
 
     def __init__(self, gpx_file):
         super().__init__()
 
+        gpx_helper.set_gpx(gpx_file)
+
+
         self.set_title(os.path.basename(gpx_file))
+        self.settings = Gio.Settings.new("com.github.pygpxviewer.app.window.details")
 
-        self.app_window_details_label_points.set_text(str(round(gpx_helper.get_gpx_points_nb(gpx_file))))
-        self.app_window_details_label_length.set_text(str(round(gpx_helper.get_gpx_length(gpx_file))))
-        self.app_window_details_label_up_hill.set_text(str(round(gpx_helper.get_gpx_up_hill(gpx_file))))
-        self.app_window_details_label_down_hill.set_text(str(round(gpx_helper.get_gpx_down_hill(gpx_file))))
+        self.settings.bind("width", self, "default-width", Gio.SettingsBindFlags.DEFAULT)
+        self.settings.bind("height", self, "default-height", Gio.SettingsBindFlags.DEFAULT)
+        self.settings.bind("is-maximized", self, "maximized", Gio.SettingsBindFlags.DEFAULT)
+        self.settings.bind("is-fullscreen", self, "fullscreened", Gio.SettingsBindFlags.DEFAULT)        
 
-        self.bounds = gpx_helper.get_gpx_bounds(gpx_file)
-        self.locations = gpx_helper.get_gpx_locations(gpx_file)
-        self.webview = AppWebView(self.bounds, self.locations)
-        self.app_window_details_webview.add(self.webview)
+        gpx_info = self.get_gpx_info()
+        shumate_map = self.get_shumate_map()
+        canvas = self.get_matplotlib_canvas(gpx_file)
+        
+        gpx_map_and_elevation_profile = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        gpx_map_and_elevation_profile.set_homogeneous(True)
+        gpx_map_and_elevation_profile.append(shumate_map)
+        gpx_map_and_elevation_profile.append(canvas)
 
-        figure = self.get_matplotlib_figure(gpx_file)
-        canvas = FigureCanvasGTK3Agg(figure)
-        self.app_window_details_matplotlib.add(canvas)
+        box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        box.append(gpx_info)
+        box.append(gpx_map_and_elevation_profile)
 
-    def get_matplotlib_figure(self, gpx_file):
-        length = gpx_helper.get_gpx_length(gpx_file)
-        min_elev, max_elev = gpx_helper.get_gpx_elevation_extremes(gpx_file)
-        distances, elevations = gpx_helper.get_gpx_distances_and_elevations(gpx_file)
+        self.set_child(box)
+
+    def get_gpx_info(self):
+        box_row_1 = Gtk.Box()
+        box_row_1.set_homogeneous(True)
+        box_row_1.append(Gtk.Label.new("Points (nb)"))
+        box_row_1.append(Gtk.Label.new("10"))
+        box_row_1.append(Gtk.Label.new("UpHill (m)"))
+        box_row_1.append(Gtk.Label.new("30"))
+
+        box_row_2 = Gtk.Box()
+        box_row_2.set_homogeneous(True)
+        box_row_2.append(Gtk.Label.new("Length (km)"))
+        box_row_2.append(Gtk.Label.new("20"))
+        box_row_2.append(Gtk.Label.new("DownHill (m)"))
+        box_row_2.append(Gtk.Label.new("40"))
+
+        list_box = Gtk.ListBox()
+        list_box.set_selection_mode(Gtk.SelectionMode.NONE)
+        list_box.append(box_row_1)
+        list_box.append(box_row_2)
+
+        return list_box
+
+
+    def get_shumate_map(self):
+        shumate_map = Shumate.SimpleMap()
+        shumate_map.get_scale().set_unit(Shumate.Unit.METRIC)
+
+        bounds = gpx_helper.get_gpx_bounds()
+        locations = gpx_helper.get_gpx_locations()
+
+        shumate_map_source = Shumate.RasterRenderer.new_from_url("https://tile.openstreetmap.org/{z}/{x}/{y}.png")
+        shumate_map.set_map_source(shumate_map_source)
+
+        viewport = shumate_map.get_viewport()
+        path_layer = Shumate.PathLayer.new(viewport)
+
+        self.settings.bind("zoom-level", viewport, "zoom-level", Gio.SettingsBindFlags.DEFAULT)
+        self.settings.bind("latitude", viewport, "latitude", Gio.SettingsBindFlags.DEFAULT)
+        self.settings.bind("longitude", viewport, "longitude", Gio.SettingsBindFlags.DEFAULT)
+
+        for location in locations:
+            path_layer.add_node(Shumate.Coordinate.new_full(location[1], location[0]))
+        shumate_map.add_overlay_layer(path_layer)
+
+        min_latitude = bounds.min_latitude
+        min_longitude = bounds.min_longitude
+        max_latitude = bounds.max_latitude
+        max_longitude = bounds.max_longitude
+
+        distance = gpx_helper.get_gpx_distance_between_locations(min_latitude, min_longitude, max_latitude, max_longitude) / 1000
+
+        zoom_level = 5
+        if distance <= 5:
+            zoom_level = 14
+        elif distance <= 10:
+            zoom_level = 12
+        elif distance <= 25:
+            zoom_level = 11
+        elif distance <= 50:
+            zoom_level = 10
+        elif distance <= 100:
+            zoom_level = 9
+        elif distance <= 500:
+            zoom_level = 7
+
+        shumate_map.get_map().go_to_full(
+            (min_latitude + max_latitude) / 2,
+            (min_longitude + max_longitude) / 2,
+            zoom_level
+        )
+
+        return shumate_map
+
+    def get_matplotlib_canvas(self, gpx_file):
+        gpx_helper.set_gpx(gpx_file)
+        length = gpx_helper.get_gpx_length()
+        min_elev, max_elev = gpx_helper.get_gpx_elevation_extremes()
+        distances, elevations = gpx_helper.get_gpx_distances_and_elevations()
 
         min_elev = round(min_elev)
         max_elev = round(max_elev)
         mean_elev = round((sum(elevations)/len(elevations)))
 
-        figure = Figure()
-        figure.tight_layout()
+        figure = Figure(tight_layout=True)
 
         ax = figure.add_subplot()
         ax.grid()
@@ -63,4 +141,11 @@ class AppWindowDetails(Gtk.Window):
         ax.set_ylabel("Elevation (m)")
         ax.legend()
 
-        return figure
+        canvas = FigureCanvas(figure)
+        toolbar = NavigationToolbar(canvas, self)
+
+        box = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
+        box.append(canvas)
+        box.append(toolbar)
+
+        return box
