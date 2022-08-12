@@ -21,7 +21,6 @@ class AppWindowDetails(Gtk.Window):
 
         gpx_helper.set_gpx(gpx_file)
 
-
         self.set_title(os.path.basename(gpx_file))
         self.settings = Gio.Settings.new("com.github.pygpxviewer.app.window.details")
 
@@ -49,16 +48,16 @@ class AppWindowDetails(Gtk.Window):
         box_row_1 = Gtk.Box()
         box_row_1.set_homogeneous(True)
         box_row_1.append(Gtk.Label.new("Points (nb)"))
-        box_row_1.append(Gtk.Label.new("10"))
+        box_row_1.append(Gtk.Label.new(str(round(gpx_helper.get_gpx_points_nb()))))
         box_row_1.append(Gtk.Label.new("UpHill (m)"))
-        box_row_1.append(Gtk.Label.new("30"))
+        box_row_1.append(Gtk.Label.new(str(round(gpx_helper.get_gpx_up_hill()))))
 
         box_row_2 = Gtk.Box()
         box_row_2.set_homogeneous(True)
         box_row_2.append(Gtk.Label.new("Length (km)"))
-        box_row_2.append(Gtk.Label.new("20"))
+        box_row_2.append(Gtk.Label.new(str(round(gpx_helper.get_gpx_length()))))
         box_row_2.append(Gtk.Label.new("DownHill (m)"))
-        box_row_2.append(Gtk.Label.new("40"))
+        box_row_2.append(Gtk.Label.new(str(round(gpx_helper.get_gpx_down_hill()))))
 
         list_box = Gtk.ListBox()
         list_box.set_selection_mode(Gtk.SelectionMode.NONE)
@@ -119,7 +118,6 @@ class AppWindowDetails(Gtk.Window):
         return shumate_map
 
     def get_matplotlib_canvas(self, gpx_file):
-        gpx_helper.set_gpx(gpx_file)
         length = gpx_helper.get_gpx_length()
         min_elev, max_elev = gpx_helper.get_gpx_elevation_extremes()
         distances, elevations = gpx_helper.get_gpx_distances_and_elevations()
