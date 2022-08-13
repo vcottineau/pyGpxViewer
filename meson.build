@@ -28,7 +28,7 @@ PKGDATA_DIR = join_paths(get_option('prefix'), get_option('datadir'), APPLICATIO
 PKGLIB_DIR = join_paths(get_option('prefix'), get_option('libdir'), APPLICATION_NAME)
 
 # Dependencies
-dependency('glib-2.0', version: '>= 2.72.3')
+dependency('glib-2.0', version: '>= 2.64.6')
 dependency('gobject-introspection-1.0', version: '>= 1.72.0')
 dependency('gtk4', version: '>= 4.6.6')
 dependency('pygobject-3.0', version: '>= 3.42.2')
