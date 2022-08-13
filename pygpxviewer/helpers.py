@@ -49,6 +49,8 @@ class SQLiteHelper():
 
     def update_record(self, record):
         conn, c = self.get_conn()
+        # ToDo Update Record
+        # ...
         self.close_conn(conn, c)
 
     def get_records(self):

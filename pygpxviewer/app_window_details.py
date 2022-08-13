@@ -1,7 +1,6 @@
 import os
 
 
-
 from matplotlib.backends.backend_gtk4 import (NavigationToolbar2GTK4 as NavigationToolbar)
 from matplotlib.backends.backend_gtk4agg import (FigureCanvasGTK4Agg as FigureCanvas)
 from matplotlib.figure import Figure
@@ -65,7 +64,6 @@ class AppWindowDetails(Gtk.Window):
         list_box.append(box_row_2)
 
         return list_box
-
 
     def get_shumate_map(self):
         shumate_map = Shumate.SimpleMap()

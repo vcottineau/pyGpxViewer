@@ -44,31 +44,40 @@ class AppWindow(Gtk.ApplicationWindow):
         self.set_child(self.scrolled_window)
 
     def set_header_bar(self):
-        self.header_bar = Gtk.HeaderBar()
-        self.header_bar.set_show_title_buttons(True)
+        header_bar = Gtk.HeaderBar()
+        header_bar.set_show_title_buttons(True)
 
-        self.button_open = Gtk.Button.new_from_icon_name("document-open-symbolic")
-        self.button_open.connect("clicked", self.on_button_open_clicked)
-        self.header_bar.pack_start(self.button_open)
+        title_widget = Gtk.Label()
+        title_widget.set_markup(f"<b>{Config.PROGRAM_NAME}</b>")
+        title_widget.set_hexpand_set(False)
+        title_widget.set_hexpand(False)
+        header_bar.set_title_widget(title_widget)
 
-        self.search_entry = Gtk.SearchEntry()
-        self.search_entry.connect("changed", self.app_column_view.on_search_entry_changed)
-        self.header_bar.pack_start(self.search_entry)
+        button_open = Gtk.Button.new_from_icon_name("document-open-symbolic")
+        button_open.connect("clicked", self.on_button_open_clicked)
+        header_bar.pack_start(button_open)
 
-        self.popover = Gtk.Popover()
-        self.menu_button = Gtk.MenuButton()
-        self.menu_button.set_icon_name("view-more-symbolic")
-        self.menu_button.set_popover(self.popover)
-        self.header_bar.pack_end(self.menu_button)
+        search_entry = Gtk.SearchEntry()
+        search_entry.set_hexpand_set(True)
+        search_entry.set_hexpand(True)
+        search_entry.set_halign(Gtk.Align.FILL)
+        search_entry.connect("changed", self.app_column_view.on_search_entry_changed)
+        header_bar.pack_start(search_entry)
 
-        self.button_refresh = Gtk.Button.new_from_icon_name("view-refresh-symbolic")
-        self.button_refresh.connect("clicked", self.on_button_refresh_clicked)
-        self.header_bar.pack_end(self.button_refresh)
+        popover = Gtk.Popover()
+        menu_button = Gtk.MenuButton()
+        menu_button.set_icon_name("view-more-symbolic")
+        menu_button.set_popover(popover)
+        header_bar.pack_end(menu_button)
+
+        button_refresh = Gtk.Button.new_from_icon_name("view-refresh-symbolic")
+        button_refresh.connect("clicked", self.on_button_refresh_clicked)
+        header_bar.pack_end(button_refresh)
 
         self.spinner = Gtk.Spinner()
-        self.header_bar.pack_end(self.spinner)
+        header_bar.pack_end(self.spinner)
 
-        self.set_titlebar(self.header_bar)
+        self.set_titlebar(header_bar)
 
     def on_button_open_clicked(self, button):
         self.file_chooser = Gtk.FileChooserNative.new(
