@@ -15,7 +15,7 @@ permissions:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v3
@@ -25,7 +25,8 @@ jobs:
         python-version: "3.10"
     - name: Install dependencies
       run: |
-        sudo apt-get install libgtk-4-dev libgirepository1.0-dev
+        sudo apt update
+        sudo apt install libgtk-4-dev libgirepository1.0-dev
         python -m pip install --upgrade pip
         pip install flake8
         if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
