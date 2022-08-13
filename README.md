@@ -1,3 +1,4 @@
+[![Python application](https://github.com/vcottineau/pyGpxViewer/actions/workflows/python-app.yml/badge.svg?branch=master)](https://github.com/vcottineau/pyGpxViewer/actions/workflows/python-app.yml)
 # pyGpxViewer
 **pyGpxViewer** is a simple python applications based on [Gtk4](https://www.gtk.org/), [libshumate](https://wiki.gnome.org/Projects/libshumate) and [matplotlib](https://matplotlib.org/) to parse gpx files.
 <p align="center">
