@@ -1,6 +1,5 @@
 from lxml import etree
 import sqlite3
-from sqlite3 import Error
 
 
 import gpxpy
