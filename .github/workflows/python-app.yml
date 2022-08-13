@@ -26,7 +26,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install libgtk-4-dev libgirepository1.0-dev python-gi-dev
+        sudo apt install libgtk-4-dev libgirepository1.0-dev python-gi-dev desktop-file-utils
         python -m pip install --upgrade pip
         pip install flake8
         if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
