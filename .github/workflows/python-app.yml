@@ -25,9 +25,9 @@ jobs:
         python-version: "3.10"
     - name: Install dependencies
       run: |
-        sudo apt-get install libgirepository1.0-dev
+        sudo apt-get install gtk4 libgirepository1.0-dev
         python -m pip install --upgrade pip
-        pip install flake8 pytest
+        pip install flake8
         if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
     - name: Lint with flake8
       run: |
