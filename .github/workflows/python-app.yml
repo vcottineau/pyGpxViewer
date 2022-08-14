@@ -27,6 +27,7 @@ jobs:
 
       - name: Install libshumate
         run: |
+          pipenv install jinja2 markdown markupsafe pygments toml typogrify
           git clone https://gitlab.gnome.org/GNOME/libshumate.git
           cd libshumate
           pipenv run meson build
