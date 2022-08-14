@@ -33,7 +33,7 @@ dependency('gobject-introspection-1.0', version: '>= 1.72.0')
 dependency('gtk4', version: '>= 4.6.6')
 dependency('pygobject-3.0', version: '>= 3.42.1')
 dependency('gio-2.0', version: '>= 2.72.1')
-# dependency('shumate-1.0', version: '>= 1.0.0')
+dependency('shumate-1.0', version: '>= 1.0.0')
 
 subdir('data')
 
