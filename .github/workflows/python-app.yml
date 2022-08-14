@@ -33,13 +33,15 @@ jobs:
           cd libshumate
           pipenv run meson setup build
           pipenv run meson compile -C build
+          pipenv run meson dist -C build
 
-      - name: Install libshumate
-        uses: BSFishy/meson-build@v1.0.3
-        with:
-          action: install
-          directory: libshumate/build
-          meson-version: 0.63.0
+          cd build/meson-dist
+          ls
+          xz -d libshumate-1.0.xz
+          cd libshumate-1.0
+          ./configure
+          make
+          sudo make install
 
       - name: Lint with isort & flake8
         run: |
