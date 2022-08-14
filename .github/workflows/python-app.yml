@@ -32,7 +32,7 @@ jobs:
           cd libshumate
           meson setup build
           meson compile -C build
-          meson install -C build
+          sudo meson install -C build
 
       - name: Lint with isort & flake8
         run: |
