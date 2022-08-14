@@ -20,6 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          sudo apt update
           sudo apt install libgtk-4-dev libgirepository1.0-dev python-gi-dev desktop-file-utils
           pip install pipenv
           pipenv install --dev
