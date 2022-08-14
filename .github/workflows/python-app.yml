@@ -23,6 +23,7 @@ jobs:
           sudo add-apt-repository universe
           ls /var/lib/apt/lists/
           sudo apt update
+          grep ^Package /var/lib/apt/lists/azure.archive.ubuntu.com_ubuntu_dists_jammy_universe_binary-amd64_Packages | awk '{print $2}' | sort -u
           sudo apt install libgtk-4-dev libgirepository1.0-dev python-gi-dev desktop-file-utils libshumate-1.0-1
           pip install pipenv
           pipenv install --dev
