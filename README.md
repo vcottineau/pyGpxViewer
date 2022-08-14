@@ -18,8 +18,8 @@ pipenv update --dev
 pyGpxViewer uses the [Meson](https://mesonbuild.com/) and [Ninja](https://ninja-build.org/) build systems. Use the following commands to build from the source directory:
 
 ```
-meson build
-ninja -C build
+meson setup build
+meson compile -C build
 ```
 
 ## Run
@@ -33,7 +33,7 @@ python build/pygpxviewer_local
 To install the application:
 
 ```
-ninja -C build install
+meson install -C build
 ```
 
 ## License

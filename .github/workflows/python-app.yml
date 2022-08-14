@@ -25,7 +25,6 @@ jobs:
           pip install --upgrade pip
           pip install jinja2 markdown markupsafe pygments toml typogrify
 
-
       - name: Build libshumate
         run: |
           git clone https://gitlab.gnome.org/GNOME/libshumate.git
