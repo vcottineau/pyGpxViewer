@@ -53,7 +53,7 @@ class AppColumnView(Gtk.ColumnView):
             {"title": "DownHill (m)", "property": "down_hill", "expand":  False, "setup": self.factory_setup_label, "bind": self.factory_bind_label},
             {"title": "Actions", "property": None, "expand":  False, "setup": self.factory_setup_actions, "bind": None}
         ]
-        
+
         for column in columns:
             column_view_column = Gtk.ColumnViewColumn()
             column_view_column.set_title(column["title"])
@@ -107,14 +107,14 @@ class AppColumnView(Gtk.ColumnView):
         button_refresh = Gtk.Button.new_from_icon_name("view-refresh-symbolic")
 
         context = button_view.get_style_context()
-        Gtk.StyleContext.add_class(context,"column_view_button")
+        Gtk.StyleContext.add_class(context, "column_view_button")
 
         context = button_refresh.get_style_context()
-        Gtk.StyleContext.add_class(context,"column_view_button")
-        
+        Gtk.StyleContext.add_class(context, "column_view_button")
+
         button_view.connect("clicked", self.on_button_view_clicked, list_item)
-        button_refresh.connect("clicked", self.on_button_refresh_clicked,list_item)
-        
+        button_refresh.connect("clicked", self.on_button_refresh_clicked, list_item)
+
         box.append(button_view)
         box.append(button_refresh)
 
@@ -151,7 +151,7 @@ class AppColumnView(Gtk.ColumnView):
 
         record = (path, points, length, up_hill, down_hill)
         sqlite_helper.update_record(record)
-  
+
         selected_item.path = path
         selected_item.points = points
         selected_item.length = length

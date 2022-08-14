@@ -9,13 +9,14 @@ gpxpy = "*"
 "srtm.py" = "*"
 lxml = "*"
 matplotlib = "*"
-numpy = "*"
 python-dotenv = "*"
+numpy = "*"
 
 [dev-packages]
 meson = "*"
-pylint = "*"
 ninja = "*"
+flake8 = "*"
+isort = "*"
 
 [requires]
 python_version = "3.10"

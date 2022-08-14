@@ -2,7 +2,6 @@ import pathlib
 import threading
 
 
-
 from gi.repository import Gio, Gtk, GObject
 
 
@@ -24,7 +23,7 @@ class AppWindow(Gtk.ApplicationWindow):
         Gtk.StyleContext.add_provider_for_display(self.get_display(), self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
         self.settings = Gio.Settings.new("com.github.pygpxviewer.app.window")
-        
+
         self.set_size_request(300, 600)
 
         self.app_column_view = AppColumnView()
@@ -105,6 +104,7 @@ class AppWindow(Gtk.ApplicationWindow):
         self.app_column_view.reset_liststore()
         self.set_sensitive(True)
         self.spinner.stop()
+
 
 class WorkerUpdateThread(threading.Thread):
     def __init__(self, folder_path, callback):

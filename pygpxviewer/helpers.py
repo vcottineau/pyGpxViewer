@@ -44,7 +44,7 @@ class SQLiteHelper():
         conn, c = self.get_conn()
         c.execute(sql, record)
         conn.commit()
-        self.close_conn(conn, c)        
+        self.close_conn(conn, c)
 
     def update_record(self, record):
         conn, c = self.get_conn()
@@ -56,7 +56,7 @@ class SQLiteHelper():
         sql = "SELECT * FROM gpx"
         conn, c = self.get_conn()
         c.execute(sql)
-        records =  c.fetchall()
+        records = c.fetchall()
         self.close_conn(conn, c)
         return records
 
@@ -139,7 +139,7 @@ class GpxHelper:
                     node.getparent().remove(node)
 
         tree.write(self.gpx_file, pretty_print=True)
-        
+
         self.gpx.schema_locations = [
             "http://www.topografix.com/GPX/1/1",
             "http://www.topografix.com/GPX/1/1/gpx.xsd"

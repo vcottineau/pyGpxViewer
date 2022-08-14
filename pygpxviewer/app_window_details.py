@@ -26,12 +26,12 @@ class AppWindowDetails(Gtk.Window):
         self.settings.bind("width", self, "default-width", Gio.SettingsBindFlags.DEFAULT)
         self.settings.bind("height", self, "default-height", Gio.SettingsBindFlags.DEFAULT)
         self.settings.bind("is-maximized", self, "maximized", Gio.SettingsBindFlags.DEFAULT)
-        self.settings.bind("is-fullscreen", self, "fullscreened", Gio.SettingsBindFlags.DEFAULT)        
+        self.settings.bind("is-fullscreen", self, "fullscreened", Gio.SettingsBindFlags.DEFAULT)
 
         gpx_info = self.get_gpx_info()
         shumate_map = self.get_shumate_map()
         canvas = self.get_matplotlib_canvas(gpx_file)
-        
+
         gpx_map_and_elevation_profile = Gtk.Box.new(Gtk.Orientation.VERTICAL, 0)
         gpx_map_and_elevation_profile.set_homogeneous(True)
         gpx_map_and_elevation_profile.append(shumate_map)
