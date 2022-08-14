@@ -39,6 +39,7 @@ jobs:
         with:
           action: install
           directory: build
+          meson-version: 0.63.0
 
       - name: Lint with isort & flake8
         run: |
