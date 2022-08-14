@@ -33,7 +33,7 @@ jobs:
           cd libshumate
           pipenv run meson setup build
           pipenv run meson compile -C build
-          pipenv run meson dist -C build
+          pipenv run meson dist -C build --no-tests
 
           cd build/meson-dist
           ls
