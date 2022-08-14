@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install libgtk-4-dev libgirepository1.0-dev python-gi-dev desktop-file-utils meson libsoup2.4-dev
+          sudo apt install libgtk-4-dev libgirepository1.0-dev python-gi-dev desktop-file-utils libsoup2.4-dev
           pip install pipenv
           pipenv install --dev
 
@@ -29,9 +29,9 @@ jobs:
         run: |
           git clone https://gitlab.gnome.org/GNOME/libshumate.git
           cd libshumate
-          meson build
-          meson -C build
-          sudo ninja -C build install
+          pipenv run meson build
+          pipenv run ninja -C build
+          pipenv run sudo ninja -C build install
 
       - name: Lint with isort & flake8
         run: |
