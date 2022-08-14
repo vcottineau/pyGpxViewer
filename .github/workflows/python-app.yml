@@ -38,12 +38,11 @@ jobs:
         uses: BSFishy/meson-build@v1.0.3
         with:
           action: install
-          directory: build
+          directory: libshumate/build
           meson-version: 0.63.0
 
       - name: Lint with isort & flake8
         run: |
-          cd ..
           pipenv run isort pygpxviewer
           pipenv run flake8 pygpxviewer --count --select=E9,F63,F7,F82 --show-source --statistics
           pipenv run flake8 pygpxviewer --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
