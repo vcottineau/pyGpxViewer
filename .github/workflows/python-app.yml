@@ -21,10 +21,11 @@ jobs:
       - name: Install dependencies
         run: |
           sudo add-apt-repository universe
+          ls /var/lib/apt/lists/
           sudo apt update
           sudo apt install libgtk-4-dev libgirepository1.0-dev python-gi-dev desktop-file-utils libshumate-1.0-1
           pip install pipenv
-          pipenv install --deploy --dev
+          pipenv install --dev
 
       - name: Lint with isort & flake8
         run: |
