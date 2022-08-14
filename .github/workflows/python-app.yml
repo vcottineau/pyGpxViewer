@@ -32,7 +32,7 @@ jobs:
           cd libshumate
           pipenv run meson build
           pipenv run ninja -C build
-          pipenv run sudo ninja -C build install
+          pipenv run ninja -C build install
 
       - name: Lint with isort & flake8
         run: |
