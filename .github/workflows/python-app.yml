@@ -37,8 +37,8 @@ jobs:
 
           cd build/meson-dist
           ls
-          xz -d libshumate-1.0.xz
-          cd libshumate-1.0
+          xz -d libshumate-1.0.0.alpha.tar.xz
+          cd libshumate-1.0.0.alpha
           ./configure
           make
           sudo make install
