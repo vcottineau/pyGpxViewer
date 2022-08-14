@@ -24,23 +24,25 @@ jobs:
           sudo apt install libgtk-4-dev libgirepository1.0-dev python-gi-dev desktop-file-utils libsoup2.4-dev
           pip install pipenv
           pipenv install --dev
+          pipenv install jinja2 markdown markupsafe pygments toml typogrify --dev
+          pipenv shell
 
       - name: Install libshumate
         run: |
           pipenv install jinja2 markdown markupsafe pygments toml typogrify
           git clone https://gitlab.gnome.org/GNOME/libshumate.git
           cd libshumate
-          pipenv run meson build
-          pipenv run ninja -C build
-          sudo pipenv run ninja -C build install
+          meson build
+          ninja -C build
+          sudo ninja -C build install
 
       - name: Lint with isort & flake8
         run: |
-          pipenv run isort pygpxviewer
-          pipenv run flake8 pygpxviewer --count --select=E9,F63,F7,F82 --show-source --statistics
-          pipenv run flake8 pygpxviewer --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+          isort pygpxviewer
+          flake8 pygpxviewer --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 pygpxviewer --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
       - name: Build with meson
         run: |
-          pipenv run meson build
-          pipenv run ninja -C build
+          meson build
+          ninja -C build
