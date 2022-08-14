@@ -33,7 +33,6 @@ jobs:
           cd libshumate
           pipenv run meson setup build
           pipenv run meson compile -C build
-          pipenv run sudo meson install -C build
 
       - name: Install libshumate
         uses: BSFishy/meson-build@v1.0.3
