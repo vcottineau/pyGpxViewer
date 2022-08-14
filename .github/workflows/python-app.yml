@@ -32,10 +32,11 @@ jobs:
           cd libshumate
           pipenv run meson build
           pipenv run ninja -C build
+          sudo pipenv run ninja -C build install
 
       - name: Lint with isort & flake8
         run: |
-          pipenv run isort pygoxviewer
+          pipenv run isort pygpxviewer
           pipenv run flake8 pygpxviewer --count --select=E9,F63,F7,F82 --show-source --statistics
           pipenv run flake8 pygpxviewer --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
