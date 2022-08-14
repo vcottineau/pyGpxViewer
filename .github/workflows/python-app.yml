@@ -36,7 +36,7 @@ jobs:
           pipenv run sudo meson install -C build
 
       - name: Install libshumate
-      - uses: BSFishy/meson-build@v1.0.3
+        uses: BSFishy/meson-build@v1.0.3
         with:
           action: install
           directory: build
