@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install libgtk-4-dev libgirepository1.0-dev python-gi-dev desktop-file-utils
+          sudo apt install libgtk-4-dev libgirepository1.0-dev python-gi-dev desktop-file-utils meson
           pip install pipenv
           pipenv install --dev
 
