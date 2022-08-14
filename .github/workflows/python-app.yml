@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install libgtk-4-dev libgirepository1.0-dev python-gi-dev desktop-file-utils libsoup2.4-dev meson
+          sudo apt install libgtk-4-dev libgirepository1.0-dev python-gi-dev desktop-file-utils libsoup2.4-dev
           pip install --upgrade pip
           pip install pipenv
           pipenv install --dev
@@ -30,17 +30,20 @@ jobs:
       - name: Build libshumate
         run: |
           git clone https://gitlab.gnome.org/GNOME/libshumate.git
-          pipenv run meson setup libshumate/build
-          pipenv run meson compile -C libshumate/build
+          cd libshumate
+          pipenv run meson setup build
+          pipenv run meson compile -C build
+          pipenv run sudo meson install -C build
 
       - name: Install libshumate
-        uses: BSFishy/meson-build@v1.0.3
+      - uses: BSFishy/meson-build@v1.0.3
         with:
           action: install
-          directory: libshumate/build
+          directory: build
 
       - name: Lint with isort & flake8
         run: |
+          cd ..
           pipenv run isort pygpxviewer
           pipenv run flake8 pygpxviewer --count --select=E9,F63,F7,F82 --show-source --statistics
           pipenv run flake8 pygpxviewer --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
