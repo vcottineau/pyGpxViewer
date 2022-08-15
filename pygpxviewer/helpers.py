@@ -126,13 +126,13 @@ class GpxHelper:
         # Single occurrence
         for node_name in [".//extensions", ".//metadata", ".//desc", ".//type", ".//number", ".//cmt"]:
             node = root.find(node_name, namespaces=root.nsmap)
-            if node is not None:
+            if node:
                 node.getparent().remove(node)
 
         # Multiple occurrences
         for node_name in [".//name", ".//wpt", ".//time"]:
             nodes = [node for node in root.iterfind(node_name, namespaces=root.nsmap)]
-            if nodes is not None:
+            if nodes:
                 for node in nodes:
                     node.getparent().remove(node)
 
