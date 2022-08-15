@@ -1,13 +1,11 @@
 import os
 
-
-from matplotlib.backends.backend_gtk4 import (NavigationToolbar2GTK4 as NavigationToolbar)
-from matplotlib.backends.backend_gtk4agg import (FigureCanvasGTK4Agg as FigureCanvas)
-from matplotlib.figure import Figure
-
-
 from gi.repository import Gio, Gtk, Shumate
-
+from matplotlib.backends.backend_gtk4 import \
+    NavigationToolbar2GTK4 as NavigationToolbar
+from matplotlib.backends.backend_gtk4agg import \
+    FigureCanvasGTK4Agg as FigureCanvas
+from matplotlib.figure import Figure
 
 from pygpxviewer.helpers import gpx_helper
 
@@ -91,7 +89,10 @@ class AppWindowDetails(Gtk.Window):
         max_latitude = bounds.max_latitude
         max_longitude = bounds.max_longitude
 
-        distance = gpx_helper.get_gpx_distance_between_locations(min_latitude, min_longitude, max_latitude, max_longitude) / 1000
+        distance = gpx_helper.get_gpx_distance_between_locations(
+            min_latitude, min_longitude,
+            max_latitude, max_longitude
+        ) / 1000
 
         zoom_level = 5
         if distance <= 5:

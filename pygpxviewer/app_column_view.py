@@ -1,8 +1,7 @@
-from gi.repository import Gio, Gtk, GObject, Pango
-
+from gi.repository import Gio, GObject, Gtk, Pango
 
 from pygpxviewer.app_window_details import AppWindowDetails
-from pygpxviewer.helpers import sqlite_helper, gpx_helper
+from pygpxviewer.helpers import gpx_helper, sqlite_helper
 
 
 class Item(GObject.GObject):
@@ -24,8 +23,11 @@ class Item(GObject.GObject):
         self.down_hill = down_hill
 
 
+# @Gtk.Template(resource_path="/com/github/pygpxviewer/ui/app_column_view.ui")
 class AppColumnView(Gtk.ColumnView):
     __gtype_name__ = "app_column_view"
+
+    # sort_list_model = Gtk.Template.Child()
 
     def __init__(self,):
         super().__init__()
@@ -46,12 +48,30 @@ class AppColumnView(Gtk.ColumnView):
         self.sort_list_model.set_sorter(self.get_sorter())
 
         columns = [
-            {"title": "Path", "property": "path", "expand": True, "setup": self.factory_setup_label, "bind": self.factory_bind_label},
-            {"title": "Points (nb)", "property": "points", "expand":  False, "setup": self.factory_setup_label, "bind": self.factory_bind_label},
-            {"title": "Length (km)", "property": "length", "expand":  False, "setup": self.factory_setup_label, "bind": self.factory_bind_label},
-            {"title": "UpHill (m)", "property": "up_hill", "expand":  False, "setup": self.factory_setup_label, "bind": self.factory_bind_label},
-            {"title": "DownHill (m)", "property": "down_hill", "expand":  False, "setup": self.factory_setup_label, "bind": self.factory_bind_label},
-            {"title": "Actions", "property": None, "expand":  False, "setup": self.factory_setup_actions, "bind": None}
+            {
+                "title": "Path", "property": "path", "expand": True,
+                "setup": self.factory_setup_label, "bind": self.factory_bind_label
+            },
+            {
+                "title": "Points (nb)", "property": "points", "expand":  False,
+                "setup": self.factory_setup_label, "bind": self.factory_bind_label
+            },
+            {
+                "title": "Length (km)", "property": "length", "expand":  False,
+                "setup": self.factory_setup_label, "bind": self.factory_bind_label
+            },
+            {
+                "title": "UpHill (m)", "property": "up_hill", "expand":  False,
+                "setup": self.factory_setup_label, "bind": self.factory_bind_label
+            },
+            {
+                "title": "DownHill (m)", "property": "down_hill", "expand":  False,
+                "setup": self.factory_setup_label, "bind": self.factory_bind_label
+            },
+            {
+                "title": "Actions", "property": None, "expand":  False,
+                "setup": self.factory_setup_actions, "bind": None
+            }
         ]
 
         for column in columns:

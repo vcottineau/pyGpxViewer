@@ -1,15 +1,13 @@
-from lxml import etree
 import sqlite3
-
 
 import gpxpy
 import gpxpy.gpx
-from gpxpy.geo import Location
 import srtm
+from gpxpy.geo import Location
+from lxml import etree
 
-
-from pygpxviewer.utils import get_resource_as_string
 from config import HOME_DATA_FOLDER
+from pygpxviewer.utils import get_resource_as_string
 
 
 class SQLiteHelper():

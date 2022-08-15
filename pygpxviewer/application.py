@@ -1,8 +1,7 @@
-from gi.repository import Gtk, Gio, GLib
+from gi.repository import Gio, GLib, Gtk
 
-
-from pygpxviewer.app_window import AppWindow
 from config import Config
+from pygpxviewer.app_window import AppWindow
 
 
 class Application(Gtk.Application):

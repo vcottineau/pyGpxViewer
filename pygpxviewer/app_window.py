@@ -1,13 +1,11 @@
 import pathlib
 import threading
 
+from gi.repository import Gio, GObject, Gtk
 
-from gi.repository import Gio, Gtk, GObject
-
-
-from pygpxviewer.app_column_view import AppColumnView
-from pygpxviewer.helpers import sqlite_helper, gpx_helper
 from config import Config
+from pygpxviewer.app_column_view import AppColumnView
+from pygpxviewer.helpers import gpx_helper, sqlite_helper
 
 
 class AppWindow(Gtk.ApplicationWindow):
@@ -20,7 +18,11 @@ class AppWindow(Gtk.ApplicationWindow):
 
         self.css_provider = Gtk.CssProvider()
         self.css_provider.load_from_resource("/com/github/pygpxviewer/style.css")
-        Gtk.StyleContext.add_provider_for_display(self.get_display(), self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        Gtk.StyleContext.add_provider_for_display(
+            self.get_display(),
+            self.css_provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        )
 
         self.settings = Gio.Settings.new("com.github.pygpxviewer.app.window")
 
@@ -30,7 +32,6 @@ class AppWindow(Gtk.ApplicationWindow):
         self.connect("notify::folder-path", self.app_column_view.on_folder_path_changed)
 
         self.scrolled_window = Gtk.ScrolledWindow()
-        # self.scrolled_window.set_vexpand(True)
         self.scrolled_window.set_child(self.app_column_view)
 
         self.settings.bind("width", self, "default-width", Gio.SettingsBindFlags.DEFAULT)
