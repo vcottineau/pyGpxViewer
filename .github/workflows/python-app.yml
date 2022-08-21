@@ -3,7 +3,7 @@
 
 name: master
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   build:
@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
@@ -33,13 +33,12 @@ jobs:
           meson compile -C build
           sudo meson install -C build
 
-      - name: Lint with isort & flake8
+      - name: Lint with flake8 & mypy
         run: |
           pip install pipenv
           pipenv install --dev
-          pipenv run isort pygpxviewer
-          pipenv run flake8 pygpxviewer --count --select=E9,F63,F7,F82 --show-source --statistics
-          pipenv run flake8 pygpxviewer --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+          pipenv run flake8 --ignore E402,W503 --show-source pygpxviewer/
+          pipenv run mypy --ignore-missing-imports --disallow-incomplete-defs pygpxviewer
 
       - name: Build with meson
         run: |
