@@ -20,24 +20,12 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-import os
-from pathlib import Path
-
-from dotenv import load_dotenv
-
-load_dotenv(str(Path(__file__).resolve().parent) + "/.env")
+from gi.repository import Gtk
 
 
-class Config(object):
-    PROGRAM_NAME = "pyGpxViewer"
-    APPLICATION_ID = "com.github.pygpxviewer"
-    VERSION = "1.0"
-    MAPBOX_API_KEY = os.environ.get("MAPBOX_API_KEY")
+@Gtk.Template(resource_path="/com/github/pygpxviewer/ui/AppMenu.ui")
+class AppMenu(Gtk.Popover):
+    __gtype_name__ = "AppMenu"
 
-
-HOME_CACHE_FOLDER = Path.home().joinpath(".cache", Config.APPLICATION_ID)
-HOME_CONFIG_FOLDER = Path.home().joinpath(".config", Config.APPLICATION_ID)
-HOME_DATA_FOLDER = Path.home().joinpath(".local", "share", Config.APPLICATION_ID)
-
-for path in [HOME_CACHE_FOLDER, HOME_CONFIG_FOLDER, HOME_DATA_FOLDER]:
-    path.mkdir(parents=True, exist_ok=True)
+    def __init__(self):
+        super().__init__()

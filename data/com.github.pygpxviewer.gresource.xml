@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
     <gresource prefix="/com/github/pygpxviewer">
-        <file>ui/app_column_view.ui</file>
-        <file>xslt/stylesheet.xslt</file>
+        <file alias="gtk/help-overlay.ui" preprocess="xml-stripblanks">ui/HelpOverlay.ui</file>
         <file>style.css</file>
+        <file preprocess="xml-stripblanks">ui/AppMenu.ui</file>
+        <file preprocess="xml-stripblanks">ui/Window.ui</file>
+        <file preprocess="xml-stripblanks">xslt/stylesheet.xslt</file>
     </gresource>
 </gresources>

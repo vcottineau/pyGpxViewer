@@ -4,6 +4,7 @@ __pycache__
 
 # Code
 .vscode
+.idea
 *.code-workspace
 
 # Build

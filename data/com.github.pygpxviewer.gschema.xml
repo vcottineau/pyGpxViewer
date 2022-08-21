@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schemalist gettext-domain="pygpxviewer">
-    <schema id="com.github.pygpxviewer.app.window" path="/com/github/pygpxviewer/app/window/">
+<schemalist>
+    <schema path="/com/github/pygpxviewer/window/" id="com.github.pygpxviewer.window">
         <key name="width" type="i">
             <default>640</default>
         </key>
@@ -17,7 +17,7 @@
             <default>"/home/vcottineau/Documents/Voyages/Tracks/Gpx"</default>
         </key>
     </schema>
-    <schema id="com.github.pygpxviewer.app.window.details" path="/com/github/pygpxviewer/app/window/details/">
+    <schema path="/com/github/pygpxviewer/app/window/details/" id="com.github.pygpxviewer.app.window.details">
         <key name="width" type="i">
             <default>640</default>
         </key>

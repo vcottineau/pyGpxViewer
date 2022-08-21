@@ -1,24 +1,60 @@
-from gi.repository import Gio, GLib, Gtk
+#  MIT License
+#
+#  Copyright (c) 2022 Vincent Cottineau
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#  The above copyright notice and this permission notice shall be included in all
+#  copies or substantial portions of the Software.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#  SOFTWARE.
+
+from gi.repository import Adw, GLib, GObject, Gio
 
 from config import Config
-from pygpxviewer.app_window import AppWindow
+from pygpxviewer.logger import Logger
+from pygpxviewer.window import Window
 
 
-class Application(Gtk.Application):
+class Application(Adw.Application):
     __gtype_name__ = "app"
 
     def __init__(self, application_id):
-        super().__init__(application_id=application_id, flags=Gio.ApplicationFlags.FLAGS_NONE)
-
-        self.props.resource_base_path = "/com/github/vcottineau/pygpxviewer/"
+        super().__init__(
+            application_id=application_id,
+            flags=Gio.ApplicationFlags.FLAGS_NONE)
+        self.props.resource_base_path = "/com/github/pygpxviewer"
         GLib.set_application_name(Config.PROGRAM_NAME)
         GLib.set_prgname(application_id)
 
+        self._log = Logger()
+
         self.app_window = None
 
+    @GObject.Property(
+        type=Logger, default=None, flags=GObject.ParamFlags.READABLE)
+    def log(self):
+        return self._log
+
+    def do_startup(self):
+        Adw.Application.do_startup(self)
+        Adw.StyleManager.get_default().set_color_scheme(
+            Adw.ColorScheme.PREFER_LIGHT)
+
     def do_activate(self):
-        self.app_window = self.props.active_window
         if not self.app_window:
-            self.app_window = AppWindow(application=self)
+            self.app_window = Window(application=self)
             self.app_window.set_default_icon_name(self.props.application_id)
+
         self.app_window.present()
