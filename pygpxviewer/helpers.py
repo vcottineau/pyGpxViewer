@@ -70,9 +70,19 @@ class SQLiteHelper:
         self.close_conn(conn, c)
 
     def update_record(self, record):
+        sql = f"""
+            UPDATE gpx
+            SET
+                points = {record[1]},
+                length = {record[2]},
+                up_hill = {record[3]},
+                down_hill = {record[4]}
+            WHERE
+                path = '{record[0]}';
+        """
         conn, c = self.get_conn()
-        # ToDo Update Record
-        # ...
+        c.execute(sql)
+        conn.commit()
         self.close_conn(conn, c)
 
     def get_records(self):
