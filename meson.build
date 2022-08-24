@@ -42,11 +42,6 @@ install_subdir(
     install_dir: PKGDATA_DIR
 )
 
-sources = [
-  'config.py'
-]
-install_data(sources, install_dir: PKGDATA_DIR)
-
 # Install the executable file
 bin_config = configuration_data()
 bin_config.set('application_id', APPLICATION_ID)

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <template class="GpxColumnView" parent="GtkColumnView">
+        <property name="show-row-separators">True</property>
+        <property name="model">
+            <object class="GtkSingleSelection" id="_single_selection">
+                <property name="model">
+                    <object class="GtkSortListModel" id="_sort_list_model">
+                        <binding name="sorter">
+                            <lookup name="sorter">GpxColumnView</lookup>
+                        </binding>
+                    </object>
+                </property>
+            </object>
+        </property>
+        <child>
+            <object class="GtkColumnViewColumn" id="_path_view_column">
+                <property name="title" translatable="yes">Path</property>
+                <property name="expand">True</property>
+                <property name="factory">
+                    <object class="GtkSignalListItemFactory" id="_factory_path">
+                        <signal name="setup" handler="_factory_setup_label"/>
+                    </object>
+                </property>
+                <property name="sorter">
+                    <object class="GtkStringSorter">
+                        <property name="expression">
+                            <lookup name="path" type="GpxItem"/>
+                        </property>
+                    </object>
+                </property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkColumnViewColumn" id="_points_view_column">
+                <property name="title" translatable="yes">Points (nb)</property>
+                <property name="factory">
+                    <object class="GtkSignalListItemFactory" id="_factory_points">
+                        <signal name="setup" handler="_factory_setup_label"/>
+                    </object>
+                </property>
+                <property name="sorter">
+                    <object class="GtkNumericSorter">
+                        <property name="expression">
+                            <lookup name="points" type="GpxItem"/>
+                        </property>
+                    </object>
+                </property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkColumnViewColumn" id="_length_view_column">
+                <property name="title" translatable="yes">Length (km)</property>
+                <property name="factory">
+                    <object class="GtkSignalListItemFactory" id="_factory_length">
+                        <signal name="setup" handler="_factory_setup_label"/>
+                    </object>
+                </property>
+                <property name="sorter">
+                    <object class="GtkNumericSorter">
+                        <property name="expression">
+                            <lookup name="length" type="GpxItem"/>
+                        </property>
+                    </object>
+                </property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkColumnViewColumn" id="_up_hill_view_column">
+                <property name="title" translatable="yes">UpHill (m)</property>
+                <property name="factory">
+                    <object class="GtkSignalListItemFactory" id="_factory_up_hill">
+                        <signal name="setup" handler="_factory_setup_label"/>
+                    </object>
+                </property>
+                <property name="sorter">
+                    <object class="GtkNumericSorter">
+                        <property name="expression">
+                            <lookup name="up_hill" type="GpxItem"/>
+                        </property>
+                    </object>
+                </property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkColumnViewColumn" id="_down_hill_view_column">
+                <property name="title" translatable="yes">DownHill (m)</property>
+                <property name="factory">
+                    <object class="GtkSignalListItemFactory" id="_factory_down_hill">
+                        <signal name="setup" handler="_factory_setup_label"/>
+                    </object>
+                </property>
+                <property name="sorter">
+                    <object class="GtkNumericSorter">
+                        <property name="expression">
+                            <lookup name="down_hill" type="GpxItem"/>
+                        </property>
+                    </object>
+                </property>
+            </object>
+        </child>
+        <child>
+            <object class="GtkColumnViewColumn" id="_actions_view_column">
+                <property name="title" translatable="yes">Actions</property>
+                <property name="factory">
+                    <object class="GtkSignalListItemFactory">
+                        <signal name="setup" handler="_factory_setup_actions"/>
+                    </object>
+                </property>
+            </object>
+        </child>
+    </template>
+</interface>

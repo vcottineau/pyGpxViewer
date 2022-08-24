@@ -25,11 +25,15 @@ from typing import Optional
 from gi.repository import Adw, Gio, GLib, GObject, Gtk
 
 from pygpxviewer.widgets.appmenu import AppMenu
+from pygpxviewer.widgets.gpxcolumnview import GpxColumnView
+from pygpxviewer.workers import WorkerUpdateThread
 
 
 @Gtk.Template(resource_path="/com/github/pygpxviewer/ui/Window.ui")
 class Window(Adw.ApplicationWindow):
     __gtype_name__ = "Window"
+
+    folder_path = GObject.Property(type=str)
 
     _headerbar = Gtk.Template.Child()
     _menu_button = Gtk.Template.Child()
@@ -43,15 +47,19 @@ class Window(Adw.ApplicationWindow):
         self._set_css()
         self._settings = Gio.Settings.new("com.github.pygpxviewer.window")
 
+        self._app_menu = AppMenu()
+        self._gpx_column_view = GpxColumnView(self)
+
         self._set_actions()
         self._setup_view()
 
-    @GObject.Property(
-        type=Gio.Settings, flags=GObject.ParamFlags.READABLE)
+        self._gpx_column_view.refresh()
+
+    @GObject.Property(type=Gio.Settings, flags=GObject.ParamFlags.READABLE)
     def settings(self):
         return self._settings
 
-    def _set_actions(self):
+    def _set_actions(self) -> None:
         action_entries = [
             ('refresh', self._refresh, ("win.refresh", ["<Ctrl>R"])),
             ("about", self._about, None)
@@ -64,7 +72,7 @@ class Window(Adw.ApplicationWindow):
             if accel is not None:
                 self._app.set_accels_for_action(*accel)
 
-    def _setup_view(self):
+    def _setup_view(self) -> None:
         self._settings.bind(
             "width", self, "default-width",
             Gio.SettingsBindFlags.DEFAULT)
@@ -78,29 +86,50 @@ class Window(Adw.ApplicationWindow):
             "is-fullscreen", self, "fullscreened",
             Gio.SettingsBindFlags.DEFAULT)
 
-        self._menu_button.set_popover(AppMenu())
+        self.settings.bind(
+            "folder-path", self, "folder-path",
+            Gio.SettingsBindFlags.DEFAULT)
 
-    def _set_css(self):
+        self._menu_button.set_popover(self._app_menu)
+        self._scrolled_window.set_child(self._gpx_column_view)
+
+    def _set_css(self) -> None:
         css_provider = Gtk.CssProvider()
         css_provider.load_from_resource("/com/github/pygpxviewer/style.css")
-        Gtk.StyleContext.add_provider_for_display(
-            self.get_display(), css_provider,
-            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        Gtk.StyleContext.add_provider_for_display(self.get_display(), css_provider,
+                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
     @Gtk.Template.Callback()
-    def _on_open_button_clicked(
-            self, button: Gtk.Button) -> None:
-        print("_on_open_button_clicked")
+    def _on_open_button_clicked(self, button: Gtk.Button) -> None:
+        self.file_chooser = Gtk.FileChooserNative.new(
+            title="Select folder",
+            parent=self,
+            action=Gtk.FileChooserAction.SELECT_FOLDER)
+        self.file_chooser.connect("response", self._on_file_chooser_response)
+        self.file_chooser.show()
+
+    def _on_file_chooser_response(self, dialog, response):
+        if response == Gtk.ResponseType.ACCEPT:
+            self.folder_path = dialog.get_file().get_path()
+            self._update_database()
+
+    def _update_database(self):
+        self.set_sensitive(False)
+        thread = WorkerUpdateThread(self.folder_path, self.on_update_database_ended)
+        thread.start()
+
+    def on_update_database_ended(self):
+        self._gpx_column_view.refresh()
+        self.set_sensitive(True)
 
     @Gtk.Template.Callback()
-    def _on_search_entry_search_changed(
-            self, search_entry: Gtk.SearchEntry) -> None:
-        print("_on_search_entry_changed")
+    def _on_search_entry_search_changed(self, search_entry: Gtk.SearchEntry) -> None:
+        self._gpx_column_view.refresh(search_entry.get_text().lower())
 
-    def _refresh(self, action: Gio.SimpleAction,
-                 param: Optional[GLib.Variant]) -> None:
-        print("_refresh")
+    def _refresh(self, action: Gio.SimpleAction, param: Optional[GLib.Variant]) -> None:
+        self._update_database()
 
-    def _about(self, action: Gio.SimpleAction,
-               param: Optional[GLib.Variant]) -> None:
-        print("_about")
+    def _about(self, action: Gio.SimpleAction, param: Optional[GLib.Variant]) -> None:
+        # ToDo: Add AboutWindow
+        # https://gnome.pages.gitlab.gnome.org/libadwaita/doc/main/class.AboutWindow.html
+        pass

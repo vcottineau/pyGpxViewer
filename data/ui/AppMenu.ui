@@ -4,7 +4,6 @@
         <property name="focusable">False</property>
         <child>
             <object class="GtkBox">
-                <property name="focusable">False</property>
                 <property name="margin-bottom">6</property>
                 <property name="margin-end">6</property>
                 <property name="margin-start">6</property>
@@ -13,7 +12,6 @@
                 <property name="orientation">vertical</property>
                 <child>
                     <object class="GtkModelButton" id="_refresh_model_button">
-                        <property name="focusable">True</property>
                         <property name="action_name">win.refresh</property>
                         <property name="text" translatable="yes">_Refresh</property>
                     </object>

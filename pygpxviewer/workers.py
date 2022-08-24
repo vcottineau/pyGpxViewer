@@ -20,24 +20,24 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-import os
-from pathlib import Path
+import pathlib
+import threading
 
-from dotenv import load_dotenv
+from gi.repository import GObject
 
-load_dotenv(str(Path(__file__).resolve().parent) + "/.env")
-
-
-class Config(object):
-    PROGRAM_NAME = "pyGpxViewer"
-    APPLICATION_ID = "com.github.pygpxviewer"
-    VERSION = "1.0"
-    MAPBOX_API_KEY = os.environ.get("MAPBOX_API_KEY")
+from pygpxviewer.helpers import GpxHelper, sqlite_helper
 
 
-HOME_CACHE_FOLDER = Path.home().joinpath(".cache", Config.APPLICATION_ID)
-HOME_CONFIG_FOLDER = Path.home().joinpath(".config", Config.APPLICATION_ID)
-HOME_DATA_FOLDER = Path.home().joinpath(".local", "share", Config.APPLICATION_ID)
+class WorkerUpdateThread(threading.Thread):
+    def __init__(self, folder_path, callback):
+        threading.Thread.__init__(self)
+        self.folder_path = folder_path
+        self.callback = callback
 
-for path in [HOME_CACHE_FOLDER, HOME_CONFIG_FOLDER, HOME_DATA_FOLDER]:
-    path.mkdir(parents=True, exist_ok=True)
+    def run(self):
+        sqlite_helper.clear_records()
+        for gpx_file in pathlib.Path(self.folder_path).glob("**/*.gpx"):
+            gpx_helper = GpxHelper(gpx_file)
+            record = gpx_helper.get_gpx_details()
+            sqlite_helper.add_record(record)
+        GObject.idle_add(self.callback)

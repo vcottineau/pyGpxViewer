@@ -25,6 +25,9 @@
 import os
 import signal
 import sys
+from pathlib import Path
+
+from pygpxviewer.utils import get_resource_as_string
 
 if '@local_build@':
     sys.path.insert(1, '@pythondir@')
@@ -48,6 +51,14 @@ Adw.init()
 def set_resources():
     resource = Gio.resource_load(os.path.join('@pkgdatadir@', '@application_id@.gresource'))
     Gio.Resource._register(resource)
+
+    sources_path = Path.home().joinpath(".config", "pygpxviewer")
+    sources_path.mkdir(parents=True, exist_ok=True)
+    sources_file = sources_path.joinpath("sources.json")
+    if not sources_file.exists():
+        with open(sources_file, 'w') as f:
+            sources_json = get_resource_as_string("/map/sources.json")
+            f.write(sources_json)
 
 
 def run_application():

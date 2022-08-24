@@ -9,7 +9,6 @@ gpxpy = "*"
 "srtm.py" = "*"
 lxml = "*"
 matplotlib = "*"
-python-dotenv = "*"
 numpy = "*"
 
 [dev-packages]

@@ -3,24 +3,17 @@ __pycache__
 *.py[cod]
 
 # Code
-.vscode
 .idea
-*.code-workspace
 
 # Build
-build
+_build
 build.sh
 
-# Misc
-ToDo
-samples
-logs
+# Lint
+.mypy_cache
 
 # Pipenv
 *.lock
-
-# Glade
-*.glade~
 
 # Translations
 *.mo
