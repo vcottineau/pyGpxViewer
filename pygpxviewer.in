@@ -1,28 +1,64 @@
 #!/usr/bin/env python3
-import sys
+
+#  MIT License
+#
+#  Copyright (c) 2022 Vincent Cottineau
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#  The above copyright notice and this permission notice shall be included in all
+#  copies or substantial portions of the Software.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#  SOFTWARE.
+
 import os
 import signal
+import sys
+from pathlib import Path
+
+from pygpxviewer.utils import get_resource_as_string
+
+if '@local_build@':
+    sys.path.insert(1, '@pythondir@')
+    os.environ["XDG_DATA_DIRS"] = '@schemasdir@:' + os.environ.get("XDG_DATA_DIRS", "/usr/share")
+
+    # icon_theme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default())
+    # icon_theme.add_search_path("@schemasdir@" + '/icons')
+else:
+    sys.path.insert(1, '@pkgdatadir@')
 
 import gi
 
 gi.require_version('Gtk', '4.0')
+gi.require_version('Adw', '1')
 gi.require_version('Shumate', '1.0')
-from gi.repository import Gio, Gtk, Gdk
+from gi.repository import Gio, Adw
 
-
-if '@local_build@':
-    sys.path.insert(1, '@pythondir@')
-    os.environ["XDG_DATA_DIRS"] = '@schemasdir@:' + os.environ.get("XDG_DATA_DIRS", "/usr/share:/usr/local/share")
-
-    icon_theme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default())
-    icon_theme.add_search_path("@schemasdir@" + '/icons')
-else:
-    sys.path.insert(1, '@pkgdatadir@')
+Adw.init()
 
 
 def set_resources():
     resource = Gio.resource_load(os.path.join('@pkgdatadir@', '@application_id@.gresource'))
     Gio.Resource._register(resource)
+
+    sources_path = Path.home().joinpath(".config", "pygpxviewer")
+    sources_path.mkdir(parents=True, exist_ok=True)
+    sources_file = sources_path.joinpath("sources.json")
+    if not sources_file.exists():
+        with open(sources_file, 'w') as f:
+            sources_json = get_resource_as_string("/map/sources.json")
+            f.write(sources_json)
 
 
 def run_application():

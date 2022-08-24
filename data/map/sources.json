@@ -1,0 +1,14 @@
+{
+  "providers": [
+    {
+      "name": "OpenStreetMap",
+      "api_key": "",
+      "layers": [
+        {
+          "name": "standard",
+          "url": "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        }
+      ]
+    }
+  ]
+}

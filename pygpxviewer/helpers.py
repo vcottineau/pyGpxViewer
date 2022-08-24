@@ -1,18 +1,43 @@
+#  MIT License
+#
+#  Copyright (c) 2022 Vincent Cottineau
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#  The above copyright notice and this permission notice shall be included in all
+#  copies or substantial portions of the Software.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#  SOFTWARE.
+
 import sqlite3
+from pathlib import Path
 
 import gpxpy
-import gpxpy.gpx
 import srtm
 from gpxpy.geo import Location
 from lxml import etree
 
-from config import HOME_DATA_FOLDER
 from pygpxviewer.utils import get_resource_as_string
 
 
-class SQLiteHelper():
+class SQLiteHelper:
     def __init__(self):
-        self.db_file = HOME_DATA_FOLDER.joinpath("pygpxviewer.db")
+        db_path = Path.home().joinpath(".cache", "pygpxviewer")
+        db_path.mkdir(parents=True, exist_ok=True)
+
+        self.db_file = db_path.joinpath("pygpxviewer.db")
+
         sql = """
             CREATE TABLE IF NOT EXISTS gpx (
                 id INTEGER PRIMARY KEY,
@@ -58,6 +83,14 @@ class SQLiteHelper():
         self.close_conn(conn, c)
         return records
 
+    def search_records(self, search_entry):
+        sql = f"SELECT * FROM gpx WHERE gpx.path LIKE '%{search_entry}%'"
+        conn, c = self.get_conn()
+        c.execute(sql)
+        records = c.fetchall()
+        self.close_conn(conn, c)
+        return records
+
     def get_conn(self):
         conn = sqlite3.connect(self.db_file)
         c = conn.cursor()
@@ -71,48 +104,40 @@ class SQLiteHelper():
 sqlite_helper = SQLiteHelper()
 
 
-class GpxHelper:
-    def __init__(self):
-        self.gpx_file = None
-        self.gpx = None
-
-    def set_gpx(self, gpx_file):
+class GpxHelper():
+    def __init__(self, gpx_file):
         self.gpx_file = gpx_file
-        self.gpx = gpxpy.parse(open(gpx_file, 'r'))
+        self.gpx = self._get_gpx()
 
-    def get_gpx_points_nb(self):
-        return self.gpx.get_points_no()
+    def _get_gpx(self):
+        return gpxpy.parse(open(self.gpx_file, 'r'))
 
-    def get_gpx_length(self):
-        return self.gpx.length_3d() / 1000
+    def get_gpx_details(self):
+        return (
+            str(self.gpx_file),
+            self.gpx.get_points_no(),
+            self.gpx.length_3d() / 1000,
+            self.gpx.get_uphill_downhill()[0],
+            self.gpx.get_uphill_downhill()[1]
+        )
 
-    def get_gpx_up_hill(self):
-        return self.gpx.get_uphill_downhill()[0]
-
-    def get_gpx_down_hill(self):
-        return self.gpx.get_uphill_downhill()[1]
-
-    def get_gpx_bounds(self):
-        return self.gpx.get_bounds()
-
-    def get_gpx_elevation_extremes(self):
-        return self.gpx.get_elevation_extremes()
-
-    def get_gpx_distance_between_locations(self, min_latitude, min_longitude, max_latitude, max_longitude):
-        start_location = Location(min_latitude, min_longitude)
-        end_location = Location(max_latitude, max_longitude)
-        return start_location.distance_3d(end_location)
-
-    def get_gpx_locations(self):
+    def get_locations(self):
         return [[point_data[0].longitude, point_data[0].latitude] for point_data in self.gpx.get_points_data()]
 
-    def get_gpx_distances_and_elevations(self):
+    def get_distances_and_elevations(self):
         distances = []
         elevations = []
         for point_data in self.gpx.get_points_data():
-            distances.append(point_data[1]/1000)
+            distances.append(
+                point_data[1]
+                / 1000)
             elevations.append(point_data[0].elevation)
         return distances, elevations
+
+    def get_distance_between_locations(self, min_latitude, min_longitude, max_latitude, max_longitude):
+        start_location = Location(min_latitude, min_longitude)
+        end_location = Location(max_latitude, max_longitude)
+        return start_location.distance_3d(end_location)
 
     def set_gpx_info(self):
         parser = etree.XMLParser(remove_blank_text=True)
@@ -124,20 +149,21 @@ class GpxHelper:
         root = tree.getroot()
 
         # Single occurrence
-        for node_name in [".//extensions", ".//metadata", ".//desc", ".//type", ".//number", ".//cmt"]:
+        for node_name in [".//metadata", ".//type", ".//number", ".//cmt"]:
             node = root.find(node_name, namespaces=root.nsmap)
-            if node:
+            if node is not None:
                 node.getparent().remove(node)
 
         # Multiple occurrences
-        for node_name in [".//name", ".//wpt", ".//time"]:
+        for node_name in [".//extensions", ".//desc", ".//name", ".//wpt", ".//time"]:
             nodes = [node for node in root.iterfind(node_name, namespaces=root.nsmap)]
-            if nodes:
+            if nodes is not None:
                 for node in nodes:
                     node.getparent().remove(node)
 
         tree.write(self.gpx_file, pretty_print=True)
 
+        self.gpx = self._get_gpx()
         self.gpx.schema_locations = [
             "http://www.topografix.com/GPX/1/1",
             "http://www.topografix.com/GPX/1/1/gpx.xsd"
@@ -155,6 +181,3 @@ class GpxHelper:
 
         with open(self.gpx_file, 'w') as f:
             f.write(self.gpx.to_xml())
-
-
-gpx_helper = GpxHelper()

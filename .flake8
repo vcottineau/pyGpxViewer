@@ -1,7 +1,2 @@
 [flake8]
-exclude = samples
-max-complexity = 10
-statistics = True
-max-line-length = 127
-show-source = True
-indent-size = 4
+max-line-length = 120

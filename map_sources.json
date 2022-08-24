@@ -1,0 +1,71 @@
+{
+  "providers": [
+    {
+      "name": "OpenStreetMap",
+      "api_key": "",
+      "layers": [
+        {
+          "id": 1,
+          "name": "standard",
+          "url": "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        }
+      ]
+    },
+    {
+      "name": "Thunderforest",
+      "api_key": "26900ad7986e480283778ce704d59cf2",
+      "layers": [
+        {
+          "id": 2,
+          "name": "OpenCycleMap",
+          "url": "https://tile.thunderforest.com/cycle/{z}/{x}/{y}.png"
+        },
+        {
+          "id": 3,
+          "name": "Transport",
+          "url": "https://tile.thunderforest.com/transport/{z}/{x}/{y}.png"
+        },
+        {
+          "id": 4,
+          "name": "Landscape",
+          "url": "https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png"
+        },
+        {
+          "id": 5,
+          "name": "Outdoors",
+          "url": "https://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png"
+        },
+        {
+          "id": 6,
+          "name": "Transport Dark",
+          "url": "https://tile.thunderforest.com/transport-dark/{z}/{x}/{y}.png"
+        },
+        {
+          "id": 7,
+          "name": "Spinal Map",
+          "url": "https://tile.thunderforest.com/spinal-map/{z}/{x}/{y}.png"
+        },
+        {
+          "id": 8,
+          "name": "Pioneer",
+          "url": "https://tile.thunderforest.com/pioneer/{z}/{x}/{y}.png"
+        },
+        {
+          "id": 9,
+          "name": "Mobile Atlas",
+          "url": "https://tile.thunderforest.com/mobile-atlas/{z}/{x}/{y}.png"
+        },
+        {
+          "id": 10,
+          "name": "Neighbourhood",
+          "url": "https://tile.thunderforest.com/neighbourhood/{z}/{x}/{y}.png"
+        },
+        {
+          "id": 11,
+          "name": "Atlas",
+          "url": "https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png"
+        }
+      ]
+    }
+  ]
+}

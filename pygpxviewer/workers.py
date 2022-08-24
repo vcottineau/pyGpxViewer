@@ -20,37 +20,24 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-from gi.repository import Adw, Gio, GLib, GObject
+import pathlib
+import threading
 
-from pygpxviewer.logger import Logger
-from pygpxviewer.window import Window
+from gi.repository import GObject
+
+from pygpxviewer.helpers import GpxHelper, sqlite_helper
 
 
-class Application(Adw.Application):
-    __gtype_name__ = "app"
+class WorkerUpdateThread(threading.Thread):
+    def __init__(self, folder_path, callback):
+        threading.Thread.__init__(self)
+        self.folder_path = folder_path
+        self.callback = callback
 
-    def __init__(self, application_id):
-        super().__init__(
-            application_id=application_id,
-            flags=Gio.ApplicationFlags.FLAGS_NONE)
-        self.props.resource_base_path = "/com/github/pygpxviewer"
-        GLib.set_application_name("pyGpxViewer")
-        GLib.set_prgname(application_id)
-
-        self._log = Logger()
-
-        self.app_window = None
-
-    @GObject.Property(type=Logger, default=None, flags=GObject.ParamFlags.READABLE)
-    def log(self):
-        return self._log
-
-    def do_startup(self):
-        Adw.Application.do_startup(self)
-
-    def do_activate(self):
-        if not self.app_window:
-            self.app_window = Window(application=self)
-            self.app_window.set_default_icon_name(self.props.application_id)
-
-        self.app_window.present()
+    def run(self):
+        sqlite_helper.clear_records()
+        for gpx_file in pathlib.Path(self.folder_path).glob("**/*.gpx"):
+            gpx_helper = GpxHelper(gpx_file)
+            record = gpx_helper.get_gpx_details()
+            sqlite_helper.add_record(record)
+        GObject.idle_add(self.callback)

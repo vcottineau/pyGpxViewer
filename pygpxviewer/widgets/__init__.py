@@ -19,38 +19,3 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
-
-from gi.repository import Adw, Gio, GLib, GObject
-
-from pygpxviewer.logger import Logger
-from pygpxviewer.window import Window
-
-
-class Application(Adw.Application):
-    __gtype_name__ = "app"
-
-    def __init__(self, application_id):
-        super().__init__(
-            application_id=application_id,
-            flags=Gio.ApplicationFlags.FLAGS_NONE)
-        self.props.resource_base_path = "/com/github/pygpxviewer"
-        GLib.set_application_name("pyGpxViewer")
-        GLib.set_prgname(application_id)
-
-        self._log = Logger()
-
-        self.app_window = None
-
-    @GObject.Property(type=Logger, default=None, flags=GObject.ParamFlags.READABLE)
-    def log(self):
-        return self._log
-
-    def do_startup(self):
-        Adw.Application.do_startup(self)
-
-    def do_activate(self):
-        if not self.app_window:
-            self.app_window = Window(application=self)
-            self.app_window.set_default_icon_name(self.props.application_id)
-
-        self.app_window.present()
