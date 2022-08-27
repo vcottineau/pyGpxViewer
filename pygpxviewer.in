@@ -27,8 +27,6 @@ import signal
 import sys
 from pathlib import Path
 
-from pygpxviewer.utils import get_resource_as_string
-
 if '@local_build@':
     sys.path.insert(1, '@pythondir@')
     os.environ["XDG_DATA_DIRS"] = '@schemasdir@:' + os.environ.get("XDG_DATA_DIRS", "/usr/share")
@@ -57,7 +55,8 @@ def set_resources():
     sources_file = sources_path.joinpath("sources.json")
     if not sources_file.exists():
         with open(sources_file, 'w') as f:
-            sources_json = get_resource_as_string("/map/sources.json")
+            from pygpxviewer import utils
+            sources_json = utils.get_resource_as_string("/map/sources.json")
             f.write(sources_json)
 
 

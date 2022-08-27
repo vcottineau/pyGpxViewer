@@ -20,9 +20,13 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-from gi.repository import Gio
+from gi.repository import Gio, Gtk
 
 
 def get_resource_as_string(path):
     resource = Gio.resources_lookup_data("/com/github/pygpxviewer" + path, Gio.ResourceLookupFlags.NONE)
     return resource.get_data().decode('utf-8')
+
+
+def get_dark_theme_enable():
+    return Gtk.Settings.get_default().props.gtk_application_prefer_dark_theme

@@ -24,6 +24,7 @@ import json
 import os
 from pathlib import Path
 
+import matplotlib.pyplot as plt
 from gi.repository import Adw, Gio, GLib, Gtk, Shumate
 from matplotlib.backends.backend_gtk4 import \
     NavigationToolbar2GTK4 as NavigationToolbar
@@ -31,6 +32,7 @@ from matplotlib.backends.backend_gtk4agg import \
     FigureCanvasGTK4Agg as FigureCanvas
 from matplotlib.figure import Figure
 
+from pygpxviewer import utils
 from pygpxviewer.helpers import GpxHelper
 
 
@@ -110,8 +112,7 @@ class GpxDetailedView(Adw.Window):
         for provider in map_sources["providers"]:
             for layer in provider["layers"]:
                 if layer["url"] == layer_url:
-                    api_key = provider["api_key"]
-                    return layer_url + f"?apikey={api_key}"
+                    return layer_url + provider["api_key"]
 
     def _on_layer_action(
             self, action: Gio.SimpleAction,
@@ -186,6 +187,10 @@ class GpxDetailedView(Adw.Window):
         mean_elev = round(
             sum(elevations)
             / len(elevations))
+
+        if utils.get_dark_theme_enable():
+            plt.style.use('dark_background')
+
         figure = Figure(tight_layout=True)
 
         ax = figure.add_subplot()
