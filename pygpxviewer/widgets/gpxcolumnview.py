@@ -29,15 +29,17 @@ from pygpxviewer.widgets.gpxdetailedview import GpxDetailedView
 class GpxItem(GObject.GObject):
     __gtype_name__ = "GpxItem"
 
+    id = GObject.Property(type=int)
     path = GObject.Property(type=str)
     points = GObject.Property(type=int)
     length = GObject.Property(type=float)
     up_hill = GObject.Property(type=float)
     down_hill = GObject.Property(type=float)
 
-    def __init__(self, path, points, length, up_hill, down_hill):
+    def __init__(self, id, path, points, length, up_hill, down_hill):
         super().__init__()
 
+        self.id = id
         self.path = path
         self.points = points
         self.length = length
@@ -77,8 +79,8 @@ class GpxColumnView(Gtk.ColumnView):
         else:
             records = sqlite_helper.get_records()
         for record in records:
-            _, path, points, length, up_hill, down_hill = record
-            gpx_item = GpxItem(path, points, length, up_hill, down_hill)
+            id, path, points, length, up_hill, down_hill = record
+            gpx_item = GpxItem(id, path, points, length, up_hill, down_hill)
             self._list_store.append(gpx_item)
 
     def _setup_column_view(self) -> None:
@@ -136,7 +138,7 @@ class GpxColumnView(Gtk.ColumnView):
         gpx_helper.set_gpx_info()
 
         record = gpx_helper.get_gpx_details()
-        sqlite_helper.update_record(record)
+        sqlite_helper.update_record(selected_item.id, record)
 
         selected_item.points = record[1]
         selected_item.length = record[2]

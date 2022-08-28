@@ -69,7 +69,7 @@ class SQLiteHelper:
         conn.commit()
         self.close_conn(conn, c)
 
-    def update_record(self, record):
+    def update_record(self, id, record):
         sql = f"""
             UPDATE gpx
             SET
@@ -78,7 +78,7 @@ class SQLiteHelper:
                 up_hill = {record[3]},
                 down_hill = {record[4]}
             WHERE
-                path = '{record[0]}';
+                id = '{id}';
         """
         conn, c = self.get_conn()
         c.execute(sql)
@@ -165,7 +165,7 @@ class GpxHelper():
                 node.getparent().remove(node)
 
         # Multiple occurrences
-        for node_name in [".//extensions", ".//desc", ".//name", ".//wpt", ".//time"]:
+        for node_name in [".//extensions", ".//number", ".//desc", ".//name", ".//wpt", ".//time"]:
             nodes = [node for node in root.iterfind(node_name, namespaces=root.nsmap)]
             if nodes is not None:
                 for node in nodes:
