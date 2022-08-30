@@ -25,6 +25,7 @@ from pathlib import Path
 
 import gpxpy
 import srtm
+from gi.repository import GObject
 from gpxpy.geo import Location
 from lxml import etree
 
@@ -114,8 +115,10 @@ class SQLiteHelper:
 sqlite_helper = SQLiteHelper()
 
 
-class GpxHelper():
+class GpxHelper(GObject.GObject):
     def __init__(self, gpx_file):
+        super().__init__()
+
         self.gpx_file = gpx_file
         self.gpx = self._get_gpx()
 
@@ -138,11 +141,15 @@ class GpxHelper():
         distances = []
         elevations = []
         for point_data in self.gpx.get_points_data():
-            distances.append(
-                point_data[1]
-                / 1000)
+            distances.append(point_data[1] / 1000)
             elevations.append(point_data[0].elevation)
         return distances, elevations
+
+    def get_lat_lng_from_distance(self, distance):
+        for point_data in self.gpx.get_points_data():
+            if round(point_data[1] / 1000) == round(distance):
+                return point_data[0].latitude, point_data[0].longitude
+        return None, None
 
     def get_distance_between_locations(self, min_latitude, min_longitude, max_latitude, max_longitude):
         start_location = Location(min_latitude, min_longitude)
