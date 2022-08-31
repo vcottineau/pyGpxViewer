@@ -13,7 +13,7 @@
 
 pyGpxViewer uses [pipenv](https://pypi.org/project/pipenv/) to manage virtualenvs:
 
-```
+```console
 pipenv shell
 pipenv update --dev
 ```
@@ -23,7 +23,7 @@ pipenv update --dev
 pyGpxViewer uses the [Meson](https://mesonbuild.com/) and [Ninja](https://ninja-build.org/) build systems. Use the
 following commands to build from the source directory:
 
-```
+```console
 meson setup build
 meson compile -C build
 ```
@@ -32,7 +32,7 @@ meson compile -C build
 
 To run locally the application:
 
-```
+```console
 python build/pygpxviewer_local
 ```
 
@@ -40,7 +40,7 @@ python build/pygpxviewer_local
 
 To install the application:
 
-```
+```console
 meson install -C build
 ```
 
@@ -48,7 +48,7 @@ meson install -C build
 
 To add a new layer edit the file under `~/.config/pygpxviewer/sources.json`:
 
-```
+```json
 {
   "providers": [
     {
