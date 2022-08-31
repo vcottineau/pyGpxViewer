@@ -53,8 +53,9 @@ class GpxDetailedView(Adw.Window):
         self._settings = Gio.Settings.new("com.github.pygpxviewer.app.window.detailed")
 
         self._shumate_map = ShumateMap(self)
-        self._elevation_profile = ElevationProfile(self)
-        self._elevation_profile.connect("on-mouse-move-event", self._shumate_map.on_mouse_move_event)
+        if self._gpx_helper.gpx.has_elevations():
+            self._elevation_profile = ElevationProfile(self)
+            self._elevation_profile.connect("on-mouse-move-event", self._shumate_map.on_mouse_move_event)
 
         self._setup_actions()
         self._setup_view()

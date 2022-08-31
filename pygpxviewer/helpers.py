@@ -37,7 +37,7 @@ class SQLiteHelper:
         db_path = Path.home().joinpath(".cache", "pygpxviewer")
         db_path.mkdir(parents=True, exist_ok=True)
 
-        self.db_file = db_path.joinpath("pygpxviewer.db")
+        self._db_file = db_path.joinpath("pygpxviewer.db")
 
         sql = """
             CREATE TABLE IF NOT EXISTS gpx (
@@ -103,7 +103,7 @@ class SQLiteHelper:
         return records
 
     def get_conn(self):
-        conn = sqlite3.connect(self.db_file)
+        conn = sqlite3.connect(self._db_file)
         c = conn.cursor()
         return conn, c
 
@@ -119,15 +119,15 @@ class GpxHelper(GObject.GObject):
     def __init__(self, gpx_file):
         super().__init__()
 
-        self.gpx_file = gpx_file
+        self._gpx_file = gpx_file
         self.gpx = self._get_gpx()
 
     def _get_gpx(self):
-        return gpxpy.parse(open(self.gpx_file, 'r'))
+        return gpxpy.parse(open(self._gpx_file, 'r'))
 
     def get_gpx_details(self):
         return (
-            str(self.gpx_file),
+            str(self._gpx_file),
             self.gpx.get_points_no(),
             self.gpx.length_3d() / 1000,
             self.gpx.get_uphill_downhill()[0],
@@ -159,7 +159,7 @@ class GpxHelper(GObject.GObject):
     def set_gpx_info(self):
         parser = etree.XMLParser(remove_blank_text=True)
 
-        tree = etree.parse(self.gpx_file, parser)
+        tree = etree.parse(self._gpx_file, parser)
         xslt = etree.fromstring(get_resource_as_string("/xslt/stylesheet.xslt"))
 
         tree = tree.xslt(xslt)
@@ -178,7 +178,7 @@ class GpxHelper(GObject.GObject):
                 for node in nodes:
                     node.getparent().remove(node)
 
-        tree.write(self.gpx_file, pretty_print=True)
+        tree.write(self._gpx_file, pretty_print=True)
 
         self.gpx = self._get_gpx()
         self.gpx.schema_locations = [
@@ -196,5 +196,5 @@ class GpxHelper(GObject.GObject):
         elevation_data = srtm.get_data()
         elevation_data.add_elevations(self.gpx, smooth=True)
 
-        with open(self.gpx_file, 'w') as f:
+        with open(self._gpx_file, 'w') as f:
             f.write(self.gpx.to_xml())

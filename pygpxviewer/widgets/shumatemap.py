@@ -20,7 +20,7 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-from gi.repository import GObject, Gtk, Shumate
+from gi.repository import Gio, GObject, Gtk, Shumate
 
 
 class ShumateMap(Shumate.SimpleMap):
@@ -47,6 +47,11 @@ class ShumateMap(Shumate.SimpleMap):
         return self._marker_layer
 
     def _set_map(self):
+        self._window.settings.bind("zoom-level", self.get_viewport(), "zoom-level",
+                                   Gio.SettingsBindFlags.GET_NO_CHANGES)
+        self._window.settings.bind("latitude", self.get_viewport(), "latitude", Gio.SettingsBindFlags.GET_NO_CHANGES)
+        self._window.settings.bind("longitude", self.get_viewport(), "longitude", Gio.SettingsBindFlags.GET_NO_CHANGES)
+
         bounds = self._window.gpx_helper.gpx.get_bounds()
 
         min_latitude = bounds.min_latitude
