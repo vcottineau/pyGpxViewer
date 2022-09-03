@@ -38,9 +38,9 @@ class ElevationProfile(Gtk.Box):
     def __init__(self, window):
         super().__init__(orientation=Gtk.Orientation.VERTICAL)
 
-        self._window = window
+        self._gpx_helper = window.gpx_helper
 
-        if utils.get_dark_theme_enable():
+        if utils.is_dark_theme_enable():
             plt.style.use('dark_background')
 
         canvas = FigureCanvasGTK4Agg(self._get_figure())
@@ -50,9 +50,9 @@ class ElevationProfile(Gtk.Box):
         self.append(toolbar)
 
     def _get_figure(self):
-        length = self._window.gpx_helper.gpx.length_3d() / 1000
-        min_elev, max_elev = self._window.gpx_helper.gpx.get_elevation_extremes()
-        distances, elevations = self._window.gpx_helper.get_distances_and_elevations()
+        length = self._gpx_helper.gpx.length_3d() / 1000
+        min_elev, max_elev = self._gpx_helper.gpx.get_elevation_extremes()
+        distances, elevations = self._gpx_helper.get_gpx_distances_and_elevations()
 
         min_elev = round(min_elev)
         max_elev = round(max_elev)
@@ -78,6 +78,6 @@ class ElevationProfile(Gtk.Box):
 
     def _on_motion_notify_event(self, event):
         if event.inaxes:
-            latitude, longitude = self._window.gpx_helper.get_lat_lng_from_distance(event.xdata)
+            latitude, longitude = self._gpx_helper.get_gpx_lat_lng_from_distance(event.xdata)
             if latitude and longitude:
                 self.emit("on-mouse-move-event", latitude, longitude)

@@ -22,7 +22,8 @@
 
 from gi.repository import Gio, GObject, Gtk, Pango
 
-from pygpxviewer.helpers import GpxHelper, sqlite_helper
+from pygpxviewer.helpers.sqlitehelper import SQLiteHelper
+from pygpxviewer.threads.workers import WorkerUpdateRecord
 from pygpxviewer.widgets.gpxdetailedview import GpxDetailedView
 
 
@@ -65,6 +66,7 @@ class GpxColumnView(Gtk.ColumnView):
         super().__init__()
 
         self._window = window
+        self._sqlitehelper = SQLiteHelper()
 
         self._list_store = Gio.ListStore()
         self._sort_list_model.set_model(self._list_store)
@@ -75,9 +77,9 @@ class GpxColumnView(Gtk.ColumnView):
     def refresh(self, search_entry=None):
         self._list_store.remove_all()
         if search_entry:
-            records = sqlite_helper.search_records(search_entry)
+            records = self._sqlitehelper.search_records(search_entry)
         else:
-            records = sqlite_helper.get_records()
+            records = self._sqlitehelper.get_records()
         for record in records:
             id, path, points, length, up_hill, down_hill = record
             gpx_item = GpxItem(id, path, points, length, up_hill, down_hill)
@@ -101,17 +103,16 @@ class GpxColumnView(Gtk.ColumnView):
     def _factory_setup_actions(self, factory: Gtk.SignalListItemFactory, list_item: Gtk.ListItem) -> None:
         box = Gtk.Box(spacing=6)
 
-        button_view = Gtk.Button.new_from_icon_name("mark-location-symbolic")
-        button_view.connect("clicked", self._on_button_view_clicked, list_item)
-        context = button_view.get_style_context()
-        Gtk.StyleContext.add_class(context, "column_view_button")
-        box.append(button_view)
-
-        button_refresh = Gtk.Button.new_from_icon_name("view-refresh-symbolic")
-        button_refresh.connect("clicked", self._on_button_refresh_clicked, list_item)
-        context = button_refresh.get_style_context()
-        Gtk.StyleContext.add_class(context, "column_view_button")
-        box.append(button_refresh)
+        buttons = [
+            {"icon": "mark-location-symbolic", "callback": self._on_button_view_clicked},
+            {"icon": "view-refresh-symbolic", "callback": self._on_button_refresh_clicked}
+        ]
+        for button in buttons:
+            action_button = Gtk.Button.new_from_icon_name(button["icon"])
+            action_button.connect("clicked", button["callback"], list_item)
+            context = action_button.get_style_context()
+            Gtk.StyleContext.add_class(context, "column_view_button")
+            box.append(action_button)
 
         list_item.set_child(box)
 
@@ -133,17 +134,20 @@ class GpxColumnView(Gtk.ColumnView):
 
     def _on_button_refresh_clicked(self, button: Gtk.Button, list_item: Gtk.ListItem) -> None:
         selected_item = self._get_selected_item(list_item)
+        self._window.set_sensitive(False)
+        self._window.spinner.start()
 
-        gpx_helper = GpxHelper(selected_item.path)
-        gpx_helper.set_gpx_info()
+        thread = WorkerUpdateRecord(selected_item, self._on_update_record_ended)
+        thread.start()
 
-        record = gpx_helper.get_gpx_details()
-        sqlite_helper.update_record(selected_item.id, record)
-
+    def _on_update_record_ended(self, selected_item, record):
         selected_item.points = record[1]
         selected_item.length = record[2]
         selected_item.up_hill = record[3]
         selected_item.down_hill = record[4]
+
+        self._window.spinner.stop()
+        self._window.set_sensitive(True)
 
     def _get_selected_item(self, list_item: Gtk.ListItem) -> Gtk.ListItem:
         position = list_item.get_position()

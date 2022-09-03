@@ -28,12 +28,12 @@ class ShumateMap(Shumate.SimpleMap):
     def __init__(self, window):
         super().__init__()
 
-        self._window = window
+        self._settings = window.settings
+        self._gpx_helper = window.gpx_helper
+
         self._path_layer = None
         self._marker_layer = None
         self._marker = self._create_marker()
-
-        self.set_map_source_from_layer_url(self._window.settings.get_string("layer-url"))
 
         self._set_map()
         self._set_layers()
@@ -47,19 +47,20 @@ class ShumateMap(Shumate.SimpleMap):
         return self._marker_layer
 
     def _set_map(self):
-        self._window.settings.bind("zoom-level", self.get_viewport(), "zoom-level",
-                                   Gio.SettingsBindFlags.GET_NO_CHANGES)
-        self._window.settings.bind("latitude", self.get_viewport(), "latitude", Gio.SettingsBindFlags.GET_NO_CHANGES)
-        self._window.settings.bind("longitude", self.get_viewport(), "longitude", Gio.SettingsBindFlags.GET_NO_CHANGES)
+        self.set_map_source_from_layer_url(self._settings.get_string("layer-url"))
 
-        bounds = self._window.gpx_helper.gpx.get_bounds()
+        self._settings.bind("zoom-level", self.get_viewport(), "zoom-level", Gio.SettingsBindFlags.GET_NO_CHANGES)
+        self._settings.bind("latitude", self.get_viewport(), "latitude", Gio.SettingsBindFlags.GET_NO_CHANGES)
+        self._settings.bind("longitude", self.get_viewport(), "longitude", Gio.SettingsBindFlags.GET_NO_CHANGES)
+
+        bounds = self._gpx_helper.gpx.get_bounds()
 
         min_latitude = bounds.min_latitude
         min_longitude = bounds.min_longitude
         max_latitude = bounds.max_latitude
         max_longitude = bounds.max_longitude
 
-        distance = self._window.gpx_helper.get_distance_between_locations(
+        distance = self._gpx_helper.get_gpx_distance_between_locations(
             min_latitude, min_longitude,
             max_latitude, max_longitude) / 1000
 
@@ -77,7 +78,7 @@ class ShumateMap(Shumate.SimpleMap):
         self._path_layer = Shumate.PathLayer.new(self.get_viewport())
         self._marker_layer = Shumate.MarkerLayer.new(self.get_viewport())
 
-        locations = self._window.gpx_helper.get_locations()
+        locations = self._gpx_helper.get_gpx_locations()
         for location in locations:
             self._path_layer.add_node(Shumate.Coordinate.new_full(location[1], location[0]))
 

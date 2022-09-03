@@ -25,7 +25,6 @@
 import os
 import signal
 import sys
-from pathlib import Path
 
 if '@local_build@':
     sys.path.insert(1, '@pythondir@')
@@ -50,13 +49,21 @@ def set_resources():
     resource = Gio.resource_load(os.path.join('@pkgdatadir@', '@application_id@.gresource'))
     Gio.Resource._register(resource)
 
-    sources_path = Path.home().joinpath(".config", "pygpxviewer")
-    sources_path.mkdir(parents=True, exist_ok=True)
-    sources_file = sources_path.joinpath("sources.json")
-    if not sources_file.exists():
-        with open(sources_file, 'w') as f:
+    from pygpxviewer.config import dem_file, map_file
+    resources_files = [
+        {"path": dem_file, "resource": "/dem/dem.json"},
+        {"path": map_file, "resource": "/map/map.json"}
+    ]
+
+    for resource_file in resources_files:
+        add_resource_file(resource_file["path"], resource_file["resource"])
+
+
+def add_resource_file(path, resource):
+    if not path.exists():
+        with open(path, 'w') as f:
             from pygpxviewer import utils
-            sources_json = utils.get_resource_as_string("/map/sources.json")
+            sources_json = utils.get_resource_as_string(resource)
             f.write(sources_json)
 
 

@@ -19,25 +19,3 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
-
-import pathlib
-import threading
-
-from gi.repository import GObject
-
-from pygpxviewer.helpers import GpxHelper, sqlite_helper
-
-
-class WorkerUpdateThread(threading.Thread):
-    def __init__(self, folder_path, callback):
-        threading.Thread.__init__(self)
-        self.folder_path = folder_path
-        self.callback = callback
-
-    def run(self):
-        sqlite_helper.clear_records()
-        for gpx_file in pathlib.Path(self.folder_path).glob("**/*.gpx"):
-            gpx_helper = GpxHelper(gpx_file)
-            record = gpx_helper.get_gpx_details()
-            sqlite_helper.add_record(record)
-        GObject.idle_add(self.callback)

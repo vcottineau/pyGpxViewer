@@ -22,11 +22,11 @@
 
 import json
 import os
-from pathlib import Path
 
 from gi.repository import Adw, Gio, GLib, GObject, Gtk
 
-from pygpxviewer.helpers import GpxHelper
+import pygpxviewer.config as config
+from pygpxviewer.helpers.gpxhelper import GpxHelper
 from pygpxviewer.widgets.elevationprofile import ElevationProfile
 from pygpxviewer.widgets.shumatemap import ShumateMap
 
@@ -46,16 +46,13 @@ class GpxDetailedView(Adw.Window):
         super().__init__()
 
         self._path = path
-        self._map_sources = Path.home().joinpath(".config", "pygpxviewer", "sources.json")
         self._gpx_helper = GpxHelper(self._path)
-
-        self.set_title(os.path.basename(self._path))
         self._settings = Gio.Settings.new("com.github.pygpxviewer.app.window.detailed")
 
-        self._shumate_map = ShumateMap(self)
-        if self._gpx_helper.gpx.has_elevations():
-            self._elevation_profile = ElevationProfile(self)
-            self._elevation_profile.connect("on-mouse-move-event", self._shumate_map.on_mouse_move_event)
+        self.set_title(os.path.basename(self._path))
+
+        self._shumate_map = None
+        self._elevation_profile = None
 
         self._setup_actions()
         self._setup_view()
@@ -93,8 +90,12 @@ class GpxDetailedView(Adw.Window):
         self._up_hill_label.set_text(str(round(up_hill)))
         self._down_hill_label.set_text(str(round(down_hill)))
 
+        self._shumate_map = ShumateMap(self)
         self._box_container.append(self._shumate_map)
+
         if self._gpx_helper.gpx.has_elevations():
+            self._elevation_profile = ElevationProfile(self)
+            self._elevation_profile.connect("on-mouse-move-event", self._shumate_map.on_mouse_move_event)
             self._box_container.append(self._elevation_profile)
 
     def _setup_layers_menu(self):
@@ -110,7 +111,7 @@ class GpxDetailedView(Adw.Window):
             menu_model.append_submenu(provider["name"], sub_menu)
 
     def _get_map_sources(self):
-        with open(self._map_sources) as json_file:
+        with open(config.map_file) as json_file:
             return json.load(json_file)
 
     def _get_map_source_from_url(self, layer_url):

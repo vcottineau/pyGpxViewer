@@ -12,6 +12,9 @@ build.sh
 # Lint
 .mypy_cache
 
+# Resources
+resources/dem
+
 # Pipenv
 *.lock
 

@@ -18,6 +18,9 @@
                                 </property>
                             </object>
                         </child>
+                        <child type="end">
+                            <object class="GtkSpinner" id="_spinner"/>
+                        </child>
                         <child type="start">
                             <object class="GtkButton">
                                 <property name="child">

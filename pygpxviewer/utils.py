@@ -28,5 +28,5 @@ def get_resource_as_string(path):
     return resource.get_data().decode('utf-8')
 
 
-def get_dark_theme_enable():
+def is_dark_theme_enable():
     return Gtk.Settings.get_default().props.gtk_application_prefer_dark_theme

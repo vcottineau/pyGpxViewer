@@ -6,10 +6,11 @@ name = "pypi"
 [packages]
 pygobject = "*"
 gpxpy = "*"
-"srtm.py" = "*"
 lxml = "*"
 matplotlib = "*"
 numpy = "*"
+requests = "*"
+gmalthgtparser = "*"
 
 [dev-packages]
 meson = "*"
@@ -17,6 +18,7 @@ ninja = "*"
 flake8 = "*"
 isort = "*"
 mypy = "*"
+types-requests = "*"
 
 [requires]
 python_version = "3.10"

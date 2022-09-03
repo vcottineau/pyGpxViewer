@@ -24,9 +24,9 @@ from typing import Optional
 
 from gi.repository import Adw, Gio, GLib, GObject, Gtk
 
+from pygpxviewer.threads.workers import WorkerUpdateRecords
 from pygpxviewer.widgets.appmenu import AppMenu
 from pygpxviewer.widgets.gpxcolumnview import GpxColumnView
-from pygpxviewer.workers import WorkerUpdateThread
 
 
 @Gtk.Template(resource_path="/com/github/pygpxviewer/ui/Window.ui")
@@ -38,6 +38,7 @@ class Window(Adw.ApplicationWindow):
     _headerbar = Gtk.Template.Child()
     _menu_button = Gtk.Template.Child()
     _scrolled_window = Gtk.Template.Child()
+    _spinner = Gtk.Template.Child()
 
     def __init__(self, application):
         super().__init__(application=application)
@@ -54,6 +55,10 @@ class Window(Adw.ApplicationWindow):
         self._setup_view()
 
         self._gpx_column_view.refresh()
+
+    @GObject.Property(type=Gtk.Spinner, flags=GObject.ParamFlags.READABLE)
+    def spinner(self):
+        return self._spinner
 
     @GObject.Property(type=Gio.Settings, flags=GObject.ParamFlags.READABLE)
     def settings(self):
@@ -108,26 +113,29 @@ class Window(Adw.ApplicationWindow):
         self.file_chooser.connect("response", self._on_file_chooser_response)
         self.file_chooser.show()
 
-    def _on_file_chooser_response(self, dialog, response):
-        if response == Gtk.ResponseType.ACCEPT:
-            self.folder_path = dialog.get_file().get_path()
-            self._update_database()
-
-    def _update_database(self):
-        self.set_sensitive(False)
-        thread = WorkerUpdateThread(self.folder_path, self.on_update_database_ended)
-        thread.start()
-
-    def on_update_database_ended(self):
-        self._gpx_column_view.refresh()
-        self.set_sensitive(True)
-
     @Gtk.Template.Callback()
     def _on_search_entry_search_changed(self, search_entry: Gtk.SearchEntry) -> None:
         self._gpx_column_view.refresh(search_entry.get_text().lower())
 
+    def _on_file_chooser_response(self, dialog, response):
+        if response == Gtk.ResponseType.ACCEPT:
+            self.folder_path = dialog.get_file().get_path()
+            self._update_records()
+
+    def _update_records(self):
+        self.set_sensitive(False)
+        self._spinner.start()
+
+        thread = WorkerUpdateRecords(self.folder_path, self._on_update_records_ended)
+        thread.start()
+
+    def _on_update_records_ended(self):
+        self._gpx_column_view.refresh()
+        self._spinner.stop()
+        self.set_sensitive(True)
+
     def _refresh(self, action: Gio.SimpleAction, param: Optional[GLib.Variant]) -> None:
-        self._update_database()
+        self._update_records()
 
     def _about(self, action: Gio.SimpleAction, param: Optional[GLib.Variant]) -> None:
         # ToDo: Add AboutWindow

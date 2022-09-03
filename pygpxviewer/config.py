@@ -19,35 +19,16 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
-from gi.repository import Adw, Gio, GLib, GObject
+from pathlib import Path
 
-from pygpxviewer.logger import Logger
-from pygpxviewer.window import Window
+home_path = Path.home()
+cache_path = home_path.joinpath(".cache", "pygpxviewer")
+config_path = home_path.joinpath(".config", "pygpxviewer")
+dem_path = cache_path.joinpath("dem")
 
+dem_file = cache_path.joinpath("dem.json")
+db_file = cache_path.joinpath("sqlite.db")
+map_file = config_path.joinpath("map.json")
 
-class Application(Adw.Application):
-    __gtype_name__ = "Application"
-
-    def __init__(self, application_id):
-        super().__init__(
-            application_id=application_id,
-            flags=Gio.ApplicationFlags.FLAGS_NONE)
-        self.props.resource_base_path = "/com/github/pygpxviewer"
-        GLib.set_application_name("pyGpxViewer")
-        GLib.set_prgname(application_id)
-
-        self._log = Logger()
-        self._app_window = None
-
-    @GObject.Property(type=Logger, default=None, flags=GObject.ParamFlags.READABLE)
-    def log(self):
-        return self._log
-
-    def do_startup(self):
-        Adw.Application.do_startup(self)
-
-    def do_activate(self):
-        if not self._app_window:
-            self._app_window = Window(application=self)
-            self._app_window.set_default_icon_name(self.props.application_id)
-        self._app_window.present()
+for path in [cache_path, config_path, dem_path]:
+    path.mkdir(parents=True, exist_ok=True)
