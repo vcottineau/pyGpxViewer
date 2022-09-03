@@ -40,7 +40,7 @@ class Window(Adw.ApplicationWindow):
     _scrolled_window = Gtk.Template.Child()
     _spinner = Gtk.Template.Child()
 
-    def __init__(self, application):
+    def __init__(self, application: Adw.ApplicationWindow):
         super().__init__(application=application)
 
         self._app = application
@@ -57,11 +57,11 @@ class Window(Adw.ApplicationWindow):
         self._gpx_column_view.refresh()
 
     @GObject.Property(type=Gtk.Spinner, flags=GObject.ParamFlags.READABLE)
-    def spinner(self):
+    def spinner(self) -> None:
         return self._spinner
 
     @GObject.Property(type=Gio.Settings, flags=GObject.ParamFlags.READABLE)
-    def settings(self):
+    def settings(self) -> None:
         return self._settings
 
     def _set_actions(self) -> None:
@@ -98,7 +98,7 @@ class Window(Adw.ApplicationWindow):
         self._menu_button.set_popover(self._app_menu)
         self._scrolled_window.set_child(self._gpx_column_view)
 
-    def _set_css(self) -> None:
+    def _set_css(self):
         css_provider = Gtk.CssProvider()
         css_provider.load_from_resource("/com/github/pygpxviewer/style.css")
         Gtk.StyleContext.add_provider_for_display(self.get_display(), css_provider,
@@ -117,7 +117,7 @@ class Window(Adw.ApplicationWindow):
     def _on_search_entry_search_changed(self, search_entry: Gtk.SearchEntry) -> None:
         self._gpx_column_view.refresh(search_entry.get_text().lower())
 
-    def _on_file_chooser_response(self, dialog, response):
+    def _on_file_chooser_response(self, dialog: Gtk.FileChooserNative, response: Gtk.ResponseType) -> None:
         if response == Gtk.ResponseType.ACCEPT:
             self.folder_path = dialog.get_file().get_path()
             self._update_records()

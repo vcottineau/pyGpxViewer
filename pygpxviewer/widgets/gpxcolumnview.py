@@ -19,6 +19,7 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
+from typing import Optional, Tuple
 
 from gi.repository import Gio, GObject, Gtk, Pango
 
@@ -74,7 +75,7 @@ class GpxColumnView(Gtk.ColumnView):
         self.sort_by_column(self._path_view_column, Gtk.SortType.ASCENDING)
         self._setup_column_view()
 
-    def refresh(self, search_entry=None):
+    def refresh(self, search_entry: Optional[str] = None) -> None:
         self._list_store.remove_all()
         if search_entry:
             records = self._sqlitehelper.search_records(search_entry)
@@ -85,7 +86,7 @@ class GpxColumnView(Gtk.ColumnView):
             gpx_item = GpxItem(id, path, points, length, up_hill, down_hill)
             self._list_store.append(gpx_item)
 
-    def _setup_column_view(self) -> None:
+    def _setup_column_view(self):
         self._factory_path.connect("bind", self._factory_bind, "path")
         self._factory_points.connect("bind", self._factory_bind, "points")
         self._factory_length.connect("bind", self._factory_bind, "length")
@@ -140,7 +141,7 @@ class GpxColumnView(Gtk.ColumnView):
         thread = WorkerUpdateRecord(selected_item, self._on_update_record_ended)
         thread.start()
 
-    def _on_update_record_ended(self, selected_item, record):
+    def _on_update_record_ended(self, selected_item: Gtk.ListItem, record: Tuple) -> None:
         selected_item.points = record[1]
         selected_item.length = record[2]
         selected_item.up_hill = record[3]

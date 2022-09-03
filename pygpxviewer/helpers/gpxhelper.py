@@ -21,6 +21,7 @@
 #  SOFTWARE.
 import json
 import math
+from typing import Optional
 
 import gpxpy
 import gpxpy.gpx
@@ -58,7 +59,7 @@ class GpxHelper:
             self.gpx.get_uphill_downhill()[1]
         )
 
-    def get_gpx_locations(self):
+    def get_gpx_locations(self) -> list[list[float]]:
         return [[point_data[0].longitude, point_data[0].latitude] for point_data in self.gpx.get_points_data()]
 
     def get_gpx_distances_and_elevations(self):
@@ -69,7 +70,7 @@ class GpxHelper:
             elevations.append(point_data[0].elevation)
         return distances, elevations
 
-    def get_gpx_lat_lng_from_distance(self, length, distance):
+    def get_gpx_lat_lng_from_distance(self, length: float, distance: float) -> Optional[tuple[float, float]]:
         delta = 1.00
         if length <= 500:
             delta = 0.05
@@ -83,7 +84,7 @@ class GpxHelper:
         for point_data in self.gpx.get_points_data():
             if abs(point_data[1] / 1000 - distance) <= delta:
                 return point_data[0].latitude, point_data[0].longitude
-        return None, None
+        return None
 
     def get_gpx_distance_between_locations(self, min_latitude, min_longitude, max_latitude, max_longitude):
         start_location = geo.Location(min_latitude, min_longitude)
@@ -106,7 +107,7 @@ class GpxHelper:
         with open(self._gpx_file, 'w') as f:
             f.write(self._gpx.to_xml())
 
-    def _clean_gpx(self):
+    def _clean_gpx(self) -> None:
         parser = etree.XMLParser(remove_blank_text=True)
 
         tree = etree.parse(self._gpx_file, parser)
@@ -131,7 +132,7 @@ class GpxHelper:
         tree.write(self._gpx_file, pretty_print=True)
         self.gpx = None
 
-    def _set_gpx_headers(self):
+    def _set_gpx_headers(self) -> None:
         self.gpx.schema_locations = [
             "http://www.topografix.com/GPX/1/1",
             "http://www.topografix.com/GPX/1/1/gpx.xsd"
@@ -151,7 +152,7 @@ class GpxHelper:
             if elevation is not None:
                 point_data[0].elevation = elevation
 
-    def _get_hgt_file_name(self, latitude, longitude):
+    def _get_hgt_file_name(self, latitude: float, longitude: float) -> str:
         if latitude >= 0:
             north_south = 'N'
         else:
@@ -190,7 +191,7 @@ class GpxHelper:
                     }
         return urls
 
-    def _get_elevation(self, latitude, longitude):
+    def _get_elevation(self, latitude: float, longitude: float) -> Optional[int]:
         hgt_file_name = self._get_hgt_file_name(latitude, longitude)
         hgt_file_path = config.dem_path.joinpath(hgt_file_name)
 

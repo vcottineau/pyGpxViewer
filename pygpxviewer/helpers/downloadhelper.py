@@ -34,7 +34,7 @@ class DownloadHelper:
     def __init__(self, urls):
         self._urls = urls
 
-    def get_size_in_mb(self):
+    def get_size_in_mb(self) -> float:
         size = [int(self._urls[url]["size"]) for url in self._urls]
         return round(sum(size) / 1000 / 1000, 1)
 

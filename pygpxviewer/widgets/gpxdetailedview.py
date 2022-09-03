@@ -122,12 +122,13 @@ class GpxDetailedView(Adw.Window):
         with open(config.map_file) as json_file:
             return json.load(json_file)
 
-    def _get_map_source_from_url(self, layer_url):
+    def _get_map_source_from_url(self, layer_url: str) -> tuple:
         map_sources = self._get_map_sources()
         for provider in map_sources["providers"]:
             for layer in provider["layers"]:
                 if layer["url"] == layer_url:
                     return provider["name"], layer_url + provider["api_key"]
+        return None, None
 
     def _on_layer_action(
             self, action: Gio.SimpleAction,

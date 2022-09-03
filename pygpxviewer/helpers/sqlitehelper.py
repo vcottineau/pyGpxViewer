@@ -75,7 +75,7 @@ class SQLiteHelper:
         with self._db_cur() as cur:
             cur.execute(sql)
 
-    def get_records(self):
+    def get_records(self) -> tuple:
         sql = """
             SELECT * FROM gpx
             ORDER BY
@@ -86,7 +86,7 @@ class SQLiteHelper:
             records = cur.fetchall()
         return records
 
-    def search_records(self, search_entry):
+    def search_records(self, search_entry: str) -> tuple:
         sql = f"""
             SELECT * FROM gpx
             WHERE

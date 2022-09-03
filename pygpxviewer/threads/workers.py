@@ -21,15 +21,16 @@
 #  SOFTWARE.
 import pathlib
 import threading
+from typing import Callable, Tuple
 
-from gi.repository import GObject
+from gi.repository import GObject, Gtk
 
 from pygpxviewer.helpers.gpxhelper import GpxHelper
 from pygpxviewer.helpers.sqlitehelper import SQLiteHelper
 
 
 class WorkerUpdateRecords(threading.Thread):
-    def __init__(self, folder_path, callback):
+    def __init__(self, folder_path: str, callback: Callable[[], None]):
         threading.Thread.__init__(self)
         self.folder_path = folder_path
         self.callback = callback
@@ -48,7 +49,7 @@ class WorkerUpdateRecords(threading.Thread):
 
 
 class WorkerUpdateRecord(threading.Thread):
-    def __init__(self, selected_item, callback):
+    def __init__(self, selected_item: Gtk.ListItem, callback: Callable[[Gtk.ListItem, Tuple], None]):
         threading.Thread.__init__(self)
         self.selected_item = selected_item
         self.callback = callback

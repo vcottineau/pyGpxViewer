@@ -22,6 +22,7 @@
 
 import matplotlib.pyplot as plt
 from gi.repository import GObject, Gtk
+from matplotlib.backend_bases import MouseEvent
 from matplotlib.backends.backend_gtk4 import NavigationToolbar2GTK4
 from matplotlib.backends.backend_gtk4agg import FigureCanvasGTK4Agg
 from matplotlib.figure import Figure
@@ -49,7 +50,7 @@ class ElevationProfile(Gtk.Box):
         self.append(canvas)
         self.append(toolbar)
 
-    def _get_figure(self):
+    def _get_figure(self) -> Figure:
         length = self._gpx_helper.gpx.length_3d() / 1000
         min_elev, max_elev = self._gpx_helper.gpx.get_elevation_extremes()
         distances, elevations = self._gpx_helper.get_gpx_distances_and_elevations()
@@ -76,9 +77,9 @@ class ElevationProfile(Gtk.Box):
 
         return figure
 
-    def _on_motion_notify_event(self, event):
+    def _on_motion_notify_event(self, event: MouseEvent) -> None:
         if event.inaxes:
             length = self._gpx_helper.gpx.length_3d() / 1000
-            latitude, longitude = self._gpx_helper.get_gpx_lat_lng_from_distance(length, event.xdata)
-            if latitude and longitude:
-                self.emit("on-mouse-move-event", latitude, longitude)
+            result = self._gpx_helper.get_gpx_lat_lng_from_distance(length, event.xdata)
+            if result:
+                self.emit("on-mouse-move-event", result[0], result[1])

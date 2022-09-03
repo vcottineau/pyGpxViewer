@@ -22,6 +22,8 @@
 
 from gi.repository import Gio, GObject, Gtk, Shumate
 
+from pygpxviewer.widgets.elevationprofile import ElevationProfile
+
 
 class ShumateMap(Shumate.SimpleMap):
 
@@ -72,7 +74,7 @@ class ShumateMap(Shumate.SimpleMap):
             (min_longitude + max_longitude) / 2,
             self._get_zoom_level(distance))
 
-    def set_map_source_from_layer_url(self, layer_provider, layer_url):
+    def set_map_source_from_layer_url(self, layer_provider: str, layer_url: str) -> None:
         map_source = Shumate.RasterRenderer.new_from_url(layer_url)
         map_source.set_license(layer_provider)
         self.set_map_source(map_source)
@@ -91,7 +93,7 @@ class ShumateMap(Shumate.SimpleMap):
         self.add_overlay_layer(self._path_layer)
         self.add_overlay_layer(self._marker_layer)
 
-    def _create_marker(self):
+    def _create_marker(self) -> Shumate.Marker:
         marker = Shumate.Marker.new()
 
         marker_image = Gtk.Image.new_from_icon_name("media-record-symbolic")
@@ -103,7 +105,7 @@ class ShumateMap(Shumate.SimpleMap):
         marker.set_child(marker_image)
         return marker
 
-    def _get_zoom_level(self, distance):
+    def _get_zoom_level(self, distance: float) -> int:
         zoom_level = 5
         if distance <= 5:
             zoom_level = 14
@@ -119,5 +121,5 @@ class ShumateMap(Shumate.SimpleMap):
             zoom_level = 7
         return zoom_level
 
-    def on_mouse_move_event(self, widget, latitude, longitude):
+    def on_mouse_move_event(self, widget: ElevationProfile, latitude: float, longitude: float) -> None:
         self._marker.set_location(latitude, longitude)
