@@ -46,7 +46,7 @@ meson install -C build
 
 ## Layers
 
-To add a new layer edit the file under `~/.config/pygpxviewer/sources.json`:
+To add a new layer edit the file under `~/.config/pygpxviewer/map.json`:
 
 ```json
 {

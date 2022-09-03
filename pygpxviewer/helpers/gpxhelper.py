@@ -69,10 +69,19 @@ class GpxHelper:
             elevations.append(point_data[0].elevation)
         return distances, elevations
 
-    # ToDo: Improve detection point calculation
-    def get_gpx_lat_lng_from_distance(self, distance):
+    def get_gpx_lat_lng_from_distance(self, length, distance):
+        delta = 1.00
+        if length <= 500:
+            delta = 0.05
+        elif length <= 800:
+            delta = 0.10
+        elif length <= 1000:
+            delta = 0.25
+        elif length <= 10000:
+            delta = 0.50
+
         for point_data in self.gpx.get_points_data():
-            if abs(point_data[1] / 1000 - distance) <= 0.05:
+            if abs(point_data[1] / 1000 - distance) <= delta:
                 return point_data[0].latitude, point_data[0].longitude
         return None, None
 

@@ -78,6 +78,7 @@ class ElevationProfile(Gtk.Box):
 
     def _on_motion_notify_event(self, event):
         if event.inaxes:
-            latitude, longitude = self._gpx_helper.get_gpx_lat_lng_from_distance(event.xdata)
+            length = self._gpx_helper.gpx.length_3d() / 1000
+            latitude, longitude = self._gpx_helper.get_gpx_lat_lng_from_distance(length, event.xdata)
             if latitude and longitude:
                 self.emit("on-mouse-move-event", latitude, longitude)

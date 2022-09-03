@@ -49,10 +49,10 @@ def set_resources():
     resource = Gio.resource_load(os.path.join('@pkgdatadir@', '@application_id@.gresource'))
     Gio.Resource._register(resource)
 
-    from pygpxviewer.config import dem_file, map_file
+    from pygpxviewer import config
     resources_files = [
-        {"path": dem_file, "resource": "/dem/dem.json"},
-        {"path": map_file, "resource": "/map/map.json"}
+        {"path": config.dem_file, "resource": "/dem/dem.json"},
+        {"path": config.map_file, "resource": "/map/map.json"}
     ]
 
     for resource_file in resources_files:
