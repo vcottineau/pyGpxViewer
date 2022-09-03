@@ -110,6 +110,14 @@ class GpxDetailedView(Adw.Window):
                 sub_menu.append(name, f"view.layer('{url}')")
             menu_model.append_submenu(provider["name"], sub_menu)
 
+    @Gtk.Template.Callback()
+    def _on_toggle_button_toggled(self, toggle_button: Gtk.ToggleButton) -> None:
+        if toggle_button.get_active():
+            if self._gpx_helper.gpx.has_elevations():
+                self._box_container.append(self._elevation_profile)
+        else:
+            self._box_container.remove(self._elevation_profile)
+
     def _get_map_sources(self):
         with open(config.map_file) as json_file:
             return json.load(json_file)

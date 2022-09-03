@@ -8,6 +8,17 @@
                 <property name="orientation">vertical</property>
                 <child>
                     <object class="AdwHeaderBar">
+                        <child type="end">
+                            <object class="GtkToggleButton" id="_toggle_button">
+                                <property name="active">True</property>
+                                <signal name="toggled" handler="_on_toggle_button_toggled"/>
+                                <child>
+                                    <object class="GtkImage">
+                                        <property name="icon_name">find-location-symbolic</property>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
                         <child type="start">
                             <object class="GtkMenuButton" id="_menu_button">
                                 <property name="child">

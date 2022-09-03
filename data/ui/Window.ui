@@ -8,7 +8,6 @@
                 <property name="orientation">vertical</property>
                 <child>
                     <object class="AdwHeaderBar" id="_headerbar">
-                        <property name="show-end-title-buttons">True</property>
                         <child type="end">
                             <object class="GtkMenuButton" id="_menu_button">
                                 <property name="child">
