@@ -5,7 +5,7 @@
       "api_key": "",
       "layers": [
         {
-          "name": "standard",
+          "name": "Standard",
           "url": "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         }
       ]

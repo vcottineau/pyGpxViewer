@@ -47,7 +47,9 @@ class ShumateMap(Shumate.SimpleMap):
         return self._marker_layer
 
     def _set_map(self):
-        self.set_map_source_from_layer_url(self._settings.get_string("layer-url"))
+        layer_provider = self._settings.get_string("layer-provider")
+        layer_url = self._settings.get_string("layer-url")
+        self.set_map_source_from_layer_url(layer_provider, layer_url)
 
         self._settings.bind("zoom-level", self.get_viewport(), "zoom-level", Gio.SettingsBindFlags.GET_NO_CHANGES)
         self._settings.bind("latitude", self.get_viewport(), "latitude", Gio.SettingsBindFlags.GET_NO_CHANGES)
@@ -70,8 +72,9 @@ class ShumateMap(Shumate.SimpleMap):
             (min_longitude + max_longitude) / 2,
             self._get_zoom_level(distance))
 
-    def set_map_source_from_layer_url(self, layer_url):
+    def set_map_source_from_layer_url(self, layer_provider, layer_url):
         map_source = Shumate.RasterRenderer.new_from_url(layer_url)
+        map_source.set_license(layer_provider)
         self.set_map_source(map_source)
 
     def _set_layers(self):

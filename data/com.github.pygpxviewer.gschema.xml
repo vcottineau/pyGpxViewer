@@ -63,6 +63,9 @@
         <key name="longitude" type="d">
             <default>2.213749</default>
         </key>
+        <key name="layer-provider" type="s">
+            <default>"OpenStreetMap"</default>
+        </key>
         <key name="layer-url" type="s">
             <default>"https://tile.openstreetmap.org/{z}/{x}/{y}.png"</default>
         </key>

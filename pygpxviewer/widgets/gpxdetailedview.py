@@ -119,11 +119,12 @@ class GpxDetailedView(Adw.Window):
         for provider in map_sources["providers"]:
             for layer in provider["layers"]:
                 if layer["url"] == layer_url:
-                    return layer_url + provider["api_key"]
+                    return provider["name"], layer_url + provider["api_key"]
 
     def _on_layer_action(
             self, action: Gio.SimpleAction,
             data: GLib.Variant) -> None:
-        layer_url = self._get_map_source_from_url(data.get_string())
+        layer_provider, layer_url = self._get_map_source_from_url(data.get_string())
+        self._settings.set_string("layer-provider", layer_provider)
         self._settings.set_string("layer-url", layer_url)
-        self._shumate_map.set_map_source_from_layer_url(layer_url)
+        self._shumate_map.set_map_source_from_layer_url(layer_provider, layer_url)
