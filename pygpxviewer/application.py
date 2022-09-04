@@ -27,6 +27,8 @@ from pygpxviewer.window import Window
 
 
 class Application(Adw.Application):
+    """Main application manager."""
+
     __gtype_name__ = "Application"
 
     def __init__(self, application_id: str):
@@ -38,16 +40,24 @@ class Application(Adw.Application):
         GLib.set_prgname(application_id)
 
         self._log = Logger()
+
         self._app_window = None
 
     @GObject.Property(type=Logger, default=None, flags=GObject.ParamFlags.READABLE)
     def log(self) -> Logger:
+        """Get the logger property.
+
+        @return: Logger to display message(s)
+        @rtype: Logger
+        """
         return self._log
 
     def do_startup(self):
+        """Start the application."""
         Adw.Application.do_startup(self)
 
     def do_activate(self):
+        """Activate the application."""
         if not self._app_window:
             self._app_window = Window(application=self)
             self._app_window.set_default_icon_name(self.props.application_id)

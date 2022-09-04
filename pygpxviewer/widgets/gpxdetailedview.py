@@ -33,6 +33,8 @@ from pygpxviewer.widgets.shumatemap import ShumateMap
 
 @Gtk.Template(resource_path="/com/github/pygpxviewer/ui/GpxDetailedView.ui")
 class GpxDetailedView(Adw.Window):
+    """Display an interactive map and a chart to analyse a gpx file."""
+
     __gtype_name__ = "GpxDetailedView"
 
     _menu_button = Gtk.Template.Child()
@@ -60,10 +62,20 @@ class GpxDetailedView(Adw.Window):
 
     @GObject.Property(type=Gio.Settings, flags=GObject.ParamFlags.READABLE)
     def settings(self):
+        """Get Window settings property.
+
+        @return: Window settings
+        @rtype: Gio.Settings
+        """
         return self._settings
 
     @GObject.Property(type=GObject.GObject, flags=GObject.ParamFlags.READABLE)
     def gpx_helper(self):
+        """Get Gpx Helper property.
+
+        @return: Helper to work with gpx file
+        @rtype: GObject.GObject
+        """
         return self._gpx_helper
 
     def _setup_actions(self):

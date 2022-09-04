@@ -34,23 +34,49 @@ from pygpxviewer.helpers.downloadhelper import DownloadHelper
 
 
 class GpxHelper:
+    """Helper to handle gpx file content."""
+
     def __init__(self, gpx_file):
         super().__init__()
 
-        self.gpx = None
+        self._gpx: Optional[gpxpy.gpx.GPX] = None
         self._gpx_file = gpx_file
+        self._update = False
 
     @property
-    def gpx(self):
-        if self._gpx is None:
+    def gpx(self) -> gpxpy.gpx.GPX:
+        """Get the gpx object property.
+
+        @return: Gpx object
+        @rtype: gpxpy.gpx.GPX
+        """
+        if self._gpx is None or self._update:
             self._gpx = gpxpy.parse(open(self._gpx_file, 'r'))
+            self._update = False
         return self._gpx
 
     @gpx.setter
-    def gpx(self, value):
+    def gpx(self, value: Optional[gpxpy.gpx.GPX]) -> None:
+        """Set the gpx object property.
+
+        @param value: Gpx object
+        @type value: gpxpy.gpx.GPX
+        """
         self._gpx = value
 
-    def get_gpx_details(self):
+    def get_gpx_details(self) -> tuple:
+        """Get main properties of a gpx file.
+
+        Main properties are:
+            * path: File system path
+            * points: Number of track points
+            * length: Total distance in km
+            * up_hill: Total ascent in m
+            * down_hill: Total descent in m
+
+        @return: Main gpx properties
+        @rtype: tuple
+        """
         return (
             str(self._gpx_file),
             self.gpx.get_points_no(),
@@ -60,9 +86,19 @@ class GpxHelper:
         )
 
     def get_gpx_locations(self) -> list[list[float]]:
+        """Get all the locations of a gpx file.
+
+        @return: List of all the locations
+        @rtype: list[list[float]
+        """
         return [[point_data[0].longitude, point_data[0].latitude] for point_data in self.gpx.get_points_data()]
 
-    def get_gpx_distances_and_elevations(self):
+    def get_gpx_distances_and_elevations(self) -> tuple:
+        """Get the distance and elevation values for all the locations in a gpx file.
+
+        @return: Distance and elevation values
+        @rtype: tuple
+        """
         distances = []
         elevations = []
         for point_data in self.gpx.get_points_data():
@@ -71,6 +107,17 @@ class GpxHelper:
         return distances, elevations
 
     def get_gpx_lat_lng_from_distance(self, length: float, distance: float) -> Optional[tuple[float, float]]:
+        """Get the closest location based on the distance from the first point.
+
+        Delta variable is used for rendering purposes
+
+        @param length: Length of the gpx file in km
+        @type length: float
+        @param distance: Distance from the first point in km
+        @type distance: float
+        @return: Location latitude and longitude
+        @rtype: tuple[float, float]
+        """
         delta = 1.00
         if length <= 500:
             delta = 0.05
@@ -86,12 +133,37 @@ class GpxHelper:
                 return point_data[0].latitude, point_data[0].longitude
         return None
 
-    def get_gpx_distance_between_locations(self, min_latitude, min_longitude, max_latitude, max_longitude):
+    def get_gpx_distance_between_locations(self, min_latitude: float, min_longitude: float, max_latitude: float,
+                                           max_longitude: float) -> Optional[float]:
+        """Get the distance between two locations in m.
+
+        @param min_latitude:
+        @type min_latitude: float
+        @param min_longitude:
+        @type min_longitude: float
+        @param max_latitude:
+        @type max_latitude: float
+        @param max_longitude:
+        @type max_longitude: float
+        @return: Distance in m
+        @rtype: float
+        """
         start_location = geo.Location(min_latitude, min_longitude)
         end_location = geo.Location(max_latitude, max_longitude)
         return start_location.distance_3d(end_location)
 
     def set_gpx_details(self, clean=True, headers=True, simplify=True, elevation=True):
+        """Set many attributes to a gpx file.
+
+        @param clean: Remove specific unused nodes
+        @type clean: bool
+        @param headers: Add xsd schemas
+        @type headers: bool
+        @param simplify: Remove track points to reduce the size
+        @type simplify: bool
+        @param elevation: Add missing elevation data
+        @type elevation: bool
+        """
         if clean:
             self._clean_gpx()
 
@@ -130,7 +202,7 @@ class GpxHelper:
                     node.getparent().remove(node)
 
         tree.write(self._gpx_file, pretty_print=True)
-        self.gpx = None
+        self._update = True
 
     def _set_gpx_headers(self) -> None:
         self.gpx.schema_locations = [

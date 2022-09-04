@@ -24,9 +24,21 @@ from gi.repository import Gio, Gtk
 
 
 def get_resource_as_string(path: str) -> str:
+    """Get a resource file as string.
+
+    @param path: Path of the resource file
+    @type path: str
+    @return: Resource file as string
+    @rtype: str
+    """
     resource = Gio.resources_lookup_data("/com/github/pygpxviewer" + path, Gio.ResourceLookupFlags.NONE)
     return resource.get_data().decode('utf-8')
 
 
 def is_dark_theme_enable() -> bool:
+    """Check if the dark theme is enabled.
+
+    @return: True if dark theme is enabled
+    @rtype: bool
+    """
     return Gtk.Settings.get_default().props.gtk_application_prefer_dark_theme

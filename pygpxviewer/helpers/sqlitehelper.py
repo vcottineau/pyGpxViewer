@@ -26,6 +26,8 @@ import pygpxviewer.config as config
 
 
 class SQLiteHelper:
+    """Helper to handle CRUD statements on a sqlite database."""
+
     def __init__(self):
         sql = """
             CREATE TABLE IF NOT EXISTS gpx (
@@ -41,11 +43,17 @@ class SQLiteHelper:
             cur.execute(sql)
 
     def clear_records(self):
+        """Clear all records of the database."""
         sql = "DELETE from gpx"
         with self._db_cur() as cur:
             cur.execute(sql)
 
-    def add_record(self, record):
+    def add_record(self, record: tuple) -> None:
+        """Add a single record to the database.
+
+        @param record: Single record
+        @type record: tuple
+        """
         sql = """
             INSERT INTO gpx(path,points,length,up_hill,down_hill)
                 VALUES(?,?,?,?,?)
@@ -53,7 +61,12 @@ class SQLiteHelper:
         with self._db_cur() as cur:
             cur.execute(sql, record)
 
-    def add_records(self, records):
+    def add_records(self, records: tuple) -> None:
+        """Add many records to the database.
+
+        @param records: List of records
+        @type records: tuple
+        """
         sql = """
             INSERT INTO gpx(path,points,length,up_hill,down_hill)
                 VALUES(?,?,?,?,?)
@@ -61,7 +74,14 @@ class SQLiteHelper:
         with self._db_cur() as cur:
             cur.executemany(sql, records)
 
-    def update_record(self, id, record):
+    def update_record(self, id: int, record: tuple) -> None:
+        """Update a single record based on his id.
+
+        @param id: Id of the record
+        @type id: int
+        @param record: Single record
+        @type record: tuple
+        """
         sql = f"""
             UPDATE gpx
             SET
@@ -76,6 +96,11 @@ class SQLiteHelper:
             cur.execute(sql)
 
     def get_records(self) -> tuple:
+        """Get all records.
+
+        @return: List of records
+        @rtype: tuple
+        """
         sql = """
             SELECT * FROM gpx
             ORDER BY
@@ -87,6 +112,13 @@ class SQLiteHelper:
         return records
 
     def search_records(self, search_entry: str) -> tuple:
+        """Get records with a text filter.
+
+        @param search_entry:
+        @type search_entry: str
+        @return: List of records
+        @rtype: tuple
+        """
         sql = f"""
             SELECT * FROM gpx
             WHERE

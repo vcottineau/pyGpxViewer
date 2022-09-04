@@ -29,6 +29,17 @@ from pygpxviewer.widgets.gpxdetailedview import GpxDetailedView
 
 
 class GpxItem(GObject.GObject):
+    """GpxItem is the item used to fill to Gio.ListStore.
+
+    Main properties are:
+        * id: SQLite database id
+        * path: File system path
+        * points: Number of track points
+        * length: Total distance in km
+        * up_hill: Total ascent in m
+        * down_hill: Total descent in m
+    """
+
     __gtype_name__ = "GpxItem"
 
     id = GObject.Property(type=int)
@@ -51,6 +62,11 @@ class GpxItem(GObject.GObject):
 
 @Gtk.Template(resource_path="/com/github/pygpxviewer/ui/GpxColumnView.ui")
 class GpxColumnView(Gtk.ColumnView):
+    """GpxColumnView is the main Window child.
+
+    Display all *.gpx files listed in a folder and their main properties
+    """
+
     __gtype_name__ = "GpxColumnView"
 
     _single_selection = Gtk.Template.Child()
@@ -76,6 +92,11 @@ class GpxColumnView(Gtk.ColumnView):
         self._setup_column_view()
 
     def refresh(self, search_entry: Optional[str] = None) -> None:
+        """Apply text filter and refresh the view.
+
+        @param search_entry: Text pattern to search
+        @type search_entry: Optional[str]
+        """
         self._list_store.remove_all()
         if search_entry:
             records = self._sqlitehelper.search_records(search_entry)
@@ -109,7 +130,7 @@ class GpxColumnView(Gtk.ColumnView):
             {"icon": "view-refresh-symbolic", "callback": self._on_button_refresh_clicked}
         ]
         for button in buttons:
-            action_button = Gtk.Button.new_from_icon_name(button["icon"])
+            action_button = Gtk.Button().new_from_icon_name(button["icon"])
             action_button.connect("clicked", button["callback"], list_item)
             context = action_button.get_style_context()
             Gtk.StyleContext.add_class(context, "column_view_button")

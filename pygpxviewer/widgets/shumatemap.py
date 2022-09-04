@@ -26,6 +26,14 @@ from pygpxviewer.widgets.elevationprofile import ElevationProfile
 
 
 class ShumateMap(Shumate.SimpleMap):
+    """Display an interactive map.
+
+    Contains the following elements:
+        * Zoom
+        * License
+        * Scale
+        * Compass
+    """
 
     def __init__(self, window):
         super().__init__()
@@ -35,17 +43,28 @@ class ShumateMap(Shumate.SimpleMap):
 
         self._path_layer = None
         self._marker_layer = None
-        self._marker = self._create_marker()
+        self._marker = None
 
         self._set_map()
+        self._set_marker()
         self._set_layers()
 
     @GObject.Property(type=GObject.GObject, flags=GObject.ParamFlags.READABLE)
     def path_layer(self):
+        """Get the path layer property.
+
+        @return: Path layer of the map
+        @rtype: GObject.GObject
+        """
         return self._path_layer
 
     @GObject.Property(type=GObject.GObject, flags=GObject.ParamFlags.READABLE)
     def marker_layer(self):
+        """Get the marker layer property.
+
+        @return: Marker layer of the map
+        @rtype: GObject.GObject
+        """
         return self._marker_layer
 
     def _set_map(self):
@@ -75,17 +94,24 @@ class ShumateMap(Shumate.SimpleMap):
             self._get_zoom_level(distance))
 
     def set_map_source_from_layer_url(self, layer_provider: str, layer_url: str) -> None:
+        """Set the raster renderer provider of the map.
+
+        @param layer_provider: Name of the layer provider
+        @type layer_provider: str
+        @param layer_url: Url of the layer provider
+        @type layer_url: str
+        """
         map_source = Shumate.RasterRenderer.new_from_url(layer_url)
         map_source.set_license(layer_provider)
         self.set_map_source(map_source)
 
     def _set_layers(self):
-        self._path_layer = Shumate.PathLayer.new(self.get_viewport())
-        self._marker_layer = Shumate.MarkerLayer.new(self.get_viewport())
+        self._path_layer = Shumate.PathLayer().new(self.get_viewport())
+        self._marker_layer = Shumate.MarkerLayer().new(self.get_viewport())
 
         locations = self._gpx_helper.get_gpx_locations()
         for location in locations:
-            self._path_layer.add_node(Shumate.Coordinate.new_full(location[1], location[0]))
+            self._path_layer.add_node(Shumate.Coordinate().new_full(location[1], location[0]))
 
         self._marker.set_location(locations[0][1], locations[0][0])
         self._marker_layer.add_marker(self._marker)
@@ -93,19 +119,19 @@ class ShumateMap(Shumate.SimpleMap):
         self.add_overlay_layer(self._path_layer)
         self.add_overlay_layer(self._marker_layer)
 
-    def _create_marker(self) -> Shumate.Marker:
-        marker = Shumate.Marker.new()
+    def _set_marker(self):
+        self._marker = Shumate.Marker().new()
 
-        marker_image = Gtk.Image.new_from_icon_name("media-record-symbolic")
+        marker_image = Gtk.Image().new_from_icon_name("media-record-symbolic")
         marker_image.set_pixel_size(15)
 
         context = marker_image.get_style_context()
         Gtk.StyleContext.add_class(context, "marker_image")
 
-        marker.set_child(marker_image)
-        return marker
+        self._marker.set_child(marker_image)
 
-    def _get_zoom_level(self, distance: float) -> int:
+    @staticmethod
+    def _get_zoom_level(distance: float) -> int:
         zoom_level = 5
         if distance <= 5:
             zoom_level = 14
@@ -122,4 +148,13 @@ class ShumateMap(Shumate.SimpleMap):
         return zoom_level
 
     def on_mouse_move_event(self, widget: ElevationProfile, latitude: float, longitude: float) -> None:
+        """Handle the mouse move event on the ElevationProfile widget.
+
+        @param widget:
+        @type widget: ElevationProfile
+        @param latitude: Latitude where the mouse move event occurred
+        @type latitude: float
+        @param longitude: Longitude where the mouse move event occurred
+        @type longitude: float
+        """
         self._marker.set_location(latitude, longitude)

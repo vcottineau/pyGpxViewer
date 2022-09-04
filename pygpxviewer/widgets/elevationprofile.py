@@ -31,6 +31,16 @@ from pygpxviewer import utils
 
 
 class ElevationProfile(Gtk.Box):
+    """Display a matplotlib chart to analyse elevation profile.
+
+    FigureCanvasGTK4Agg:
+        * Elevation profile
+        * Handle mouse move event
+    NavigationToolbar2GTK4:
+        * Zoom to a specific area
+        * Save elevation profile as a png file
+    """
+
     __gsignals__ = {
         'on-mouse-move-event': (GObject.SIGNAL_RUN_FIRST, None,
                                 (float, float,))
@@ -57,9 +67,7 @@ class ElevationProfile(Gtk.Box):
 
         min_elev = round(min_elev)
         max_elev = round(max_elev)
-        mean_elev = round(
-            sum(elevations)
-            / len(elevations))
+        mean_elev = round(sum(elevations) / len(elevations))
 
         figure = Figure(tight_layout=True)
         figure.canvas.mpl_connect('motion_notify_event', self._on_motion_notify_event)

@@ -31,6 +31,8 @@ from pygpxviewer.widgets.gpxcolumnview import GpxColumnView
 
 @Gtk.Template(resource_path="/com/github/pygpxviewer/ui/Window.ui")
 class Window(Adw.ApplicationWindow):
+    """Main application window manager."""
+
     __gtype_name__ = "Window"
 
     folder_path = GObject.Property(type=str)
@@ -57,14 +59,24 @@ class Window(Adw.ApplicationWindow):
         self._gpx_column_view.refresh()
 
     @GObject.Property(type=Gtk.Spinner, flags=GObject.ParamFlags.READABLE)
-    def spinner(self) -> None:
+    def spinner(self) -> Gtk.Spinner:
+        """Get spinner object property.
+
+        @return: Spinner object for threading tasks
+        @rtype: Gtk.Spinner
+        """
         return self._spinner
 
     @GObject.Property(type=Gio.Settings, flags=GObject.ParamFlags.READABLE)
-    def settings(self) -> None:
+    def settings(self) -> Gio.Settings:
+        """Get Window settings property.
+
+        @return: Window settings
+        @rtype: Gio.Settings
+        """
         return self._settings
 
-    def _set_actions(self) -> None:
+    def _set_actions(self):
         action_entries = [
             ('refresh', self._refresh, ("win.refresh", ["<Ctrl>R"])),
             ("about", self._about, None)
@@ -77,7 +89,7 @@ class Window(Adw.ApplicationWindow):
             if accel is not None:
                 self._app.set_accels_for_action(*accel)
 
-    def _setup_view(self) -> None:
+    def _setup_view(self):
         self._settings.bind(
             "width", self, "default-width",
             Gio.SettingsBindFlags.DEFAULT)

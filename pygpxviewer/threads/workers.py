@@ -30,12 +30,15 @@ from pygpxviewer.helpers.sqlitehelper import SQLiteHelper
 
 
 class WorkerUpdateRecords(threading.Thread):
+    """Thread to parse many gpx files and update database."""
+
     def __init__(self, folder_path: str, callback: Callable[[], None]):
         threading.Thread.__init__(self)
         self.folder_path = folder_path
         self.callback = callback
 
     def run(self):
+        """Get gpx file content and update database for many gpx files."""
         sqlite_helper = SQLiteHelper()
         sqlite_helper.clear_records()
 
@@ -49,12 +52,15 @@ class WorkerUpdateRecords(threading.Thread):
 
 
 class WorkerUpdateRecord(threading.Thread):
+    """Thread to update a gpx file and update database."""
+
     def __init__(self, selected_item: Gtk.ListItem, callback: Callable[[Gtk.ListItem, Tuple], None]):
         threading.Thread.__init__(self)
         self.selected_item = selected_item
         self.callback = callback
 
     def run(self):
+        """Set gpx file content and update database for a single gpx file."""
         sqlite_helper = SQLiteHelper()
         gpx_helper = GpxHelper(self.selected_item.path)
 

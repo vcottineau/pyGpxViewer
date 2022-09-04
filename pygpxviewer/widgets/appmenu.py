@@ -25,6 +25,8 @@ from gi.repository import Gtk
 
 @Gtk.Template(resource_path="/com/github/pygpxviewer/ui/AppMenu.ui")
 class AppMenu(Gtk.Popover):
+    """Main application menu."""
+
     __gtype_name__ = "AppMenu"
 
     def __init__(self):
