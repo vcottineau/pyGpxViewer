@@ -38,7 +38,7 @@ jobs:
           pip install pipenv
           pipenv install --dev
           pipenv run flake8 --ignore E402,D100,D104,D107 --show-source pygpxviewer/
-          pipenv run mypy -strict-equality --ignore-missing-imports --disallow-incomplete-defs pygpxviewer
+          pipenv run mypy --strict-equality --ignore-missing-imports --disallow-incomplete-defs pygpxviewer
 
       - name: Build with meson
         run: |
