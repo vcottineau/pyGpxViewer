@@ -32,7 +32,7 @@ jobs:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
 
-      - name: Install pip packages
+      - name: Install pip package
         if: steps.cache-pip.outputs.cache-hit != 'true'
         run: |
           pip install jinja2 markdown markupsafe pygments toml typogrify
