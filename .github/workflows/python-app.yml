@@ -9,12 +9,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Update & upgrade distribution
-        run: |
-          sudo apt update && sudo apt upgrade
-
       - name: Install distribution packages
         run: |
+          sudo apt update
           sudo apt install libgtk-4-dev libgirepository1.0-dev python-gi-dev desktop-file-utils libsoup-3.0-dev meson
 
       - name: Set up Python
@@ -55,12 +52,12 @@ jobs:
         if: steps.cache-libshumate.outputs.cache-hit != 'true'
         run: |
           git clone --branch 1.0.0.beta https://gitlab.gnome.org/GNOME/libshumate.git
-
-      - name: Install libshumate
-        run: |
           cd libshumate
           meson setup build
           meson compile -C build
+
+      - name: Install libshumate
+        run: |
           sudo meson install -C build
 
       - name: Lint with flake8 & mypy
