@@ -1,9 +1,6 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
 name: master
 
-on: [ pull_request ]
+on: [ push ]
 
 jobs:
   build:
@@ -14,15 +11,27 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Set up Python
+        id: setup-python
         uses: actions/setup-python@v3
         with:
           python-version: "3.10"
+
+      - name: install pipenv
+        run: |
+          python -m pip install --upgrade pip
+          pip install pipenv
+
+      - name: Cache pipenv
+        id: cache-pipenv
+        uses: actions/cache@v3
+        with:
+          path: ~/.local/share/virtualenvs
+          key: ${{ runner.os }}-python-${{ steps.setup-python.outputs.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
 
       - name: Install dependencies
         run: |
           sudo apt update && sudo apt upgrade
           sudo apt install libgtk-4-dev libgirepository1.0-dev python-gi-dev desktop-file-utils libsoup-3.0-dev meson
-          pip install --upgrade pip
           pip install jinja2 markdown markupsafe pygments toml typogrify
 
       - name: Build libshumate
@@ -35,8 +44,6 @@ jobs:
 
       - name: Lint with flake8 & mypy
         run: |
-          pip install pipenv
-          pipenv install --dev
           pipenv run flake8 --ignore E402,D100,D104,D107 --show-source pygpxviewer/
           pipenv run mypy --strict-equality --ignore-missing-imports --disallow-incomplete-defs pygpxviewer
 
