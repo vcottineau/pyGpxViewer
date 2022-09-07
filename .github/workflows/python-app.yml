@@ -45,7 +45,7 @@ jobs:
         id: cache-libshumate
         uses: actions/cache@v3
         with:
-          path: libshumate-1.0.0.beta
+          path: libshumate
           key: ${{ runner.os }}-libshumate-1.0.0.beta
 
       - name: Clone libshumate
