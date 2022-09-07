@@ -33,7 +33,7 @@ jobs:
       - name: Install python packages
         if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: |
-          pipenv install --dev --verbose
+          pipenv install --dev
 
       - name: Install dependencies
         run: |
