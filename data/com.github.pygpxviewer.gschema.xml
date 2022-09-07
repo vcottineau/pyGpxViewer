@@ -54,6 +54,9 @@
         <key name="is-fullscreen" type="b">
             <default>false</default>
         </key>
+    </schema>
+    <schema path="/com/github/pygpxviewer/app/window/detailed/map/"
+            id="com.github.pygpxviewer.app.window.detailed.map">
         <key name="zoom-level" type="d">
             <default>5</default>
         </key>
