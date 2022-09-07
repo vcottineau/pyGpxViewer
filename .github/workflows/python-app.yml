@@ -58,6 +58,7 @@ jobs:
 
       - name: Install libshumate
         run: |
+          cd libshumate
           sudo meson install -C build
 
       - name: Lint with flake8 & mypy
