@@ -55,6 +55,7 @@ class GpxDetailedView(Adw.Window):
 
         self._shumate_map = None
         self._elevation_profile = None
+        self._size_allocated = None
 
         self._setup_actions()
         self._setup_view()
@@ -142,10 +143,27 @@ class GpxDetailedView(Adw.Window):
                     return provider["name"], layer_url + provider["api_key"]
         return None, None
 
+    def do_size_allocate(self, width: int, height: int, baseline: int) -> None:
+        """Virtual method implementation to init the map center and zoom.
+
+        @param width: Window's width
+        @type width: int
+        @param height: Window's height
+        @type height: int
+        @param baseline: Window's baseline
+        @type baseline: int
+        @return: None
+        @rtype: None
+        """
+        Adw.Window.do_size_allocate(self, width, height, baseline)
+        if not self._size_allocated:
+            self._size_allocated = True
+            self._shumate_map.set_center_and_zoom()
+
     def _on_layer_action(
             self, action: Gio.SimpleAction,
             data: GLib.Variant) -> None:
         layer_provider, layer_url = self._get_map_source_from_url(data.get_string())
-        self._settings.set_string("layer-provider", layer_provider)
-        self._settings.set_string("layer-url", layer_url)
+        self._shumate_map.settings.set_string("layer-provider", layer_provider)
+        self._shumate_map.settings.set_string("layer-url", layer_url)
         self._shumate_map.set_map_source_from_layer_url(layer_provider, layer_url)

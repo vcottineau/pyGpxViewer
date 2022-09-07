@@ -91,7 +91,7 @@ class GpxHelper:
         @return: List of all the locations
         @rtype: list[list[float]
         """
-        return [[point_data[0].longitude, point_data[0].latitude] for point_data in self.gpx.get_points_data()]
+        return [[point_data[0].latitude, point_data[0].longitude] for point_data in self.gpx.get_points_data()]
 
     def get_gpx_distances_and_elevations(self) -> tuple:
         """Get the distance and elevation values for all the locations in a gpx file.

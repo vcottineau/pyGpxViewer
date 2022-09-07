@@ -19,6 +19,7 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
+import math
 
 from gi.repository import Gio, GObject, Gtk, Shumate
 
@@ -38,7 +39,7 @@ class ShumateMap(Shumate.SimpleMap):
     def __init__(self, window):
         super().__init__()
 
-        self._settings = window.settings
+        self._settings = Gio.Settings.new("com.github.pygpxviewer.app.window.detailed.map")
         self._gpx_helper = window.gpx_helper
 
         self._path_layer = None
@@ -48,6 +49,15 @@ class ShumateMap(Shumate.SimpleMap):
         self._set_map()
         self._set_marker()
         self._set_layers()
+
+    @GObject.Property(type=Gio.Settings, flags=GObject.ParamFlags.READABLE)
+    def settings(self):
+        """Get Window settings property.
+
+        @return: Window settings
+        @rtype: Gio.Settings
+        """
+        return self._settings
 
     @GObject.Property(type=GObject.GObject, flags=GObject.ParamFlags.READABLE)
     def path_layer(self):
@@ -68,6 +78,8 @@ class ShumateMap(Shumate.SimpleMap):
         return self._marker_layer
 
     def _set_map(self):
+        self.get_scale().set_unit(Shumate.Unit.METRIC)
+
         layer_provider = self._settings.get_string("layer-provider")
         layer_url = self._settings.get_string("layer-url")
         self.set_map_source_from_layer_url(layer_provider, layer_url)
@@ -76,6 +88,24 @@ class ShumateMap(Shumate.SimpleMap):
         self._settings.bind("latitude", self.get_viewport(), "latitude", Gio.SettingsBindFlags.GET_NO_CHANGES)
         self._settings.bind("longitude", self.get_viewport(), "longitude", Gio.SettingsBindFlags.GET_NO_CHANGES)
 
+    def set_center_and_zoom(self) -> None:
+        """Set map center and zoom based on the path layer bounds.
+
+        Link: https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
+        FixMe: Improve calculations if poles / 180th meridian is crossed
+
+        @return: None
+        @rtype: None
+        """
+
+        def get_latitude_derivation(latitude):
+            radians = math.radians(latitude)
+            return math.asinh(math.tan(radians)) / math.pi / 2
+
+        def get_latitude_derivation_reverse(latitude_derivation):
+            radians = math.atan(math.sinh(latitude_derivation * 2 * math.pi))
+            return math.degrees(radians)
+
         bounds = self._gpx_helper.gpx.get_bounds()
 
         min_latitude = bounds.min_latitude
@@ -83,15 +113,26 @@ class ShumateMap(Shumate.SimpleMap):
         max_latitude = bounds.max_latitude
         max_longitude = bounds.max_longitude
 
-        distance = self._gpx_helper.get_gpx_distance_between_locations(
-            min_latitude, min_longitude,
-            max_latitude, max_longitude) / 1000
+        min_latitude_derivation = get_latitude_derivation(min_latitude)
+        max_latitude_derivation = get_latitude_derivation(max_latitude)
+        mean_latitude_derivation = (min_latitude_derivation + max_latitude_derivation) / 2
 
-        self.get_scale().set_unit(Shumate.Unit.METRIC)
+        latitude_fraction = max_latitude_derivation - min_latitude_derivation
+        longitude_fraction = (max_longitude - min_longitude) / 360
+
+        tile_size = self.get_map_source().get_tile_size()
+        map_height = self.get_allocated_height()
+        map_width = self.get_allocated_width()
+
+        max_zoom_level = self.get_map_source().get_max_zoom_level()
+        latitude_zoom_level = math.floor(math.log(map_height / tile_size / latitude_fraction) / math.log(2))
+        longitude_zoom_level = math.floor(math.log(map_width / tile_size / longitude_fraction) / math.log(2))
+        zoom_level = min(max_zoom_level, latitude_zoom_level, longitude_zoom_level)
+
         self.get_map().go_to_full(
-            (min_latitude + max_latitude) / 2,
+            get_latitude_derivation_reverse(mean_latitude_derivation),
             (min_longitude + max_longitude) / 2,
-            self._get_zoom_level(distance))
+            zoom_level)
 
     def set_map_source_from_layer_url(self, layer_provider: str, layer_url: str) -> None:
         """Set the raster renderer provider of the map.
@@ -111,9 +152,9 @@ class ShumateMap(Shumate.SimpleMap):
 
         locations = self._gpx_helper.get_gpx_locations()
         for location in locations:
-            self._path_layer.add_node(Shumate.Coordinate().new_full(location[1], location[0]))
+            self._path_layer.add_node(Shumate.Coordinate().new_full(location[0], location[1]))
 
-        self._marker.set_location(locations[0][1], locations[0][0])
+        self._marker.set_location(locations[0][0], locations[0][1])
         self._marker_layer.add_marker(self._marker)
 
         self.add_overlay_layer(self._path_layer)
@@ -129,23 +170,6 @@ class ShumateMap(Shumate.SimpleMap):
         Gtk.StyleContext.add_class(context, "marker_image")
 
         self._marker.set_child(marker_image)
-
-    @staticmethod
-    def _get_zoom_level(distance: float) -> int:
-        zoom_level = 5
-        if distance <= 5:
-            zoom_level = 14
-        elif distance <= 10:
-            zoom_level = 12
-        elif distance <= 25:
-            zoom_level = 11
-        elif distance <= 50:
-            zoom_level = 10
-        elif distance <= 100:
-            zoom_level = 9
-        elif distance <= 500:
-            zoom_level = 7
-        return zoom_level
 
     def on_mouse_move_event(self, widget: ElevationProfile, latitude: float, longitude: float) -> None:
         """Handle the mouse move event on the ElevationProfile widget.
