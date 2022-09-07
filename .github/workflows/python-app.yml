@@ -9,6 +9,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Update & Upgrade distribution
+        run: |
+          sudo apt update && sudo apt upgrade
+
+      - name: Install distribution packages
+        run: |
+          sudo apt install libgtk-4-dev libgirepository1.0-dev python-gi-dev desktop-file-utils libsoup-3.0-dev meson
+
       - name: Set up Python
         id: setup-python
         uses: actions/setup-python@v3
