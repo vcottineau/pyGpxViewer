@@ -33,20 +33,30 @@ jobs:
           pip install jinja2 markdown markupsafe pygments toml typogrify 
 
       - name: Cache pipenv packages
-        id: cache
+        id: cache-pipenv
         uses: actions/cache@v3
         with:
           path: ~/.local/share/virtualenvs
           key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
 
       - name: Install pipenv packages
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache-pipenv.outputs.cache-hit != 'true'
         run: |
           pipenv install --dev
 
-      - name: Build libshumate
+      - name: Cache libshumate
+        id: cache-libshumate
+        uses: actions/cache@v3
+        with:
+          path: libshumate-1.0.0.beta
+          key: ${{ runner.os }}-libshumate-1.0.0.beta
+
+      - name: Clone libshumate
+        if: steps.cache-libshumate.outputs.cache-hit != 'true'
         run: |
-          git clone https://gitlab.gnome.org/GNOME/libshumate.git
+          git clone --branch 1.0.0.beta https://gitlab.gnome.org/GNOME/libshumate.git
+
+      - name: Install libshumate
           cd libshumate
           meson setup build
           meson compile -C build
