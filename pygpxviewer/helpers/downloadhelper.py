@@ -53,7 +53,7 @@ class DownloadHelper:
             link = self._urls[url]["link"]
             size = round(self._urls[url]['size'] / 1000 / 1000, 1)
 
-            logger.message(f"Name: {name}, Size: {size} MB")
+            logger.info(f"Name: {name}, Size: {size} MB")
 
             try:
                 r = requests.get(link, allow_redirects=True)
@@ -82,4 +82,4 @@ class DownloadHelper:
                 file_path = config.dem_path.joinpath(filename.split("/")[-1])
                 with open(file_path, "wb") as f:
                     f.write(z.read(filename))
-            logger.message(f"Files: {filenames}")
+            logger.info(f"Files: {filenames}")

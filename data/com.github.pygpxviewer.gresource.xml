@@ -28,7 +28,9 @@
         <file alias="gtk/help-overlay.ui" preprocess="xml-stripblanks">ui/HelpOverlay.ui</file>
         <file>style.css</file>
         <file>dem/dem.json</file>
+        <file>dem/dem.jsonschema</file>
         <file>map/map.json</file>
+        <file>map/map.jsonschema</file>
         <file preprocess="xml-stripblanks">ui/AppMenu.ui</file>
         <file preprocess="xml-stripblanks">ui/GpxColumnView.ui</file>
         <file preprocess="xml-stripblanks">ui/GpxDetailedView.ui</file>
