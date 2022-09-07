@@ -27,6 +27,7 @@ from gi.repository import Adw, Gio, GLib, GObject, Gtk
 from pygpxviewer.threads.workers import WorkerUpdateRecords
 from pygpxviewer.widgets.appmenu import AppMenu
 from pygpxviewer.widgets.gpxcolumnview import GpxColumnView
+from pygpxviewer.widgets.windowsettings import WindowSettings
 
 
 @Gtk.Template(resource_path="/com/github/pygpxviewer/ui/Window.ui")
@@ -79,6 +80,7 @@ class Window(Adw.ApplicationWindow):
     def _set_actions(self):
         action_entries = [
             ('refresh', self._refresh, ("win.refresh", ["<Ctrl>R"])),
+            ('window_settings', self._window_settings, None),
             ("about", self._about, None)
         ]
 
@@ -148,6 +150,11 @@ class Window(Adw.ApplicationWindow):
 
     def _refresh(self, action: Gio.SimpleAction, param: Optional[GLib.Variant]) -> None:
         self._update_records()
+
+    def _window_settings(self, action: Gio.SimpleAction, param: Optional[GLib.Variant]) -> None:
+        window_settings = WindowSettings(self)
+        window_settings.props.transient_for = self
+        window_settings.present()
 
     def _about(self, action: Gio.SimpleAction, param: Optional[GLib.Variant]) -> None:
         # ToDo: Add AboutWindow

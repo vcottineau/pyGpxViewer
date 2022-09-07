@@ -23,7 +23,7 @@ import pathlib
 import threading
 from typing import Callable, Tuple
 
-from gi.repository import GObject, Gtk
+from gi.repository import GObject, Gtk, Gio
 
 from pygpxviewer.helpers.gpxhelper import GpxHelper
 from pygpxviewer.helpers.sqlitehelper import SQLiteHelper
@@ -64,7 +64,13 @@ class WorkerUpdateRecord(threading.Thread):
         sqlite_helper = SQLiteHelper()
         gpx_helper = GpxHelper(self.selected_item.path)
 
-        gpx_helper.set_gpx_details()
+        settings = Gio.Settings.new("com.github.pygpxviewer.gpx")
+        clean_headers = settings.get_boolean("clean-headers")
+        clean_attributes = settings.get_boolean("clean-attributes")
+        elevation = settings.get_boolean("elevation")
+        simplify = settings.get_boolean("simplify")
+
+        gpx_helper.set_gpx_details(clean_headers, clean_attributes, elevation, simplify)
         record = gpx_helper.get_gpx_details()
 
         sqlite_helper.update_record(self.selected_item.id, record)

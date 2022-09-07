@@ -73,4 +73,19 @@
             <default>"https://tile.openstreetmap.org/{z}/{x}/{y}.png"</default>
         </key>
     </schema>
+    <schema path="/com/github/pygpxviewer/gpx/"
+            id="com.github.pygpxviewer.gpx">
+        <key name="clean-headers" type="b">
+            <default>true</default>
+        </key>
+        <key name="clean-attributes" type="b">
+            <default>true</default>
+        </key>
+        <key name="simplify" type="b">
+            <default>true</default>
+        </key>
+        <key name="elevation" type="b">
+            <default>true</default>
+        </key>
+    </schema>
 </schemalist>
