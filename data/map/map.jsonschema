@@ -1,0 +1,63 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "$ref": "#/definitions/Map",
+    "definitions": {
+        "Map": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "providers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Provider"
+                    }
+                }
+            },
+            "required": [
+                "providers"
+            ],
+            "title": "Map"
+        },
+        "Provider": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "api_key": {
+                    "type": "string"
+                },
+                "layers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Layer"
+                    }
+                }
+            },
+            "required": [
+                "api_key",
+                "layers",
+                "name"
+            ],
+            "title": "Provider"
+        },
+        "Layer": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "url"
+            ],
+            "title": "Layer"
+        }
+    }
+}

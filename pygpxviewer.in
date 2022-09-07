@@ -22,9 +22,12 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
+import json
 import os
 import signal
 import sys
+
+import jsonschema
 
 if '@local_build@':
     sys.path.insert(1, '@pythondir@')
@@ -51,20 +54,35 @@ def set_resources():
 
     from pygpxviewer import config
     resources_files = [
-        {"path": config.dem_file, "resource": "/dem/dem.json"},
-        {"path": config.map_file, "resource": "/map/map.json"}
+        {"path": config.dem_file, "resource": "/dem/dem.json", "schema": "/dem/dem.jsonschema"},
+        {"path": config.map_file, "resource": "/map/map.json", "schema": "/map/map.jsonschema"}
     ]
 
     for resource_file in resources_files:
-        add_resource_file(resource_file["path"], resource_file["resource"])
+        add_resource_file(resource_file["path"], resource_file["resource"], resource_file["schema"])
 
 
-def add_resource_file(path, resource):
+def add_resource_file(path, resource, schema):
+    from pygpxviewer.logger import Logger
+    from pygpxviewer import utils
+
+    logger = Logger()
+    resource = utils.get_resource_as_string(resource)
+    schema = utils.get_resource_as_string(schema)
+
     if not path.exists():
-        with open(path, 'w') as f:
-            from pygpxviewer import utils
-            sources_json = utils.get_resource_as_string(resource)
-            f.write(sources_json)
+        logger.info(f"json file is not valid: {path}")
+        open(path, 'w').write(resource)
+    else:
+        resource = open(path, 'r').read()
+
+    try:
+        schema_json = json.loads(schema)
+        resource_json = json.loads(resource)
+        jsonschema.validate(resource_json, schema_json)
+    except:
+        logger.warning(f"json file is not valid: {path}")
+        open(path, 'w').write(resource)
 
 
 def run_application():
