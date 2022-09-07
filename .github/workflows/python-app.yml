@@ -57,6 +57,7 @@ jobs:
           git clone --branch 1.0.0.beta https://gitlab.gnome.org/GNOME/libshumate.git
 
       - name: Install libshumate
+        run: |
           cd libshumate
           meson setup build
           meson compile -C build
