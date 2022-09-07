@@ -21,6 +21,12 @@
                     </object>
                 </child>
                 <child>
+                    <object class="GtkModelButton" id="_window_settings_model_button">
+                        <property name="action_name">win.window_settings</property>
+                        <property name="text" translatable="yes">_Settings</property>
+                    </object>
+                </child>
+                <child>
                     <object class="GtkModelButton" id="_shortcuts_model_button">
                         <property name="action_name">win.show-help-overlay</property>
                         <property name="text" translatable="yes">_Shortcuts</property>

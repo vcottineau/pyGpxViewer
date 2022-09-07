@@ -35,6 +35,7 @@
         <file preprocess="xml-stripblanks">ui/GpxColumnView.ui</file>
         <file preprocess="xml-stripblanks">ui/GpxDetailedView.ui</file>
         <file preprocess="xml-stripblanks">ui/Window.ui</file>
+        <file preprocess="xml-stripblanks">ui/WindowSettings.ui</file>
         <file preprocess="xml-stripblanks">xslt/stylesheet.xslt</file>
     </gresource>
 </gresources>

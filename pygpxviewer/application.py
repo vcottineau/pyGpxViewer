@@ -20,9 +20,8 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
-from gi.repository import Adw, Gio, GLib, GObject
+from gi.repository import Adw, Gio, GLib
 
-from pygpxviewer.logger import Logger
 from pygpxviewer.window import Window
 
 
@@ -39,18 +38,7 @@ class Application(Adw.Application):
         GLib.set_application_name("pyGpxViewer")
         GLib.set_prgname(application_id)
 
-        self._log = Logger()
-
         self._app_window = None
-
-    @GObject.Property(type=Logger, default=None, flags=GObject.ParamFlags.READABLE)
-    def log(self) -> Logger:
-        """Get the logger property.
-
-        @return: Logger to display message(s)
-        @rtype: Logger
-        """
-        return self._log
 
     def do_startup(self):
         """Start the application."""

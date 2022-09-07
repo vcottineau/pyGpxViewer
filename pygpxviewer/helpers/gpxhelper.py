@@ -152,26 +152,26 @@ class GpxHelper:
         end_location = geo.Location(max_latitude, max_longitude)
         return start_location.distance_3d(end_location)
 
-    def set_gpx_details(self, clean=True, headers=True, simplify=True, elevation=True):
+    def set_gpx_details(self, clean_headers, clean_attributes, elevation, simplify):
         """Set many attributes to a gpx file.
 
-        @param clean: Remove specific unused nodes
-        @type clean: bool
-        @param headers: Add xsd schemas
-        @type headers: bool
+        @param clean_attributes: Remove specific unused nodes
+        @type clean_attributes: bool
+        @param clean_headers: Add xsd schemas
+        @type clean_headers: bool
         @param simplify: Remove track points to reduce the size
         @type simplify: bool
         @param elevation: Add missing elevation data
         @type elevation: bool
         """
-        if clean:
-            self._clean_gpx()
+        if clean_attributes:
+            self._set_gpx_attributes()
 
-        if headers:
+        if clean_headers:
             self._set_gpx_headers()
 
         if simplify:
-            self._gpx.simplify(5)
+            self.gpx.simplify(5)
 
         if elevation:
             self._set_gpx_elevations()
@@ -179,7 +179,7 @@ class GpxHelper:
         with open(self._gpx_file, 'w') as f:
             f.write(self._gpx.to_xml())
 
-    def _clean_gpx(self) -> None:
+    def _set_gpx_attributes(self) -> None:
         parser = etree.XMLParser(remove_blank_text=True)
 
         tree = etree.parse(self._gpx_file, parser)
@@ -219,7 +219,7 @@ class GpxHelper:
             hgt_files.add(self._get_hgt_file_name(point_data[0].latitude, point_data[0].longitude))
         self._fetch_hgt_files(hgt_files)
 
-        for point_data in self._gpx.get_points_data():
+        for point_data in self.gpx.get_points_data():
             elevation = self._get_elevation(point_data[0].latitude, point_data[0].longitude)
             if elevation is not None:
                 point_data[0].elevation = elevation

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <template class="WindowSettings" parent="AdwWindow">
+        <property name="modal">True</property>
+        <property name="content">
+            <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <child>
+                    <object class="AdwHeaderBar"/>
+                </child>
+                <child>
+                    <object class="GtkLabel">
+                        <property name="margin-end">8</property>
+                        <property name="margin-start">8</property>
+                        <property name="margin-bottom">8</property>
+                        <property name="margin-top">8</property>
+                        <property name="label">Gpx</property>
+                        <property name="halign">GTK_ALIGN_START</property>
+                        <attributes>
+                            <attribute name="weight" value="bold"/>
+                        </attributes>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkListBox">
+                        <property name="margin-end">16</property>
+                        <property name="margin-start">16</property>
+                        <child>
+                            <object class="GtkListBoxRow">
+                                <property name="selectable">False</property>
+                                <property name="activatable">False</property>
+                                <property name="margin-bottom">8</property>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">horizontal</property>
+                                        <property name="spacing">8</property>
+                                        <child>
+                                            <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Clean headers</property>
+                                                <property name="hexpand">True</property>
+                                                <property name="halign">start</property>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkSwitch" id="_clean_headers_switch"/>
+                                        </child>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkListBoxRow">
+                                <property name="selectable">False</property>
+                                <property name="activatable">False</property>
+                                <property name="margin-bottom">8</property>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">horizontal</property>
+                                        <property name="spacing">8</property>
+                                        <child>
+                                            <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Clean attributes</property>
+                                                <property name="hexpand">True</property>
+                                                <property name="halign">start</property>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkSwitch" id="_clean_attributes_switch"/>
+                                        </child>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkListBoxRow">
+                                <property name="selectable">False</property>
+                                <property name="activatable">False</property>
+                                <property name="margin-bottom">8</property>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">horizontal</property>
+                                        <property name="spacing">8</property>
+                                        <child>
+                                            <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Add elevation</property>
+                                                <property name="hexpand">True</property>
+                                                <property name="halign">start</property>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkSwitch" id="_elevation_switch"/>
+                                        </child>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                        <child>
+                            <object class="GtkListBoxRow">
+                                <property name="selectable">False</property>
+                                <property name="activatable">False</property>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">horizontal</property>
+                                        <property name="spacing">8</property>
+                                        <child>
+                                            <object class="GtkLabel">
+                                                <property name="label" translatable="yes">Simplify</property>
+                                                <property name="hexpand">True</property>
+                                                <property name="halign">start</property>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkSwitch" id="_simplify_switch"/>
+                                        </child>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkLabel">
+                        <property name="margin-end">8</property>
+                        <property name="margin-start">8</property>
+                        <property name="margin-bottom">8</property>
+                        <property name="margin-top">8</property>
+                        <property name="label">Cache</property>
+                        <property name="halign">GTK_ALIGN_START</property>
+                        <attributes>
+                            <attribute name="weight" value="bold"/>
+                        </attributes>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkListBox">
+                        <property name="margin-end">16</property>
+                        <property name="margin-start">16</property>
+                        <property name="margin-bottom">16</property>
+                        <child>
+                            <object class="GtkListBoxRow">
+                                <property name="selectable">False</property>
+                                <property name="activatable">False</property>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">horizontal</property>
+                                        <property name="spacing">8</property>
+                                        <child>
+                                            <object class="GtkLabel" id="_clear_cache_label">
+                                                <property name="hexpand">True</property>
+                                                <property name="halign">start</property>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkButton" id="_clear_cache_button">
+                                                <property name="label" translatable="yes">Clear</property>
+                                                <signal name="clicked" handler="_on_clear_cache_button_clicked"/>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+            </object>
+        </property>
+    </template>
+</interface>
