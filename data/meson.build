@@ -1,5 +1,4 @@
 # Compiling the resources
-# about_dialog is defined in data/ui/meson.build to generate the output file in that directory
 gnome.compile_resources(
   APPLICATION_ID,
   APPLICATION_ID + '.gresource.xml',
@@ -11,6 +10,26 @@ gnome.compile_resources(
 
 schema_src = APPLICATION_ID + '.gschema.xml'
 gnome.compile_schemas(build_by_default: true, depend_files: files(schema_src))
+
+# Configure desktop file
+desktop_conf = configuration_data()
+desktop_conf.set('icon', APPLICATION_ID)
+configure_file(
+    input: APPLICATION_ID + '.desktop.in',
+    output: APPLICATION_ID + '.desktop',
+    configuration: desktop_conf,
+    install_dir: join_paths(get_option('prefix'), get_option('datadir'), 'applications')
+)
+
+# Validating the desktop file
+desktop_file_validate = find_program('desktop-file-validate', required:false)
+if desktop_file_validate.found()
+  test (
+    'Validate desktop file',
+    desktop_file_validate,
+    args: join_paths(meson.current_build_dir (), APPLICATION_ID + '.desktop')
+  )
+endif
 
 # Installing the schema file
 install_data(
