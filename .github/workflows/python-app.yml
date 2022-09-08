@@ -12,7 +12,8 @@ jobs:
       - name: Install distribution packages
         run: |
           sudo apt update
-          sudo apt install libgtk-4-dev libgirepository1.0-dev python-gi-dev desktop-file-utils libsoup-3.0-dev meson
+          sudo apt install libgtk-4-dev libgirepository1.0-dev python-gi-dev libsoup-3.0-dev meson
+          sudo apt install desktop-file-utils appstream-util
 
       - name: Set up Python
         id: setup-python
