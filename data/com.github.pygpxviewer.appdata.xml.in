@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+    <id>@application_id@.desktop</id>$
+    <launchable type="desktop-id">@application_id@.desktop</launchable>
+    <url type="homepage">@application_url@</url>
+    <url type="bugtracker">@application_url@</url>
+    <update_contact>vcottineau@pm.me</update_contact>
+    <metadata_license>MIT</metadata_license>
+    <project_license>MIT</project_license>
+    <name>pyGpxViewer</name>
+    <summary>A simple gpx file viewer written in python</summary>
+    <content_rating type="oars-1.1"/>
+    <description>
+        <p>A simple gpx file viewer written in python.</p>
+    </description>
+    <screenshots>
+        <screenshot type="default">
+            <image type="source">https://github.com/vcottineau/pyGpxViewer/blob/master/resources/app_window.png</image>
+        </screenshot>
+        <screenshot>
+            <image type="source">https://github.com/vcottineau/pyGpxViewer/blob/master/resources/app_window_details.png</image>
+        </screenshot>
+    </screenshots>
+    <releases>
+        <release date="2022-09-08" version="@application_version@">
+            <description>
+                <p>First development release.</p>
+            </description>
+        </release>
+    </releases>
+</component>
