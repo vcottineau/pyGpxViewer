@@ -29,7 +29,7 @@ import sys
 
 import jsonschema
 
-if '@local_build@':
+if @local_build@:
     sys.path.insert(1, '@pythondir@')
     os.environ["XDG_DATA_DIRS"] = '@schemasdir@:' + os.environ.get("XDG_DATA_DIRS", "/usr/share")
 
@@ -49,10 +49,11 @@ Adw.init()
 
 
 def set_resources():
+    from pygpxviewer import config
+
     resource = Gio.resource_load(os.path.join('@pkgdatadir@', '@application_id@.gresource'))
     Gio.Resource._register(resource)
 
-    from pygpxviewer import config
     resources_files = [
         {"path": config.dem_file, "resource": "/dem/dem.json", "schema": "/dem/dem.jsonschema"},
         {"path": config.map_file, "resource": "/map/map.json", "schema": "/map/map.jsonschema"}
@@ -87,6 +88,7 @@ def add_resource_file(path, resource, schema):
 
 def run_application():
     from pygpxviewer.application import Application
+
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     application = Application('@application_id@')
     return application.run(sys.argv)

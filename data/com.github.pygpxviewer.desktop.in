@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=pyGpxViewer
+GenericName=Gpx Viewer
+Comment=A simple gpx file viewer written in python
+Icon=@icon@
+Exec=pygpxviewer
+Terminal=false
+Categories=Utility;

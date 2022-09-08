@@ -22,7 +22,7 @@ endif
 
 # Constants
 APPLICATION_ID = 'com.github.pygpxviewer'
-APPLICATION_NAME = 'pytreksviewer'
+APPLICATION_NAME = 'pygpxviewer'
 PYTHON_DIR = py_installation.get_path('purelib')
 PKGDATA_DIR = join_paths(get_option('prefix'), get_option('datadir'), APPLICATION_NAME)
 PKGLIB_DIR = join_paths(get_option('prefix'), get_option('libdir'), APPLICATION_NAME)

@@ -23,7 +23,7 @@ import pathlib
 import threading
 from typing import Callable, Tuple
 
-from gi.repository import GObject, Gtk, Gio
+from gi.repository import Gio, GObject, Gtk
 
 from pygpxviewer.helpers.gpxhelper import GpxHelper
 from pygpxviewer.helpers.sqlitehelper import SQLiteHelper
