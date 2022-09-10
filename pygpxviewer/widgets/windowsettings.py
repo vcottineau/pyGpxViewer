@@ -19,6 +19,7 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
+from gettext import gettext as _
 from pathlib import Path
 
 from gi.repository import Adw, Gio, Gtk
@@ -71,11 +72,11 @@ class WindowSettings(Adw.Window):
     def _set_cache(self):
         self._size = sum(f.stat().st_size for f in Path(config.dem_path).glob("**/*.hgt") if f.is_file())
         self._size = round(self._size / 1000 / 1000)
-        self._clear_cache_label.set_label(f"{self._size} MB")
+        self._clear_cache_label.set_label(_(f"{self._size} MB"))
 
     @Gtk.Template.Callback()
     def _on_clear_cache_button_clicked(self, widget):
         for path in Path(config.dem_path).glob("**/*.hgt"):
             path.unlink()
-        logger.info(f"cache cleared: {self._size} MB")
+        logger.info(_(f"cache cleared: {self._size} MB"))
         self._set_cache()

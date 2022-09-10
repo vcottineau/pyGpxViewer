@@ -20,6 +20,7 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 import zipfile
+from gettext import gettext as _
 from pathlib import Path
 
 import requests
@@ -39,8 +40,8 @@ class DownloadHelper:
     def get_size_in_mb(self) -> float:
         """Get the size in MB of all the zip folders in the url list.
 
-        @return: size in MB
-        @rtype: float
+        :return: size in MB
+        :rtype: float
         """
         size = [int(self._urls[url]["size"]) for url in self._urls]
         return round(sum(size) / 1000 / 1000, 1)
@@ -53,19 +54,19 @@ class DownloadHelper:
             link = self._urls[url]["link"]
             size = round(self._urls[url]['size'] / 1000 / 1000, 1)
 
-            logger.info(f"Name: {name}, Size: {size} MB")
+            logger.info(_(f"Name: {name}, Size: {size} MB"))
 
             try:
                 r = requests.get(link, allow_redirects=True)
                 r.raise_for_status()
             except requests.exceptions.HTTPError as err:
-                logger.warning(f"HTTPError occurred: {err}")
+                logger.warning(_(f"HTTPError occurred: {err}"))
             except requests.exceptions.ConnectionError as err:
-                logger.warning(f"ConnectionError occurred: {err}")
+                logger.warning(_(f"ConnectionError occurred: {err}"))
             except requests.exceptions.Timeout as err:
-                logger.warning(f"Timeout occurred: {err}")
+                logger.warning(_(f"Timeout occurred: {err}"))
             except requests.exceptions.RequestException as err:
-                logger.warning(f"RequestException occurred: {err}")
+                logger.warning(_(f"RequestException occurred: {err}"))
             else:
                 with open(zip_path, 'wb') as file:
                     file.write(r.content)
@@ -82,4 +83,4 @@ class DownloadHelper:
                 file_path = config.dem_path.joinpath(filename.split("/")[-1])
                 with open(file_path, "wb") as f:
                     f.write(z.read(filename))
-            logger.info(f"Files: {filenames}")
+            logger.info(_(f"Files: {filenames}"))

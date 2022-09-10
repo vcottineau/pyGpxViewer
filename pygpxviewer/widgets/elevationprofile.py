@@ -20,6 +20,8 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
+from gettext import gettext as _
+
 import matplotlib.pyplot as plt
 from gi.repository import GObject, Gtk
 from matplotlib.backend_bases import MouseEvent
@@ -78,8 +80,8 @@ class ElevationProfile(Gtk.Box):
         ax.plot([0, length], [mean_elev, mean_elev], '--y', label='ave: ' + str(mean_elev) + ' m')
         ax.plot([0, length], [min_elev, min_elev], '--g', label='min: ' + str(min_elev) + ' m')
         ax.fill_between(distances, elevations, min_elev, alpha=0.1)
-        ax.set_xlabel("Distance (km)")
-        ax.set_ylabel("Elevation (m)")
+        ax.set_xlabel(_("Length (km)"))
+        ax.set_ylabel(_("Elevation (m)"))
         ax.grid()
         ax.legend()
 
