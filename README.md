@@ -34,8 +34,8 @@ pyGpxViewer uses the [meson](https://mesonbuild.com/) build systems. Use the fol
 directory:
 
 ```console
-meson setup build
-meson compile -C build
+meson setup _build
+meson compile -C _build
 ```
 
 ## Run
@@ -57,7 +57,7 @@ GTK_DEBUG=interactive _build/pygpxviewer_local
 To install the application:
 
 ```console
-meson install -C build
+meson install -C _build
 ```
 
 ## Localisation
