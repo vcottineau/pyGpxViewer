@@ -62,7 +62,7 @@ meson install -C build
 
 ## Localisation
 
-To generate .po & .pot files:
+To generate .pot & .po files:
 
 ```console
 meson compile -C _build com.github.pygpxviewer-pot
