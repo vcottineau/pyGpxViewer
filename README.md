@@ -17,8 +17,7 @@ files.
 ## Documentation
 
 pyGpxViewer uses [sphinx](https://www.sphinx-doc.org/en/master/) and [readthedocs](https://readthedocs.org/) to manage
-documentation:
-* [pygpxviewer.readthedocs.io](https://pygpxviewer.readthedocs.io/en/latest/)
+documentation: [pygpxviewer.readthedocs.io](https://pygpxviewer.readthedocs.io/en/latest/)
 
 ## Virtual Environments
 
@@ -31,7 +30,7 @@ pipenv update --dev
 
 ## Build
 
-pyGpxViewer uses the [Meson](https://mesonbuild.com/) build systems. Use the following commands to build from the source
+pyGpxViewer uses the [meson](https://mesonbuild.com/) build systems. Use the following commands to build from the source
 directory:
 
 ```console
@@ -45,6 +44,12 @@ To run locally the application:
 
 ```console
 G_MESSAGES_DEBUG=com.github.pygpxviewer _build/pygpxviewer_local
+```
+
+To run locally the application with the built-in interactive debugging support:
+
+```console
+GTK_DEBUG=interactive _build/pygpxviewer_local  
 ```
 
 ## Install
