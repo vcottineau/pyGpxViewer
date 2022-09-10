@@ -55,6 +55,15 @@ To install the application:
 meson install -C build
 ```
 
+## Localisation
+
+To generate .po & .pot files:
+
+```console
+meson compile -C _build com.github.pygpxviewer-pot
+meson compile -C _build com.github.pygpxviewer-update-po
+```
+
 ## Layers
 
 To add a new layer edit the file under `~/.config/pygpxviewer/map.json`:
