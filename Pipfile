@@ -12,6 +12,7 @@ numpy = "*"
 requests = "*"
 gmalthgtparser = "*"
 jsonschema = "*"
+docconvert = "*"
 
 [dev-packages]
 meson = "*"
@@ -20,9 +21,10 @@ flake8 = "*"
 isort = "*"
 mypy = "*"
 types-requests = "*"
-flake8-docstrings = "*"
 sphinx = "*"
-myst-parser = "*"
+sphinx-rtd-theme = "*"
+flake8-rst-docstrings = "*"
+sphinx-autoapi = "*"
 
 [requires]
 python_version = "3.10"

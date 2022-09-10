@@ -54,8 +54,8 @@ class ShumateMap(Shumate.SimpleMap):
     def settings(self):
         """Get Window settings property.
 
-        @return: Window settings
-        @rtype: Gio.Settings
+        :returns: Window settings
+        :rtype: Gio.Settings
         """
         return self._settings
 
@@ -63,8 +63,8 @@ class ShumateMap(Shumate.SimpleMap):
     def path_layer(self):
         """Get the path layer property.
 
-        @return: Path layer of the map
-        @rtype: GObject.GObject
+        :returns: Path layer of the map
+        :rtype: GObject.GObject
         """
         return self._path_layer
 
@@ -72,8 +72,8 @@ class ShumateMap(Shumate.SimpleMap):
     def marker_layer(self):
         """Get the marker layer property.
 
-        @return: Marker layer of the map
-        @rtype: GObject.GObject
+        :returns: Marker layer of the map
+        :rtype: GObject.GObject
         """
         return self._marker_layer
 
@@ -94,8 +94,8 @@ class ShumateMap(Shumate.SimpleMap):
         Link: https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
         FixMe: Improve calculations if poles / 180th meridian is crossed
 
-        @return: None
-        @rtype: None
+        :returns: None
+        :rtype: None
         """
 
         def get_latitude_derivation(latitude):
@@ -137,10 +137,10 @@ class ShumateMap(Shumate.SimpleMap):
     def set_map_source_from_layer_url(self, layer_provider: str, layer_url: str) -> None:
         """Set the raster renderer provider of the map.
 
-        @param layer_provider: Name of the layer provider
-        @type layer_provider: str
-        @param layer_url: Url of the layer provider
-        @type layer_url: str
+        :param layer_provider: Name of the layer provider
+        :type layer_provider: str
+        :param layer_url: Url of the layer provider
+        :type layer_url: str
         """
         map_source = Shumate.RasterRenderer.new_from_url(layer_url)
         map_source.set_license(layer_provider)
@@ -174,11 +174,11 @@ class ShumateMap(Shumate.SimpleMap):
     def on_mouse_move_event(self, widget: ElevationProfile, latitude: float, longitude: float) -> None:
         """Handle the mouse move event on the ElevationProfile widget.
 
-        @param widget:
-        @type widget: ElevationProfile
-        @param latitude: Latitude where the mouse move event occurred
-        @type latitude: float
-        @param longitude: Longitude where the mouse move event occurred
-        @type longitude: float
+        :param widget:
+        :type widget: ElevationProfile
+        :param latitude: Latitude where the mouse move event occurred
+        :type latitude: float
+        :param longitude: Longitude where the mouse move event occurred
+        :type longitude: float
         """
         self._marker.set_location(latitude, longitude)

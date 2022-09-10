@@ -47,8 +47,8 @@ class GpxHelper:
     def gpx(self) -> gpxpy.gpx.GPX:
         """Get the gpx object property.
 
-        @return: Gpx object
-        @rtype: gpxpy.gpx.GPX
+        :returns: Gpx object
+        :rtype: gpxpy.gpx.GPX
         """
         if self._gpx is None or self._update:
             self._gpx = gpxpy.parse(open(self._gpx_file, 'r'))
@@ -59,8 +59,8 @@ class GpxHelper:
     def gpx(self, value: Optional[gpxpy.gpx.GPX]) -> None:
         """Set the gpx object property.
 
-        @param value: Gpx object
-        @type value: gpxpy.gpx.GPX
+        :param value: Gpx object
+        :type value: gpxpy.gpx.GPX
         """
         self._gpx = value
 
@@ -74,8 +74,8 @@ class GpxHelper:
             * up_hill: Total ascent in m
             * down_hill: Total descent in m
 
-        @return: Main gpx properties
-        @rtype: tuple
+        :returns: Main gpx properties
+        :rtype: tuple
         """
         return (
             str(self._gpx_file),
@@ -88,16 +88,16 @@ class GpxHelper:
     def get_gpx_locations(self) -> list[list[float]]:
         """Get all the locations of a gpx file.
 
-        @return: List of all the locations
-        @rtype: list[list[float]
+        :returns: List of all the locations
+        :rtype: list[list[float]
         """
         return [[point_data[0].latitude, point_data[0].longitude] for point_data in self.gpx.get_points_data()]
 
     def get_gpx_distances_and_elevations(self) -> tuple:
         """Get the distance and elevation values for all the locations in a gpx file.
 
-        @return: Distance and elevation values
-        @rtype: tuple
+        :returns: Distance and elevation values
+        :rtype: tuple
         """
         distances = []
         elevations = []
@@ -111,12 +111,12 @@ class GpxHelper:
 
         Delta variable is used for rendering purposes
 
-        @param length: Length of the gpx file in km
-        @type length: float
-        @param distance: Distance from the first point in km
-        @type distance: float
-        @return: Location latitude and longitude
-        @rtype: tuple[float, float]
+        :param length: Length of the gpx file in km
+        :type length: float
+        :param distance: Distance from the first point in km
+        :type distance: float
+        :returns: Location latitude and longitude
+        :rtype: tuple[float, float]
         """
         delta = 1.00
         if length <= 500:
@@ -137,16 +137,16 @@ class GpxHelper:
                                            max_longitude: float) -> Optional[float]:
         """Get the distance between two locations in m.
 
-        @param min_latitude:
-        @type min_latitude: float
-        @param min_longitude:
-        @type min_longitude: float
-        @param max_latitude:
-        @type max_latitude: float
-        @param max_longitude:
-        @type max_longitude: float
-        @return: Distance in m
-        @rtype: float
+        :param min_latitude:
+        :type min_latitude: float
+        :param min_longitude:
+        :type min_longitude: float
+        :param max_latitude:
+        :type max_latitude: float
+        :param max_longitude:
+        :type max_longitude: float
+        :returns: Distance in m
+        :rtype: float
         """
         start_location = geo.Location(min_latitude, min_longitude)
         end_location = geo.Location(max_latitude, max_longitude)
@@ -155,14 +155,14 @@ class GpxHelper:
     def set_gpx_details(self, clean_headers, clean_attributes, elevation, simplify):
         """Set many attributes to a gpx file.
 
-        @param clean_attributes: Remove specific unused nodes
-        @type clean_attributes: bool
-        @param clean_headers: Add xsd schemas
-        @type clean_headers: bool
-        @param simplify: Remove track points to reduce the size
-        @type simplify: bool
-        @param elevation: Add missing elevation data
-        @type elevation: bool
+        :param clean_attributes: Remove specific unused nodes
+        :type clean_attributes: bool
+        :param clean_headers: Add xsd schemas
+        :type clean_headers: bool
+        :param simplify: Remove track points to reduce the size
+        :type simplify: bool
+        :param elevation: Add missing elevation data
+        :type elevation: bool
         """
         if clean_attributes:
             self._set_gpx_attributes()

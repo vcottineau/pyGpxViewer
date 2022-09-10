@@ -16,7 +16,7 @@ build.sh
 resources/dem
 
 # Documentation
-docs/_build
+docs/build
 
 # Translations
 *.mo
