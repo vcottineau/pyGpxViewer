@@ -1,0 +1,147 @@
+#
+# Vincent Cottineau <vcottineau@pm.me>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \"pygpxviewer\" 1.0\n"
+"Report-Msgid-Bugs-To: vcottineau@pm.me\n"
+"POT-Creation-Date: 2022-09-10 19:59+0200\n"
+"PO-Revision-Date: 2022-09-10 19:59+0200\n"
+"Last-Translator: Vincent Cottineau <vcottineau@pm.me>\n"
+"Language-Team: French <vcottineau@pm.me>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"X-Generator: Gtranslator 40.0\n"
+
+#: data/ui/AppMenu.ui:16
+msgid "_Refresh"
+msgstr "_Rafraichir"
+
+#: data/ui/AppMenu.ui:26
+msgid "_Settings"
+msgstr "_Paramètres"
+
+#: data/ui/AppMenu.ui:32
+msgid "_Shortcuts"
+msgstr "_Raccourcis"
+
+#: data/ui/AppMenu.ui:38
+msgid "_About"
+msgstr "_A-Propos"
+
+#: data/ui/GpxColumnView.ui:18
+msgid "Path"
+msgstr "Chemin"
+
+#: data/ui/GpxColumnView.ui:36 data/ui/GpxDetailedView.ui:45
+msgid "Points (nb)"
+msgstr "Points (nb)"
+
+#: data/ui/GpxColumnView.ui:53 data/ui/GpxDetailedView.ui:71
+#: pygpxviewer/widgets/elevationprofile.py:83
+msgid "Length (km)"
+msgstr "Distance (km)"
+
+#: data/ui/GpxColumnView.ui:70 data/ui/GpxDetailedView.ui:53
+msgid "UpHill (m)"
+msgstr "Montée (m)"
+
+#: data/ui/GpxColumnView.ui:87 data/ui/GpxDetailedView.ui:79
+msgid "DownHill (m)"
+msgstr "Descente (m)"
+
+#: data/ui/GpxColumnView.ui:104
+msgid "Actions"
+msgstr "Actions"
+
+#: data/ui/GpxDetailedView.ui:27
+msgid "Select layer"
+msgstr ""
+
+#: data/ui/HelpOverlay.ui:11
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Général"
+
+#: data/ui/HelpOverlay.ui:14
+msgctxt "shortcut window"
+msgid "Refresh"
+msgstr "Rafraichir"
+
+#: data/ui/Window.ui:28
+msgid "_Open"
+msgstr "_Ouvrir"
+
+#: data/ui/WindowSettings.ui:39
+msgid "Clean headers"
+msgstr "Nettoyer les en-têtes"
+
+#: data/ui/WindowSettings.ui:62
+msgid "Clean attributes"
+msgstr "Nettoyer les attributs"
+
+#: data/ui/WindowSettings.ui:85
+msgid "Add elevation"
+msgstr "Ajouter l'altitude"
+
+#: data/ui/WindowSettings.ui:107
+msgid "Simplify"
+msgstr "Simplifier"
+
+#: data/ui/WindowSettings.ui:155
+msgid "Clear"
+msgstr "Effacer"
+
+#: pygpxviewer/window.py:125
+msgid "Select folder"
+msgstr ""
+
+#: pygpxviewer/helpers/downloadhelper.py:57
+#, python-brace-format
+msgid "Name: {name}, Size: {size} MB"
+msgstr "Nom: {name}, Taille: {size} MB"
+
+#: pygpxviewer/helpers/downloadhelper.py:63
+#, python-brace-format
+msgid "HTTPError occurred: {err}"
+msgstr ""
+
+#: pygpxviewer/helpers/downloadhelper.py:65
+#, python-brace-format
+msgid "ConnectionError occurred: {err}"
+msgstr ""
+
+#: pygpxviewer/helpers/downloadhelper.py:67
+#, python-brace-format
+msgid "Timeout occurred: {err}"
+msgstr ""
+
+#: pygpxviewer/helpers/downloadhelper.py:69
+#, python-brace-format
+msgid "RequestException occurred: {err}"
+msgstr ""
+
+#: pygpxviewer/helpers/downloadhelper.py:86
+#, python-brace-format
+msgid "Files: {filenames}"
+msgstr "Fichiers: {filenames}"
+
+#: pygpxviewer/widgets/elevationprofile.py:84
+msgid "Elevation (m)"
+msgstr "Altitude (m)"
+
+#: pygpxviewer/widgets/windowsettings.py:75
+#, python-brace-format
+msgid "{self._size} MB"
+msgstr "{self._size} MB"
+
+#: pygpxviewer/widgets/windowsettings.py:81
+#, python-brace-format
+msgid "cache cleared: {self._size} MB"
+msgstr "cache vidé: {self._size} MB"
+
+#~ msgid "Distance (km)"
+#~ msgstr "Distance (km)"
