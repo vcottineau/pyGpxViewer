@@ -16,9 +16,7 @@ files.
 ## Documentation
 
 pyGpxViewer uses [sphinx](https://www.sphinx-doc.org/en/master/) and [readthedocs](https://readthedocs.org/) to manage
-documentation:
-
-[Read the docs](https://pygpxviewer.readthedocs.io/en/latest/)
+documentation: [pygpxviewer.readthedocs.io](https://pygpxviewer.readthedocs.io/en/latest/)
 
 ## Virtual Environments
 
