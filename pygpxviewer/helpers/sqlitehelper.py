@@ -51,8 +51,8 @@ class SQLiteHelper:
     def add_record(self, record: tuple) -> None:
         """Add a single record to the database.
 
-        @param record: Single record
-        @type record: tuple
+        :param record: Single record
+        :type record: tuple
         """
         sql = """
             INSERT INTO gpx(path,points,length,up_hill,down_hill)
@@ -64,8 +64,8 @@ class SQLiteHelper:
     def add_records(self, records: tuple) -> None:
         """Add many records to the database.
 
-        @param records: List of records
-        @type records: tuple
+        :param records: List of records
+        :type records: tuple
         """
         sql = """
             INSERT INTO gpx(path,points,length,up_hill,down_hill)
@@ -77,10 +77,10 @@ class SQLiteHelper:
     def update_record(self, id: int, record: tuple) -> None:
         """Update a single record based on his id.
 
-        @param id: Id of the record
-        @type id: int
-        @param record: Single record
-        @type record: tuple
+        :param id: Id of the record
+        :type id: int
+        :param record: Single record
+        :type record: tuple
         """
         sql = f"""
             UPDATE gpx
@@ -98,8 +98,8 @@ class SQLiteHelper:
     def get_records(self) -> tuple:
         """Get all records.
 
-        @return: List of records
-        @rtype: tuple
+        :returns: List of records
+        :rtype: tuple
         """
         sql = """
             SELECT * FROM gpx
@@ -114,10 +114,10 @@ class SQLiteHelper:
     def search_records(self, search_entry: str) -> tuple:
         """Get records with a text filter.
 
-        @param search_entry:
-        @type search_entry: str
-        @return: List of records
-        @rtype: tuple
+        :param search_entry:
+        :type search_entry: str
+        :returns: List of records
+        :rtype: tuple
         """
         sql = f"""
             SELECT * FROM gpx

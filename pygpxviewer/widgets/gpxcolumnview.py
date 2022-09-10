@@ -64,7 +64,7 @@ class GpxItem(GObject.GObject):
 class GpxColumnView(Gtk.ColumnView):
     """GpxColumnView is the main Window child.
 
-    Display all *.gpx files listed in a folder and their main properties
+    Display all .gpx files listed in a folder and their main properties
     """
 
     __gtype_name__ = "GpxColumnView"
@@ -94,8 +94,8 @@ class GpxColumnView(Gtk.ColumnView):
     def refresh(self, search_entry: Optional[str] = None) -> None:
         """Apply text filter and refresh the view.
 
-        @param search_entry: Text pattern to search
-        @type search_entry: Optional[str]
+        :param search_entry: Text pattern to search
+        :type search_entry: Optional[str]
         """
         self._list_store.remove_all()
         if search_entry:

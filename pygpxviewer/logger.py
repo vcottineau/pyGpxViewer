@@ -69,31 +69,31 @@ class Logger(GObject.GObject):
     def message(self, message: str) -> None:
         """Output standard message.
 
-        @param message: Standard message
-        @type message: str
+        :param message: Standard message
+        :type message: str
         """
         self._log(message, GLib.LogLevelFlags.LEVEL_MESSAGE)
 
     def warning(self, message: str) -> None:
         """Output warning message.
 
-        @param message: Warning message
-        @type message: str
+        :param message: Warning message
+        :type message: str
         """
         self._log(message, GLib.LogLevelFlags.LEVEL_WARNING)
 
     def info(self, message: str) -> None:
         """Output informational message.
 
-        @param message: Informational message
-        @type message: str
+        :param message: Informational message
+        :type message: str
         """
         self._log(message, GLib.LogLevelFlags.LEVEL_INFO)
 
     def debug(self, message: str) -> None:
         """Output debug message.
 
-        @param message: Debug message
-        @type message: str
+        :pa ram message: Debug message
+        :type message: str
         """
         self._log(message, GLib.LogLevelFlags.LEVEL_DEBUG)

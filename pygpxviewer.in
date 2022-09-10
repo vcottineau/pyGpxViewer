@@ -36,7 +36,7 @@ if @local_build@:
     # icon_theme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default())
     # icon_theme.add_search_path("@schemasdir@" + '/icons')
 else:
-    sys.path.insert(1, '@pkgdatadir@')
+    sys.path.append('@pkgdatadir@')
 
 import gi
 

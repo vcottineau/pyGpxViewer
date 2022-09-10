@@ -63,8 +63,8 @@ class Window(Adw.ApplicationWindow):
     def spinner(self) -> Gtk.Spinner:
         """Get spinner object property.
 
-        @return: Spinner object for threading tasks
-        @rtype: Gtk.Spinner
+        :returns: Spinner object for threading tasks
+        :rtype: Gtk.Spinner
         """
         return self._spinner
 
@@ -72,8 +72,8 @@ class Window(Adw.ApplicationWindow):
     def settings(self) -> Gio.Settings:
         """Get Window settings property.
 
-        @return: Window settings
-        @rtype: Gio.Settings
+        :returns: Window settings
+        :rtype: Gio.Settings
         """
         return self._settings
 

@@ -65,8 +65,8 @@ class GpxDetailedView(Adw.Window):
     def settings(self):
         """Get Window settings property.
 
-        @return: Window settings
-        @rtype: Gio.Settings
+        :returns: Window settings
+        :rtype: Gio.Settings
         """
         return self._settings
 
@@ -74,8 +74,8 @@ class GpxDetailedView(Adw.Window):
     def gpx_helper(self):
         """Get Gpx Helper property.
 
-        @return: Helper to work with gpx file
-        @rtype: GObject.GObject
+        :returns: Helper to work with gpx file
+        :rtype: GObject.GObject
         """
         return self._gpx_helper
 
@@ -146,14 +146,14 @@ class GpxDetailedView(Adw.Window):
     def do_size_allocate(self, width: int, height: int, baseline: int) -> None:
         """Virtual method implementation to init the map center and zoom.
 
-        @param width: Window's width
-        @type width: int
-        @param height: Window's height
-        @type height: int
-        @param baseline: Window's baseline
-        @type baseline: int
-        @return: None
-        @rtype: None
+        :param width: Window's width
+        :type width: int
+        :param height: Window's height
+        :type height: int
+        :param baseline: Window's baseline
+        :type baseline: int
+        :returns: None
+        :rtype: None
         """
         Adw.Window.do_size_allocate(self, width, height, baseline)
         if not self._size_allocated:
