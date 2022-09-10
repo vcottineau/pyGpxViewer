@@ -6,7 +6,7 @@
 
 **pyGpxViewer** is a simple python applications based on [Gtk4](https://www.gtk.org/)
 , [libshumate](https://wiki.gnome.org/Projects/libshumate) and [matplotlib](https://matplotlib.org/).\
-[gpxpy](https://github.com/tkrajina/gpxpy) and [ViewFinder Panoramas](http://viewfinderpanoramas.org/dem3.html) are used to parse gpx
+[gpxpy](https://github.com/tkrajina/gpxpy) and [ViewFinder Panoramas](http://viewfinderpanoramas.org/dem3.html) (3DEM) are used to parse gpx
 files.
 
 <p align="center">
