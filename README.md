@@ -3,13 +3,22 @@
 
 # pyGpxViewer
 
-**pyGpxViewer** is a simple python applications based on [Gtk4](https://www.gtk.org/), [libshumate](https://wiki.gnome.org/Projects/libshumate) and [matplotlib](https://matplotlib.org/).\
-[gpxpy](https://github.com/tkrajina/gpxpy) and [srtm.py](https://github.com/tkrajina/srtm.py) are used to parse gpx files.
+**pyGpxViewer** is a simple python applications based on [Gtk4](https://www.gtk.org/)
+, [libshumate](https://wiki.gnome.org/Projects/libshumate) and [matplotlib](https://matplotlib.org/).\
+[gpxpy](https://github.com/tkrajina/gpxpy) and [srtm.py](https://github.com/tkrajina/srtm.py) are used to parse gpx
+files.
 
 <p align="center">
   <img src="../master/resources/app_window.png" width="400"/>
   <img src="../master/resources/app_window_details.png" width="400"/>
 </p>
+
+## Documentation
+
+pyGpxViewer uses [sphinx](https://www.sphinx-doc.org/en/master/) and [readthedocs](https://readthedocs.org/) to manage
+documentation:
+
+[Read the docs](https://pygpxviewer.readthedocs.io/en/latest/)
 
 ## Virtual Environments
 
@@ -22,7 +31,8 @@ pipenv update --dev
 
 ## Build
 
-pyGpxViewer uses the [Meson](https://mesonbuild.com/) build systems. Use the following commands to build from the source directory:
+pyGpxViewer uses the [Meson](https://mesonbuild.com/) build systems. Use the following commands to build from the source
+directory:
 
 ```console
 meson setup build
@@ -34,7 +44,7 @@ meson compile -C build
 To run locally the application:
 
 ```console
-python build/pygpxviewer_local
+G_MESSAGES_DEBUG=com.github.pygpxviewer _build/pygpxviewer_local
 ```
 
 ## Install
