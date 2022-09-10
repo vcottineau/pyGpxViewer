@@ -20,6 +20,7 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
+from gettext import gettext as _
 from typing import Optional
 
 from gi.repository import Adw, Gio, GLib, GObject, Gtk
@@ -121,7 +122,7 @@ class Window(Adw.ApplicationWindow):
     @Gtk.Template.Callback()
     def _on_open_button_clicked(self, button: Gtk.Button) -> None:
         self.file_chooser = Gtk.FileChooserNative.new(
-            title="Select folder",
+            title=_("Select folder"),
             parent=self,
             action=Gtk.FileChooserAction.SELECT_FOLDER)
         self.file_chooser.connect("response", self._on_file_chooser_response)

@@ -6,6 +6,7 @@ project('pygpxviewer',
 # Importing modules
 gnome = import('gnome')
 python = import('python')
+i18n = import('i18n')
 
 # Module objects
 py_installation = python.find_installation('python3')
@@ -27,6 +28,7 @@ APPLICATION_URL = 'https://github.com/vcottineau/pyGpxViewer'
 PYTHON_DIR = py_installation.get_path('purelib')
 PKGDATA_DIR = join_paths(get_option('prefix'), get_option('datadir'), APPLICATION_NAME)
 PKGLIB_DIR = join_paths(get_option('prefix'), get_option('libdir'), APPLICATION_NAME)
+LOCALE_DIR = join_paths(get_option('prefix'), get_option('datadir'), 'locale')
 
 # Dependencies
 dependency('glib-2.0', version: '>= 2.72.1')
@@ -37,6 +39,7 @@ dependency('gio-2.0', version: '>= 2.72.1')
 dependency('shumate-1.0', version: '>= 1.0.0')
 
 subdir('data')
+subdir('po')
 
 install_subdir(
     'pygpxviewer',
@@ -50,6 +53,7 @@ bin_config.set('application_name', APPLICATION_NAME)
 bin_config.set('pkgdatadir', PKGDATA_DIR)
 bin_config.set('pythondir', PYTHON_DIR)
 bin_config.set('schemasdir', PKGDATA_DIR)
+bin_config.set('localedir', LOCALE_DIR)
 
 bin_config.set('local_build', 'False')
 
@@ -67,6 +71,7 @@ local_config.set('application_name', APPLICATION_NAME)
 local_config.set('pkgdatadir', join_paths(meson.current_build_dir(), 'data'))
 local_config.set('pythondir', meson.current_source_dir())
 local_config.set('schemasdir', join_paths(meson.current_build_dir(), 'data'))
+local_config.set('localedir', join_paths(meson.current_build_dir(), 'po'))
 
 local_config.set('local_build', 'True')
 

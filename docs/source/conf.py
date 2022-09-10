@@ -43,12 +43,16 @@ release = '1.0'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'sphinx.ext.autodoc',
-    'autoapi.extension'
+    'sphinx.ext.autodoc'
 ]
 
-autoapi_type = 'python'
-autoapi_dirs = [os.path.abspath('../../pygpxviewer')]
+# extensions = [
+#     'sphinx.ext.autodoc',
+#     'autoapi.extension'
+# ]
+
+# autoapi_type = 'python'
+# autoapi_dirs = [os.path.abspath('../../pygpxviewer')]
 
 templates_path = ['_templates']
 exclude_patterns = []
