@@ -1,5 +1,6 @@
 [![Python application](https://github.com/vcottineau/pyGpxViewer/actions/workflows/python-app.yml/badge.svg?branch=master)](https://github.com/vcottineau/pyGpxViewer/actions/workflows/python-app.yml)
 [![docs](https://github.com/vcottineau/pyGpxViewer/actions/workflows/sphinx.yml/badge.svg)](https://github.com/vcottineau/pyGpxViewer/actions/workflows/sphinx.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # pyGpxViewer
 
