@@ -1,4 +1,5 @@
 [![Python application](https://github.com/vcottineau/pyGpxViewer/actions/workflows/python-app.yml/badge.svg?branch=master)](https://github.com/vcottineau/pyGpxViewer/actions/workflows/python-app.yml)
+[![Documentation Status](https://readthedocs.org/projects/pygpxviewer/badge/?version=latest)](https://pygpxviewer.readthedocs.io/en/latest/?badge=latest)
 
 # pyGpxViewer
 
