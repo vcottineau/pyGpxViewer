@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \"pygpxviewer\" 1.0\n"
 "Report-Msgid-Bugs-To: vcottineau@pm.me\n"
-"POT-Creation-Date: 2022-09-10 19:59+0200\n"
-"PO-Revision-Date: 2022-09-10 19:59+0200\n"
+"POT-Creation-Date: 2022-09-11 20:16+0200\n"
+"PO-Revision-Date: 2022-09-11 20:15+0200\n"
 "Last-Translator: Vincent Cottineau <vcottineau@pm.me>\n"
 "Language-Team: French <vcottineau@pm.me>\n"
 "Language: fr\n"
@@ -59,7 +59,7 @@ msgstr "Actions"
 
 #: data/ui/GpxDetailedView.ui:27
 msgid "Select layer"
-msgstr ""
+msgstr "Carte"
 
 #: data/ui/HelpOverlay.ui:11
 msgctxt "shortcut window"
@@ -97,41 +97,37 @@ msgstr "Effacer"
 
 #: pygpxviewer/window.py:125
 msgid "Select folder"
-msgstr ""
+msgstr "Dossier"
 
 #: pygpxviewer/helpers/downloadhelper.py:57
 #, python-brace-format
 msgid "Name: {name}, Size: {size} MB"
 msgstr "Nom: {name}, Taille: {size} MB"
 
-#: pygpxviewer/helpers/downloadhelper.py:63
-#, python-brace-format
-msgid "HTTPError occurred: {err}"
-msgstr ""
-
-#: pygpxviewer/helpers/downloadhelper.py:65
-#, python-brace-format
-msgid "ConnectionError occurred: {err}"
-msgstr ""
-
-#: pygpxviewer/helpers/downloadhelper.py:67
-#, python-brace-format
-msgid "Timeout occurred: {err}"
-msgstr ""
-
-#: pygpxviewer/helpers/downloadhelper.py:69
-#, python-brace-format
-msgid "RequestException occurred: {err}"
-msgstr ""
-
 #: pygpxviewer/helpers/downloadhelper.py:86
 #, python-brace-format
 msgid "Files: {filenames}"
 msgstr "Fichiers: {filenames}"
 
+#: pygpxviewer/widgets/elevationprofile.py:79
+msgid "max: "
+msgstr "max: "
+
+#: pygpxviewer/widgets/elevationprofile.py:80
+msgid "ave: "
+msgstr "moy: "
+
+#: pygpxviewer/widgets/elevationprofile.py:81
+msgid "min: "
+msgstr "min: "
+
 #: pygpxviewer/widgets/elevationprofile.py:84
 msgid "Elevation (m)"
 msgstr "Altitude (m)"
+
+#: pygpxviewer/widgets/windowsettings.py:46
+msgid "Settings"
+msgstr "Paramètres"
 
 #: pygpxviewer/widgets/windowsettings.py:75
 #, python-brace-format

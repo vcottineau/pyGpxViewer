@@ -76,9 +76,9 @@ class ElevationProfile(Gtk.Box):
 
         ax = figure.add_subplot()
         ax.plot(distances, elevations)
-        ax.plot([0, length], [max_elev, max_elev], '--r', label='max: ' + str(max_elev) + ' m')
-        ax.plot([0, length], [mean_elev, mean_elev], '--y', label='ave: ' + str(mean_elev) + ' m')
-        ax.plot([0, length], [min_elev, min_elev], '--g', label='min: ' + str(min_elev) + ' m')
+        ax.plot([0, length], [max_elev, max_elev], '--r', label=_('max: ') + str(max_elev) + ' m')
+        ax.plot([0, length], [mean_elev, mean_elev], '--y', label=_('ave: ') + str(mean_elev) + ' m')
+        ax.plot([0, length], [min_elev, min_elev], '--g', label=_('min: ') + str(min_elev) + ' m')
         ax.fill_between(distances, elevations, min_elev, alpha=0.1)
         ax.set_xlabel(_("Length (km)"))
         ax.set_ylabel(_("Elevation (m)"))

@@ -76,16 +76,16 @@
     <schema path="/com/github/pygpxviewer/gpx/"
             id="com.github.pygpxviewer.gpx">
         <key name="clean-headers" type="b">
-            <default>true</default>
+            <default>false</default>
         </key>
         <key name="clean-attributes" type="b">
-            <default>true</default>
+            <default>false</default>
         </key>
         <key name="simplify" type="b">
-            <default>true</default>
+            <default>false</default>
         </key>
         <key name="elevation" type="b">
-            <default>true</default>
+            <default>false</default>
         </key>
     </schema>
 </schemalist>

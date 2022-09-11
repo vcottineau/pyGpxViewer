@@ -59,14 +59,14 @@ class DownloadHelper:
             try:
                 r = requests.get(link, allow_redirects=True)
                 r.raise_for_status()
-            except requests.exceptions.HTTPError as err:
-                logger.warning(_(f"HTTPError occurred: {err}"))
-            except requests.exceptions.ConnectionError as err:
-                logger.warning(_(f"ConnectionError occurred: {err}"))
-            except requests.exceptions.Timeout as err:
-                logger.warning(_(f"Timeout occurred: {err}"))
-            except requests.exceptions.RequestException as err:
-                logger.warning(_(f"RequestException occurred: {err}"))
+            except requests.exceptions.HTTPError as e:
+                logger.warning(f"HTTPError occurred: {e}")
+            except requests.exceptions.ConnectionError as e:
+                logger.warning(f"ConnectionError occurred: {e}")
+            except requests.exceptions.Timeout as e:
+                logger.warning(f"Timeout occurred: {e}")
+            except requests.exceptions.RequestException as e:
+                logger.warning(f"RequestException occurred: {e}")
             else:
                 with open(zip_path, 'wb') as file:
                     file.write(r.content)

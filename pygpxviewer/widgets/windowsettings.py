@@ -43,7 +43,7 @@ class WindowSettings(Adw.Window):
     _clear_cache_label = Gtk.Template.Child()
 
     def __init__(self, window):
-        super().__init__(title="Settings")
+        super().__init__(title=_("Settings"))
 
         self._window = window
         self._settings = Gio.Settings.new("com.github.pygpxviewer.gpx")
