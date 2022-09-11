@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \"pygpxviewer\" 1.0\n"
 "Report-Msgid-Bugs-To: vcottineau@pm.me\n"
-"POT-Creation-Date: 2022-09-11 20:16+0200\n"
+"POT-Creation-Date: 2022-09-11 20:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,6 +94,15 @@ msgstr ""
 
 #: data/ui/WindowSettings.ui:155
 msgid "Clear"
+msgstr ""
+
+#: pygpxviewer/application.py:51
+msgid "Show the current version of pygpxviewer"
+msgstr ""
+
+#: pygpxviewer/application.py:70
+#, python-brace-format
+msgid "pygpxviewer {self._version}"
 msgstr ""
 
 #: pygpxviewer/window.py:125

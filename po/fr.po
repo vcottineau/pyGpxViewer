@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \"pygpxviewer\" 1.0\n"
 "Report-Msgid-Bugs-To: vcottineau@pm.me\n"
-"POT-Creation-Date: 2022-09-11 20:16+0200\n"
-"PO-Revision-Date: 2022-09-11 20:15+0200\n"
+"POT-Creation-Date: 2022-09-11 20:37+0200\n"
+"PO-Revision-Date: 2022-09-11 20:36+0200\n"
 "Last-Translator: Vincent Cottineau <vcottineau@pm.me>\n"
 "Language-Team: French <vcottineau@pm.me>\n"
 "Language: fr\n"
@@ -30,7 +30,7 @@ msgstr "_Raccourcis"
 
 #: data/ui/AppMenu.ui:38
 msgid "_About"
-msgstr "_A-Propos"
+msgstr "_À Propos"
 
 #: data/ui/GpxColumnView.ui:18
 msgid "Path"
@@ -94,6 +94,15 @@ msgstr "Simplifier"
 #: data/ui/WindowSettings.ui:155
 msgid "Clear"
 msgstr "Effacer"
+
+#: pygpxviewer/application.py:51
+msgid "Show the current version of pygpxviewer"
+msgstr "Afficher la version courante de pygpxviewer"
+
+#: pygpxviewer/application.py:70
+#, python-brace-format
+msgid "pygpxviewer {self._version}"
+msgstr "pygpxviewer {self._version}"
 
 #: pygpxviewer/window.py:125
 msgid "Select folder"

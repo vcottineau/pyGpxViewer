@@ -107,7 +107,7 @@ def run_application():
     from pygpxviewer.application import Application
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
-    application = Application('@application_id@')
+    application = Application('@application_id@', '@application_version@')
     return application.run(sys.argv)
 
 

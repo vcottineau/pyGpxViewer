@@ -20,6 +20,8 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 
+from gettext import gettext as _
+
 from gi.repository import Adw, Gio, GLib
 
 from pygpxviewer.window import Window
@@ -30,15 +32,25 @@ class Application(Adw.Application):
 
     __gtype_name__ = "Application"
 
-    def __init__(self, application_id: str):
+    def __init__(self, application_id: str, version: str):
         super().__init__(
             application_id=application_id,
-            flags=Gio.ApplicationFlags.FLAGS_NONE)
+            flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
         self.props.resource_base_path = "/com/github/pygpxviewer"
         GLib.set_application_name("pyGpxViewer")
         GLib.set_prgname(application_id)
 
+        self._version = version
         self._app_window = None
+
+        self.add_main_option(
+            long_name="version",
+            short_name=ord("v"),
+            flags=GLib.OptionFlags.NONE,
+            arg=GLib.OptionArg.NONE,
+            description=_("Show the current version of pygpxviewer"),
+            arg_description=None,
+        )
 
     def do_startup(self):
         """Start the application."""
@@ -50,3 +62,12 @@ class Application(Adw.Application):
             self._app_window = Window(application=self)
             self._app_window.set_default_icon_name(self.props.application_id)
         self._app_window.present()
+
+    def do_command_line(self, command_line):
+        options = command_line.get_options_dict()
+        options = options.end().unpack()
+        if "version" in options:
+            print(_(f"pygpxviewer {self._version}"))
+            return 0
+        self.activate()
+        return 0
