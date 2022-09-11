@@ -1,12 +1,13 @@
-[![Python application](https://github.com/vcottineau/pyGpxViewer/actions/workflows/python-app.yml/badge.svg?branch=master)](https://github.com/vcottineau/pyGpxViewer/actions/workflows/python-app.yml)
-[![docs](https://github.com/vcottineau/pyGpxViewer/actions/workflows/sphinx.yml/badge.svg)](https://github.com/vcottineau/pyGpxViewer/actions/workflows/sphinx.yml)
+[![build](https://github.com/vcottineau/pyGpxViewer/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/vcottineau/pyGpxViewer/actions/workflows/build.yml)
+[![docs](https://github.com/vcottineau/pyGpxViewer/actions/workflows/docs.yml/badge.svg)](https://github.com/vcottineau/pyGpxViewer/actions/workflows/docs.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # pyGpxViewer
 
 **pyGpxViewer** is a simple python applications based on [Gtk4](https://www.gtk.org/)
 , [libshumate](https://wiki.gnome.org/Projects/libshumate) and [matplotlib](https://matplotlib.org/).\
-[gpxpy](https://github.com/tkrajina/gpxpy) and [ViewFinder Panoramas](http://viewfinderpanoramas.org/dem3.html) (3DEM) are used to parse gpx
+[gpxpy](https://github.com/tkrajina/gpxpy) and [ViewFinder Panoramas](http://viewfinderpanoramas.org/dem3.html) (3DEM)
+are used to parse gpx
 files.
 
 <p align="center">
