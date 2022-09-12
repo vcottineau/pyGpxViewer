@@ -7,7 +7,6 @@ __pycache__
 
 # Build
 _build
-build.sh
 
 # Lint
 .mypy_cache
@@ -17,9 +16,3 @@ resources/dem
 
 # Documentation
 docs/build
-
-# Translations
-*.mo
-
-# Env
-.env
