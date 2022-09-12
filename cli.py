@@ -30,6 +30,13 @@ def cli():
 
 
 @cli.command()
+def run():
+    click.echo("Run locally...")
+    cmd = ["_build/pygpxviewer_local"]
+    call_with_output(cmd, echo_stdout=True)
+
+
+@cli.command()
 def build():
     click.echo("Sort imports...")
     cmd = ["isort", "pygpxviewer"]
