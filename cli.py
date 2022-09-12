@@ -34,8 +34,7 @@ def cli():
 @click.option('-l', '--language', default="en")
 def run(language):
     click.echo("Run locally...")
-    if language:
-        os.environ["LANGUAGE"] = language
+    os.environ["LANGUAGE"] = language
     cmd = ["_build/pygpxviewer_local"]
     call_with_output(cmd, echo_stdout=True)
 
