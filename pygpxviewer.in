@@ -70,8 +70,8 @@ def set_resources():
     Gio.Resource._register(resource)
 
     resources_files = [
-        {"path": config.dem_file, "resource": "/dem/dem.json", "schema": "/dem/dem.jsonschema"},
-        {"path": config.map_file, "resource": "/map/map.json", "schema": "/map/map.jsonschema"}
+        {"path": config.dem_file, "resource": "/json/dem.json", "schema": "/json/dem.jsonschema"},
+        {"path": config.map_file, "resource": "/json/map.json", "schema": "/json/map.jsonschema"}
     ]
 
     for resource_file in resources_files:

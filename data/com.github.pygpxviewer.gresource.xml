@@ -27,10 +27,10 @@
     <gresource prefix="/com/github/pygpxviewer">
         <file alias="gtk/help-overlay.ui" preprocess="xml-stripblanks">ui/HelpOverlay.ui</file>
         <file>style.css</file>
-        <file>dem/dem.json</file>
-        <file>dem/dem.jsonschema</file>
-        <file>map/map.json</file>
-        <file>map/map.jsonschema</file>
+        <file>json/dem.json</file>
+        <file>json/dem.jsonschema</file>
+        <file>json/map.json</file>
+        <file>json/map.jsonschema</file>
         <file preprocess="xml-stripblanks">ui/AppMenu.ui</file>
         <file preprocess="xml-stripblanks">ui/GpxColumnView.ui</file>
         <file preprocess="xml-stripblanks">ui/GpxDetailedView.ui</file>
