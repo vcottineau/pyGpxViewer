@@ -19,6 +19,7 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
+import os
 import subprocess
 
 import click
@@ -30,8 +31,11 @@ def cli():
 
 
 @cli.command()
-def run():
+@click.option('-l', '--language', default="en")
+def run(language):
     click.echo("Run locally...")
+    if language:
+        os.environ["LANGUAGE"] = language
     cmd = ["_build/pygpxviewer_local"]
     call_with_output(cmd, echo_stdout=True)
 
