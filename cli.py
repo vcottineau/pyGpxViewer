@@ -75,11 +75,11 @@ def tests():
 
 @cli.command()
 def locales():
-    click.echo("Compile with meson...")
+    click.echo("Update .pot file...")
     cmd = ["meson", "compile", "-C", "_build", "com.github.pygpxviewer-pot"]
     call_with_output(cmd, echo_stdout=True)
 
-    click.echo("Compile with meson...")
+    click.echo("Update .po files...")
     cmd = ["meson", "compile", "-C", "_build", "com.github.pygpxviewer-update-po"]
     call_with_output(cmd, echo_stdout=True)
 
