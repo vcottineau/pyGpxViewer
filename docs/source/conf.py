@@ -46,14 +46,6 @@ extensions = [
     'sphinx.ext.autodoc'
 ]
 
-# extensions = [
-#     'sphinx.ext.autodoc',
-#     'autoapi.extension'
-# ]
-
-# autoapi_type = 'python'
-# autoapi_dirs = [os.path.abspath('../../pygpxviewer')]
-
 templates_path = ['_templates']
 exclude_patterns = []
 

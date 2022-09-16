@@ -23,7 +23,6 @@ types-requests = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
 flake8-rst-docstrings = "*"
-sphinx-autoapi = "*"
 click = "*"
 
 [requires]
