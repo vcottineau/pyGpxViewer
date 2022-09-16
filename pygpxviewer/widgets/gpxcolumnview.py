@@ -29,16 +29,7 @@ from pygpxviewer.widgets.gpxdetailedview import GpxDetailedView
 
 
 class GpxItem(GObject.GObject):
-    """GpxItem is the item used to fill to Gio.ListStore.
-
-    Main properties are:
-        * id: SQLite database id
-        * path: File system path
-        * points: Number of track points
-        * length: Total distance in km
-        * up_hill: Total ascent in m
-        * down_hill: Total descent in m
-    """
+    """GpxItem is the item used to fill to Gio.ListStore."""
 
     __gtype_name__ = "GpxItem"
 
@@ -49,7 +40,22 @@ class GpxItem(GObject.GObject):
     up_hill = GObject.Property(type=float)
     down_hill = GObject.Property(type=float)
 
-    def __init__(self, id, path, points, length, up_hill, down_hill):
+    def __init__(self, id: int, path: str, points: int, length: float, up_hill: float, down_hill: float) -> None:
+        """Init method.
+
+        :param id: SQLite database id
+        :type id: int
+        :param path: File system path
+        :type path: str
+        :param points: Number of track points
+        :type points: int
+        :param length: Total distance in km
+        :type length: float
+        :param up_hill: Total ascent in m
+        :type up_hill: float
+        :param down_hill: Total descent in m
+        :type down_hill: float
+        """
         super().__init__()
 
         self.id = id

@@ -64,6 +64,7 @@ class Application(Adw.Application):
         self._app_window.present()
 
     def do_command_line(self, command_line):
+        """Command line handler."""
         options = command_line.get_options_dict()
         options = options.end().unpack()
         if "version" in options:

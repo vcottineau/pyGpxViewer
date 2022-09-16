@@ -59,6 +59,21 @@ def build():
 
 
 @cli.command()
+def tests():
+    click.echo("Run pytest...")
+    cmd = ["pytest"]
+    call_with_output(cmd, echo_stdout=True)
+
+    click.echo("Run pytest coverage...")
+    cmd = ["coverage", "run", "--source=pygpxviewer", "-m", "pytest"]
+    call_with_output(cmd, echo_stdout=True)
+
+    click.echo("Show pytest reports...")
+    cmd = ["coverage", "report", "-m"]
+    call_with_output(cmd, echo_stdout=True)
+
+
+@cli.command()
 def locales():
     click.echo("Compile with meson...")
     cmd = ["meson", "compile", "-C", "_build", "com.github.pygpxviewer-pot"]

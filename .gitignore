@@ -2,14 +2,13 @@
 __pycache__
 *.py[cod]
 
-# Code
+# Cache
 .idea
+.mypy_cache
+.pytest_cache
 
 # Build
 _build
-
-# Lint
-.mypy_cache
 
 # Resources
 resources/dem
