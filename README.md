@@ -37,6 +37,7 @@ directory:
 ```console
 meson setup _build
 meson compile -C _build
+meson test -C _build
 ```
 
 ## Run
