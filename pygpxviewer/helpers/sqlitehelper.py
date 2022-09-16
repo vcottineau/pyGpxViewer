@@ -61,11 +61,11 @@ class SQLiteHelper:
         with self._db_cur() as cur:
             cur.execute(sql, record)
 
-    def add_records(self, records: tuple) -> None:
+    def add_records(self, records: list[tuple]) -> None:
         """Add many records to the database.
 
         :param records: List of records
-        :type records: tuple
+        :type records: list[tuple]
         """
         sql = """
             INSERT INTO gpx(path,points,length,up_hill,down_hill)

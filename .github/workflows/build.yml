@@ -58,3 +58,4 @@ jobs:
         run: |
           pipenv run meson setup build
           pipenv run meson compile -C build
+          pipenv run meson test -C build

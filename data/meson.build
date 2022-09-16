@@ -26,7 +26,7 @@ configure_file(
 # Validating the appdata file
 appstream_util = find_program('appstream-util', required: false)
 if appstream_util.found()
-    test (
+    test(
         'Validate appdata file',
         appstream_util,
         args: ['validate-relax', join_paths(meson.current_build_dir (), APPLICATION_ID + '.appdata.xml')]
@@ -46,7 +46,7 @@ configure_file(
 # Validating the desktop file
 desktop_file_validate = find_program('desktop-file-validate', required:false)
 if desktop_file_validate.found()
-    test (
+    test(
         'Validate desktop file',
         desktop_file_validate,
         args: join_paths(meson.current_build_dir (), APPLICATION_ID + '.desktop')

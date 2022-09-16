@@ -6,12 +6,16 @@ __pycache__
 .idea
 .mypy_cache
 .pytest_cache
+.coverage
 
 # Build
 _build
 
+# Docs
+docs/build
+
+# Tests
+tests/test_sqlitehelper.db
+
 # Resources
 resources/dem
-
-# Documentation
-docs/build

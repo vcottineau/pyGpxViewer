@@ -89,4 +89,12 @@ gnome.post_install(
     update_desktop_database: true
 )
 
+pytest = find_program('pytest', required: false)
+test(
+  'Run pytest',
+  pytest,
+  args: ['pygpxviewer', 'tests/'],
+  workdir: join_paths(meson.project_source_root())
+)
+
 meson.add_postconf_script('build-aux/meson/postconf.py')

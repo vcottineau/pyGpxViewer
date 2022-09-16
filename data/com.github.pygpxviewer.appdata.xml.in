@@ -15,10 +15,10 @@
     </description>
     <screenshots>
         <screenshot type="default">
-            <image type="source">https://github.com/vcottineau/pyGpxViewer/blob/master/resources/app_window.png</image>
+            <image>https://raw.githubusercontent.com/vcottineau/pyGpxViewer/master/resources/app_window.png</image>
         </screenshot>
         <screenshot>
-            <image type="source">https://github.com/vcottineau/pyGpxViewer/blob/master/resources/app_window_details.png</image>
+            <image>https://raw.githubusercontent.com/vcottineau/pyGpxViewer/master/resources/app_window_details.png</image>
         </screenshot>
     </screenshots>
     <releases>

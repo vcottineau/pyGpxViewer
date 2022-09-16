@@ -57,14 +57,14 @@ def build():
     cmd = ["meson", "compile", "-C", "_build"]
     call_with_output(cmd, echo_stdout=True)
 
+    click.echo("Test with meson...")
+    cmd = ["meson", "test", "-C", "_build"]
+    call_with_output(cmd, echo_stdout=True)
+
 
 @cli.command()
 def tests():
     click.echo("Run pytest...")
-    cmd = ["pytest"]
-    call_with_output(cmd, echo_stdout=True)
-
-    click.echo("Run pytest coverage...")
     cmd = ["coverage", "run", "--source=pygpxviewer", "-m", "pytest"]
     call_with_output(cmd, echo_stdout=True)
 
