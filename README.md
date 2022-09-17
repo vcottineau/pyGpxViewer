@@ -28,7 +28,7 @@ pyGpxViewer depends on the following libraries:
 * gobject-introspection
 * libshumate-git
 
-## Virtual Environments
+## Environments
 
 pyGpxViewer uses [pipenv](https://pypi.org/project/pipenv/) to manage virtualenvs:
 
