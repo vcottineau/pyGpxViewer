@@ -20,6 +20,14 @@ files.
 pyGpxViewer uses [sphinx](https://www.sphinx-doc.org/en/master/) and [readthedocs](https://readthedocs.org/) to manage
 documentation: [pygpxviewer.readthedocs.io](https://pygpxviewer.readthedocs.io/en/latest/)
 
+## Dependencies
+
+pyGpxViewer depends on the following libraries:
+
+* gtk4
+* gobject-introspection
+* libshumate-git
+
 ## Virtual Environments
 
 pyGpxViewer uses [pipenv](https://pypi.org/project/pipenv/) to manage virtualenvs:
