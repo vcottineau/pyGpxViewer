@@ -29,7 +29,7 @@ pipenv shell
 pipenv update --dev
 ```
 
-## Build
+## Build & Test
 
 pyGpxViewer uses the [meson](https://mesonbuild.com/) build systems. Use the following commands to build from the source
 directory:
