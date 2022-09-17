@@ -39,8 +39,8 @@ pipenv update --dev
 
 ## Build & Test
 
-pyGpxViewer uses the [meson](https://mesonbuild.com/) build systems. Use the following commands to build from the source
-directory:
+pyGpxViewer uses the [meson](https://mesonbuild.com/) build systems.
+Use the following commands to build & test from the source directory:
 
 ```console
 meson setup _build
