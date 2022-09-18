@@ -26,7 +26,7 @@ pyGpxViewer depends on the following libraries:
 
 * gtk4
 * gobject-introspection
-* libshumate-git
+* libshumate
 
 ## Environments
 
