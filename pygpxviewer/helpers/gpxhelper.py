@@ -176,8 +176,9 @@ class GpxHelper:
         if elevation:
             self._set_gpx_elevations()
 
+        gpx_to_xml = self.gpx.to_xml()
         with open(self._gpx_file, 'w') as f:
-            f.write(self._gpx.to_xml())
+            f.write(gpx_to_xml)
 
     def _set_gpx_attributes(self) -> None:
         parser = etree.XMLParser(remove_blank_text=True)
