@@ -34,13 +34,13 @@ jobs:
         uses: actions/cache@v3
         with:
           path: libshumate
-          key: ${{ runner.os }}-libshumate-1.0.0
+          key: ${{ runner.os }}-libshumate-1.0.1
 
       - name: Clone libshumate
         if: steps.cache-libshumate.outputs.cache-hit != 'true'
         run: |
           rm -R libshumate
-          git clone --branch 1.0.0 https://gitlab.gnome.org/GNOME/libshumate.git
+          git clone --branch 1.0.1 https://gitlab.gnome.org/GNOME/libshumate.git
           cd libshumate
           meson setup build
           meson compile -C build
