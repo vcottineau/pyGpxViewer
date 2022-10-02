@@ -5,9 +5,10 @@
 # pyGpxViewer
 
 **pyGpxViewer** is a simple python applications based on [Gtk4](https://www.gtk.org/)
-, [libshumate](https://wiki.gnome.org/Projects/libshumate) and [matplotlib](https://matplotlib.org/).\
-[gpxpy](https://github.com/tkrajina/gpxpy) and [ViewFinder Panoramas](http://viewfinderpanoramas.org/dem3.html) (3DEM)
-are used to parse gpx files. Points of interest (POI) are given by [Refuges.info](https://www.refuges.info)
+, [libshumate](https://wiki.gnome.org/Projects/libshumate) and [matplotlib](https://matplotlib.org/):
+* [gpxpy](https://github.com/tkrajina/gpxpy) and [ViewFinder Panoramas](http://viewfinderpanoramas.org/dem3.html) (3DEM)
+are used to parse gpx files
+* Points of interest (POI) are given by [Refuges.info](https://www.refuges.info)
 
 <p align="center">
   <img src="../master/resources/app_window.png" width="400"/>
