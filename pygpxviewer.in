@@ -70,31 +70,41 @@ def set_resources():
     Gio.Resource._register(resource)
 
     resources_files = [
-        {"path": config.dem_file, "resource": "/json/dem.json", "schema": "/json/dem.jsonschema"},
-        {"path": config.map_file, "resource": "/json/map.json", "schema": "/json/map.jsonschema"}
+        {"type": "sqlite", "path": config.db_file, "resource": "/db/db.sqlite", "schema": None},
+        {"type": "json", "path": config.map_file, "resource": "/json/map.json", "schema": "/json/map.jsonschema"}
     ]
 
     for resource_file in resources_files:
-        add_resource_file(resource_file["path"], resource_file["resource"], resource_file["schema"])
+        if resource_file["type"] == "sqlite":
+            add_sqlite_resource_file(resource_file["path"], resource_file["resource"])
+        if resource_file["type"] == "json":
+            add_json_resource_file(resource_file["path"], resource_file["resource"], resource_file["schema"])
 
 
-def add_resource_file(path, resource, schema):
+def add_sqlite_resource_file(path, resource):
+    from pygpxviewer import utils
+
+    if not path.exists():
+        resource = utils.get_resource(resource)
+        open(path, 'wb').write(resource)
+
+
+def add_json_resource_file(path, resource, schema):
     from pygpxviewer.logger import Logger
     from pygpxviewer import utils
 
     logger = Logger()
-    resource = utils.get_resource_as_string(resource)
-    schema = utils.get_resource_as_string(schema)
+    resource = utils.get_resource(resource, decode=True)
+    schema = utils.get_resource(schema, decode=True)
 
     if not path.exists():
         logger.info(f"json file is not valid: {path}")
         open(path, 'w').write(resource)
-    else:
-        resource = open(path, 'r').read()
+        return
 
     try:
         schema_json = json.loads(schema)
-        resource_json = json.loads(resource)
+        resource_json = json.loads(open(path, 'r').read())
         jsonschema.validate(resource_json, schema_json)
     except:
         logger.warning(f"json file is not valid: {path}")

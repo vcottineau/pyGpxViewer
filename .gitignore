@@ -19,3 +19,5 @@ tests/test_sqlitehelper.db
 
 # Resources
 resources/dem
+resources/poi
+resources/db

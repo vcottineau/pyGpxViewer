@@ -19,7 +19,6 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
-import json
 import math
 from typing import Optional
 
@@ -31,6 +30,7 @@ from lxml import etree
 
 from pygpxviewer import config, utils
 from pygpxviewer.helpers.downloadhelper import DownloadHelper
+from pygpxviewer.helpers.sqlitehelper import SQLiteHelper
 
 
 class GpxHelper:
@@ -184,7 +184,7 @@ class GpxHelper:
         parser = etree.XMLParser(remove_blank_text=True)
 
         tree = etree.parse(self._gpx_file, parser)
-        xslt = etree.fromstring(utils.get_resource_as_string("/xslt/stylesheet.xslt"))
+        xslt = etree.fromstring(utils.get_resource("/xslt/stylesheet.xslt", decode=True))
 
         tree = tree.xslt(xslt)
         root = tree.getroot()
@@ -246,23 +246,19 @@ class GpxHelper:
         for hgt_file in hgt_files:
             if not config.dem_path.joinpath(hgt_file).is_file():
                 missing_hgt_files.append(hgt_file)
+
         if missing_hgt_files:
-            urls = self._get_hgt_file_urls(missing_hgt_files)
+            sqlite_helper = SQLiteHelper()
+            records = sqlite_helper.search_dem_record(missing_hgt_files)
+
+            urls = []
+            for record in records:
+                urls.append(
+                    {"folder": record[0], "size": int(record[1]), "link": record[2]}
+                )
+
             download_helper = DownloadHelper(urls)
             download_helper.fetch_urls()
-
-    def _get_hgt_file_urls(self, hgt_files):
-        with open(config.dem_file) as json_file:
-            json_data = json.load(json_file)
-
-        urls = {}
-        for fragment in json_data:
-            for fragment_file in fragment["files"]:
-                if fragment_file in hgt_files:
-                    urls[fragment["name"]] = {
-                        "link": fragment["link"], "size": fragment["size"]
-                    }
-        return urls
 
     def _get_elevation(self, latitude: float, longitude: float) -> Optional[int]:
         hgt_file_name = self._get_hgt_file_name(latitude, longitude)

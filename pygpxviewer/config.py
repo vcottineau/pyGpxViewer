@@ -26,8 +26,7 @@ cache_path = home_path.joinpath(".cache", "pygpxviewer")
 config_path = home_path.joinpath(".config", "pygpxviewer")
 dem_path = cache_path.joinpath("dem")
 
-dem_file = cache_path.joinpath("dem.json")
-db_file = cache_path.joinpath("sqlite.db")
+db_file = cache_path.joinpath("db.sqlite")
 map_file = config_path.joinpath("map.json")
 
 for path in [cache_path, config_path, dem_path]:

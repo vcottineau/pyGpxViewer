@@ -40,14 +40,14 @@ class WorkerUpdateRecords(threading.Thread):
     def run(self):
         """Get gpx file content and update database for many gpx files."""
         sqlite_helper = SQLiteHelper()
-        sqlite_helper.clear_records()
+        sqlite_helper.clear_gpx_records()
 
         records = []
         for gpx_file in pathlib.Path(self.folder_path).glob("**/*.gpx"):
             gpx_helper = GpxHelper(gpx_file)
             records.append(gpx_helper.get_gpx_details())
 
-        sqlite_helper.add_records(records)
+        sqlite_helper.add_gpx_records(records)
         GObject.idle_add(self.callback)
 
 
@@ -73,5 +73,5 @@ class WorkerUpdateRecord(threading.Thread):
         gpx_helper.set_gpx_details(clean_headers, clean_attributes, elevation, simplify)
         record = gpx_helper.get_gpx_details()
 
-        sqlite_helper.update_record(self.selected_item.id, record)
+        sqlite_helper.update_gpx_record(self.selected_item.id, record)
         GObject.idle_add(self.callback, self.selected_item, record)

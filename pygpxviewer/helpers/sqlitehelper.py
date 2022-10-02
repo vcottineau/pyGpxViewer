@@ -42,13 +42,13 @@ class SQLiteHelper:
         with self._db_cur() as cur:
             cur.execute(sql)
 
-    def clear_records(self):
+    def clear_gpx_records(self):
         """Clear all records of the database."""
         sql = "DELETE from gpx"
         with self._db_cur() as cur:
             cur.execute(sql)
 
-    def add_record(self, record: tuple) -> None:
+    def add_gpx_record(self, record: tuple) -> None:
         """Add a single record to the database.
 
         :param record: Single record
@@ -61,7 +61,7 @@ class SQLiteHelper:
         with self._db_cur() as cur:
             cur.execute(sql, record)
 
-    def add_records(self, records: list[tuple]) -> None:
+    def add_gpx_records(self, records: list[tuple]) -> None:
         """Add many records to the database.
 
         :param records: List of records
@@ -74,7 +74,7 @@ class SQLiteHelper:
         with self._db_cur() as cur:
             cur.executemany(sql, records)
 
-    def update_record(self, id: int, record: tuple) -> None:
+    def update_gpx_record(self, id: int, record: tuple) -> None:
         """Update a single record based on his id.
 
         :param id: Id of the record
@@ -95,7 +95,7 @@ class SQLiteHelper:
         with self._db_cur() as cur:
             cur.execute(sql)
 
-    def get_records(self) -> tuple:
+    def get_gpx_records(self) -> tuple:
         """Get all records.
 
         :returns: List of records
@@ -111,10 +111,10 @@ class SQLiteHelper:
             records = cur.fetchall()
         return records
 
-    def search_records(self, search_entry: str) -> tuple:
+    def search_gpx_records(self, search_entry: str) -> tuple:
         """Get records with a text filter.
 
-        :param search_entry:
+        :param search_entry: Text filter
         :type search_entry: str
         :returns: List of records
         :rtype: tuple
@@ -125,6 +125,26 @@ class SQLiteHelper:
                 gpx.path LIKE '%{search_entry}%'
             ORDER BY
                 gpx.path
+        """
+        with self._db_cur() as cur:
+            cur.execute(sql)
+            records = cur.fetchall()
+        return records
+
+    def search_dem_record(self, hgt_files: list[str]) -> tuple:
+        """Get hgt file links from name.
+
+        :param hgt_files: List of hgt file names
+        :type hgt_files: list[str]
+        :returns: List of records
+        :rtype: tuple
+        """
+        hgt_files.append('')
+        sql = f"""
+            SELECT zip.folder, zip.size, zip.link FROM zip
+            INNER JOIN dem
+                ON dem.zip_id = zip.id
+            WHERE hgt IN {tuple(hgt_files)}
         """
         with self._db_cur() as cur:
             cur.execute(sql)

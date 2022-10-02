@@ -43,18 +43,17 @@ class DownloadHelper:
         :return: size in MB
         :rtype: float
         """
-        size = [int(self._urls[url]["size"]) for url in self._urls]
+        size = [int(url["size"]) for url in self._urls]
         return round(sum(size) / 1000 / 1000, 1)
 
     def fetch_urls(self):
         """Download and extract zip files from the web."""
         zip_path = config.dem_path.joinpath("tmp.zip")
         for url in self._urls:
-            name = url
-            link = self._urls[url]["link"]
-            size = round(self._urls[url]['size'] / 1000 / 1000, 1)
-
-            logger.info(_(f"Name: {name}, Size: {size} MB"))
+            folder = url["folder"]
+            link = url["link"]
+            size = round(url['size'] / 1000 / 1000, 1)
+            logger.info(_(f"Folder: {folder}, Size: {size} MB"))
 
             try:
                 r = requests.get(link, allow_redirects=True)

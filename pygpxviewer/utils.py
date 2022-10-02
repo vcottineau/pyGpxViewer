@@ -19,20 +19,25 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
+from typing import Union
 
-from gi.repository import Gio, Gtk
+from gi.repository import Gio, GLib, Gtk
 
 
-def get_resource_as_string(path: str) -> str:
+def get_resource(path: str, decode: bool = False) -> Union[str, GLib.Bytes]:
     """Get a resource file as string.
 
     :param path: Path of the resource file
     :type path: str
+    :param decode: Get resource file as string
+    :type decode: bool
     :returns: Resource file as string
-    :rtype: str
+    :rtype: Union[str, GLib.Bytes]
     """
     resource = Gio.resources_lookup_data("/com/github/pygpxviewer" + path, Gio.ResourceLookupFlags.NONE)
-    return resource.get_data().decode('utf-8')
+    if decode:
+        return resource.get_data().decode('utf-8')
+    return resource.get_data()
 
 
 def is_dark_theme_enable() -> bool:

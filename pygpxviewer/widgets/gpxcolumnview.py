@@ -105,9 +105,9 @@ class GpxColumnView(Gtk.ColumnView):
         """
         self._list_store.remove_all()
         if search_entry:
-            records = self._sqlitehelper.search_records(search_entry)
+            records = self._sqlitehelper.search_gpx_records(search_entry)
         else:
-            records = self._sqlitehelper.get_records()
+            records = self._sqlitehelper.get_gpx_records()
         for record in records:
             id, path, points, length, up_hill, down_hill = record
             gpx_item = GpxItem(id, path, points, length, up_hill, down_hill)
@@ -133,7 +133,8 @@ class GpxColumnView(Gtk.ColumnView):
 
         buttons = [
             {"icon": "mark-location-symbolic", "callback": self._on_button_view_clicked},
-            {"icon": "view-refresh-symbolic", "callback": self._on_button_refresh_clicked}
+            {"icon": "view-refresh-symbolic", "callback": self._on_button_refresh_clicked},
+            {"icon": "user-trash-symbolic", "callback": self._on_button_trash_clicked}
         ]
         for button in buttons:
             action_button = Gtk.Button().new_from_icon_name(button["icon"])
@@ -159,6 +160,9 @@ class GpxColumnView(Gtk.ColumnView):
         app_detailed_view = GpxDetailedView(selected_item.path)
         app_detailed_view.props.transient_for = self._window
         app_detailed_view.present()
+
+    def _on_button_trash_clicked(self, button: Gtk.Button, list_item: Gtk.ListItem) -> None:
+        raise NotImplementedError
 
     def _on_button_refresh_clicked(self, button: Gtk.Button, list_item: Gtk.ListItem) -> None:
         selected_item = self._get_selected_item(list_item)

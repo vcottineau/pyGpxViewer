@@ -32,7 +32,7 @@ class SQLiteHelperInMemory(SQLiteHelper):
     def __init__(self):
         super().__init__()
 
-        self.clear_records()
+        self.clear_gpx_records()
 
     @contextmanager
     def _db_cur(self):
@@ -46,7 +46,7 @@ class SQLiteHelperInMemory(SQLiteHelper):
 @pytest.fixture
 def sqlite_helper_with_record():
     sqlite_helper = SQLiteHelperInMemory()
-    sqlite_helper.add_record(
+    sqlite_helper.add_gpx_record(
         ("path_01", 100, 25.0, 100.0, 100.0)
     )
     yield sqlite_helper
@@ -55,7 +55,7 @@ def sqlite_helper_with_record():
 @pytest.fixture
 def sqlite_helper_with_records():
     sqlite_helper = SQLiteHelperInMemory()
-    sqlite_helper.add_records(
+    sqlite_helper.add_gpx_records(
         [
             ("path_01", 100, 25.0, 100.0, 100.0),
             ("path_02", 200, 50.0, 200.0, 200.0)
@@ -73,18 +73,18 @@ class TestSQLiteHelper:
         assert "gpx" in res[0]
 
     def test_get_records(self, sqlite_helper_with_records):
-        records = sqlite_helper_with_records.get_records()
+        records = sqlite_helper_with_records.get_gpx_records()
         assert len(records) == 2
 
     def test_add_records(self, sqlite_helper_with_record):
-        records = sqlite_helper_with_record.get_records()
+        records = sqlite_helper_with_record.get_gpx_records()
         assert len(records) == 1
 
     def test_update_record(self, sqlite_helper_with_record):
-        sqlite_helper_with_record.update_record(
+        sqlite_helper_with_record.update_gpx_record(
             1, ("path_01", 200, 50.0, 200.0, 200.0)
         )
-        records = sqlite_helper_with_record.get_records()
+        records = sqlite_helper_with_record.get_gpx_records()
         assert records[0][1] == "path_01"
         assert records[0][2] == 200
         assert records[0][3] == 50.0
@@ -92,7 +92,7 @@ class TestSQLiteHelper:
         assert records[0][5] == 200.0
 
     def test_search_records(self, sqlite_helper_with_records):
-        records = sqlite_helper_with_records.search_records("path_02")
+        records = sqlite_helper_with_records.search_gpx_records("path_02")
         assert records[0][1] == "path_02"
         assert records[0][2] == 200
         assert records[0][3] == 50.0
