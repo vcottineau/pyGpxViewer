@@ -40,7 +40,7 @@ jobs:
         if: steps.cache-libshumate.outputs.cache-hit != 'true'
         run: |
           rm -rf libshumate
-          git clone --branch 1.0.1 https://gitlab.gnome.org/GNOME/libshumate.git
+          git clone --branch 1.0.2 https://gitlab.gnome.org/GNOME/libshumate.git
           cd libshumate
           meson setup build
           meson compile -C build
