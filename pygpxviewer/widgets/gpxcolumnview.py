@@ -147,13 +147,19 @@ class GpxColumnView(Gtk.ColumnView):
 
     def _factory_bind(self, factory: Gtk.SignalListItemFactory, list_item: Gtk.ListItem, property_name: str) -> None:
         label = list_item.get_child()
-        data = list_item.get_item()
+        item = list_item.get_item()
+        item.connect(f"notify::{property_name}", self._on_item_property_change, label)
+        self._set_label_text(item, property_name, label)
+
+    def _on_item_property_change(self, item: GpxItem, gparamstring: GObject.ParamSpec, label: Gtk.Label) -> None:
+        self._set_label_text(item, gparamstring.name, label)
+
+    def _set_label_text(self, item: GpxItem, property_name: str, label: Gtk.Label) -> None:
         if property_name == "path":
-            value = data.get_property(property_name).replace(self._window.folder_path, "")
-            label.set_text(value)
+            property_value = item.get_property(property_name).replace(self._window.folder_path, "")
         else:
-            value = str(round(data.get_property(property_name)))
-            label.set_text(value)
+            property_value = str(round(item.get_property(property_name)))
+        label.set_text(property_value)
 
     def _on_button_view_clicked(self, button: Gtk.Button, list_item: Gtk.ListItem) -> None:
         selected_item = self._get_selected_item(list_item)

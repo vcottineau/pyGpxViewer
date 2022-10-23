@@ -34,7 +34,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: libshumate
-          key: ${{ runner.os }}-libshumate-1.0.1
+          key: ${{ runner.os }}-libshumate-1.0.2
 
       - name: Clone libshumate
         if: steps.cache-libshumate.outputs.cache-hit != 'true'
