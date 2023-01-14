@@ -4,7 +4,7 @@ on: [ push ]
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
@@ -34,13 +34,13 @@ jobs:
         uses: actions/cache@v3
         with:
           path: libshumate
-          key: ${{ runner.os }}-libshumate-1.0.2
+          key: ${{ runner.os }}-libshumate-1.0.3
 
       - name: Clone libshumate
         if: steps.cache-libshumate.outputs.cache-hit != 'true'
         run: |
           rm -rf libshumate
-          git clone --branch 1.0.2 https://gitlab.gnome.org/GNOME/libshumate.git
+          git clone --branch 1.0.3 https://gitlab.gnome.org/GNOME/libshumate.git
           cd libshumate
           meson setup build
           meson compile -C build
