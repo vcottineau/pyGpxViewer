@@ -33,7 +33,7 @@ LOCALE_DIR = join_paths(get_option('prefix'), get_option('datadir'), 'locale')
 # Dependencies
 dependency('glib-2.0', version: '>= 2.72.4')
 dependency('gio-2.0', version: '>= 2.72.4')
-dependency('gtk4', version: '>= 4.8.3')
+dependency('gtk4', version: '>= 4.6.6')
 dependency('gobject-introspection-1.0', version: '>= 1.74.0')
 dependency('shumate-1.0', version: '>= 1.0.3')
 
