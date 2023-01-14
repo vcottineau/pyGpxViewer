@@ -23,6 +23,7 @@ import math
 
 from gi.repository import Gio, GObject, Gtk, Shumate
 
+from pygpxviewer.helpers.sqlitehelper import SQLiteHelper
 from pygpxviewer.widgets.elevationprofile import ElevationProfile
 
 
@@ -40,8 +41,13 @@ class ShumateMap(Shumate.SimpleMap):
         super().__init__()
 
         self._settings = Gio.Settings.new("com.github.pygpxviewer.app.window.detailed.map")
-        self._gpx_helper = window.gpx_helper
 
+        self._gpx_helper = window.gpx_helper
+        self._bounds = self._gpx_helper.gpx.get_bounds()
+
+        self._refuge_layer = None
+        self._hut_layer = None
+        self._water_layer = None
         self._path_layer = None
         self._marker_layer = None
         self._marker = None
@@ -106,12 +112,10 @@ class ShumateMap(Shumate.SimpleMap):
             radians = math.atan(math.sinh(latitude_derivation * 2 * math.pi))
             return math.degrees(radians)
 
-        bounds = self._gpx_helper.gpx.get_bounds()
-
-        min_latitude = bounds.min_latitude
-        min_longitude = bounds.min_longitude
-        max_latitude = bounds.max_latitude
-        max_longitude = bounds.max_longitude
+        min_latitude = self._bounds.min_latitude
+        min_longitude = self._bounds.min_longitude
+        max_latitude = self._bounds.max_latitude
+        max_longitude = self._bounds.max_longitude
 
         min_latitude_derivation = get_latitude_derivation(min_latitude)
         max_latitude_derivation = get_latitude_derivation(max_latitude)
@@ -147,16 +151,49 @@ class ShumateMap(Shumate.SimpleMap):
         self.set_map_source(map_source)
 
     def _set_layers(self):
+        self._refuge_layer = Shumate.MarkerLayer().new(self.get_viewport())
+        self._hut_layer = Shumate.MarkerLayer().new(self.get_viewport())
+        self._water_layer = Shumate.MarkerLayer().new(self.get_viewport())
         self._path_layer = Shumate.PathLayer().new(self.get_viewport())
         self._marker_layer = Shumate.MarkerLayer().new(self.get_viewport())
 
+        # Refuge, hut & water layer
+        sqlitehelper = SQLiteHelper()
+        layers = [
+            {"type": "refuge", "layer": self._refuge_layer, "css": "marker_refuge"},
+            {"type": "hut", "layer": self._hut_layer, "css": "marker_hut"},
+            {"type": "water", "layer": self._water_layer, "css": "marker_water"}
+        ]
+        for layer in layers:
+            records = sqlitehelper.search_pois_records(
+                layer["type"],
+                (self._bounds.min_latitude, self._bounds.min_longitude,
+                 self._bounds.max_latitude, self._bounds.max_longitude))
+            for record in records:
+                marker = Shumate.Marker().new()
+                marker.set_location(record[4], record[5])
+
+                marker_image = Gtk.Image().new_from_icon_name("media-record-symbolic")
+                marker_image.set_pixel_size(10)
+
+                context = marker_image.get_style_context()
+                Gtk.StyleContext.add_class(context, layer["css"])
+
+                marker.set_child(marker_image)
+                layer["layer"].add_marker(marker)
+
+        # Path layer
         locations = self._gpx_helper.get_gpx_locations()
         for location in locations:
             self._path_layer.add_node(Shumate.Coordinate().new_full(location[0], location[1]))
 
+        # Marker layer
         self._marker.set_location(locations[0][0], locations[0][1])
         self._marker_layer.add_marker(self._marker)
 
+        # self.add_overlay_layer(self._refuge_layer)
+        # self.add_overlay_layer(self._hut_layer)
+        # self.add_overlay_layer(self._water_layer)
         self.add_overlay_layer(self._path_layer)
         self.add_overlay_layer(self._marker_layer)
 

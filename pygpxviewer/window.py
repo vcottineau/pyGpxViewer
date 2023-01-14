@@ -158,6 +158,12 @@ class Window(Adw.ApplicationWindow):
         window_settings.present()
 
     def _about(self, action: Gio.SimpleAction, param: Optional[GLib.Variant]) -> None:
-        # ToDo: Add AboutWindow
-        # https://gnome.pages.gitlab.gnome.org/libadwaita/doc/main/class.AboutWindow.html
-        pass
+        about_window = Adw.AboutWindow(
+            application_name="pyGpxViewer",
+            application_icon=self._app.props.application_id,
+            version=self._app._version,
+            license_type=Gtk.License.MIT_X11,
+            issue_url="https://github.com/vcottineau/pyGpxViewer/issues",
+            website="https://github.com/vcottineau/pyGpxViewer"
+        )
+        about_window.show()

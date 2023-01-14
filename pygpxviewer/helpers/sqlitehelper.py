@@ -151,6 +151,30 @@ class SQLiteHelper:
             records = cur.fetchall()
         return records
 
+    def search_pois_records(self, layer: str, bounds: tuple) -> tuple:
+        """Get POIs from layer type and boundaries.
+
+        :param layer: Type of the layer
+        :type layer: str
+        :param bounds: Path boundaries
+        :type bounds: tuple
+        :return: List of records
+        :rtype: tuple
+        """
+        sql = f"""
+            SELECT * FROM poi
+            WHERE
+                poi.type = '{layer}' AND
+                poi.lat >= {bounds[0]} AND
+                poi.lng >= {bounds[1]} AND
+                poi.lat <= {bounds[2]} AND
+                poi.lng <= {bounds[3]}
+        """
+        with self._db_cur() as cur:
+            cur.execute(sql)
+            records = cur.fetchall()
+        return records
+
     @contextmanager
     def _db_cur(self):
         conn = sqlite3.connect(config.db_file)

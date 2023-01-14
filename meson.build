@@ -1,6 +1,6 @@
 project('pygpxviewer',
     version: '1.0',
-    meson_version: '>= 0.63.0'
+    meson_version: '>= 1.0.0'
 )
 
 # Importing modules
@@ -16,9 +16,9 @@ if not py_installation.found()
     error('No valid python3 binary found')
 endif
 
-# Python 3.7 is needed for postponed evalution of annotations
-if not py_installation.language_version().version_compare('>= 3.7')
-    error('Python 3.7 or newer is required.')
+# Python 3.10 is needed for postponed evaluation of annotations
+if not py_installation.language_version().version_compare('>= 3.10')
+    error('Python 3.10 or newer is required.')
 endif
 
 # Constants
@@ -31,11 +31,11 @@ PKGLIB_DIR = join_paths(get_option('prefix'), get_option('libdir'), APPLICATION_
 LOCALE_DIR = join_paths(get_option('prefix'), get_option('datadir'), 'locale')
 
 # Dependencies
-dependency('glib-2.0', version: '>= 2.72.1')
-dependency('gio-2.0', version: '>= 2.72.1')
-dependency('gtk4', version: '>= 4.6.6')
-dependency('gobject-introspection-1.0', version: '>= 1.72.0')
-dependency('shumate-1.0', version: '>= 1.0.2')
+dependency('glib-2.0', version: '>= 2.74.4')
+dependency('gio-2.0', version: '>= 2.74.4')
+dependency('gtk4', version: '>= 4.8.3')
+dependency('gobject-introspection-1.0', version: '>= 1.74.0')
+dependency('shumate-1.0', version: '>= 1.0.3')
 
 subdir('data')
 subdir('po')
