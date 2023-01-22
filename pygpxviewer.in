@@ -2,7 +2,7 @@
 
 #  MIT License
 #
-#  Copyright (c) 2022 Vincent Cottineau
+#  Copyright (c) 2023 Vincent Cottineau
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a copy
 #  of this software and associated documentation files (the "Software"), to deal
@@ -31,21 +31,20 @@ import sys
 
 import jsonschema
 
-if bool('@local_build@'):
-    sys.path.insert(1, '@pythondir@')
-    os.environ["XDG_DATA_DIRS"] = '@schemasdir@:' + os.environ.get("XDG_DATA_DIRS", "/usr/share")
-
-    # icon_theme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default())
-    # icon_theme.add_search_path("@schemasdir@" + '/icons')
-else:
-    sys.path.append('@pkgdatadir@')
-
 import gi
-
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 gi.require_version('Shumate', '1.0')
-from gi.repository import Gio, Adw
+from gi.repository import Gio, Adw, Gtk, Gdk
+
+if bool(@local_build@):
+    sys.path.insert(1, '@pythondir@')
+    os.environ["XDG_DATA_DIRS"] = '@schemasdir@:' + os.environ.get("XDG_DATA_DIRS", "/usr/share")
+
+    icon_theme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default())
+    icon_theme.add_search_path("@schemasdir@" + '/icons')
+else:
+    sys.path.append('@pkgdatadir@')
 
 Adw.init()
 

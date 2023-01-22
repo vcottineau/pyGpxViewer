@@ -33,6 +33,7 @@ class SQLiteHelper:
             CREATE TABLE IF NOT EXISTS gpx (
                 id INTEGER PRIMARY KEY,
                 path TEXT NOT NULL,
+                mode INTEGER,
                 points INTEGER,
                 length REAL,
                 up_hill REAL,
@@ -55,8 +56,8 @@ class SQLiteHelper:
         :type record: tuple
         """
         sql = """
-            INSERT INTO gpx(path,points,length,up_hill,down_hill)
-                VALUES(?,?,?,?,?)
+            INSERT INTO gpx(path,mode,points,length,up_hill,down_hill)
+                VALUES(?,?,?,?,?,?)
         """
         with self._db_cur() as cur:
             cur.execute(sql, record)
@@ -68,8 +69,8 @@ class SQLiteHelper:
         :type records: list[tuple]
         """
         sql = """
-            INSERT INTO gpx(path,points,length,up_hill,down_hill)
-                VALUES(?,?,?,?,?)
+            INSERT INTO gpx(path,mode,points,length,up_hill,down_hill)
+                VALUES(?,?,?,?,?,?)
         """
         with self._db_cur() as cur:
             cur.executemany(sql, records)
@@ -85,10 +86,11 @@ class SQLiteHelper:
         sql = f"""
             UPDATE gpx
             SET
-                points = {record[1]},
-                length = {record[2]},
-                up_hill = {record[3]},
-                down_hill = {record[4]}
+                mode = {record[1]},
+                points = {record[2]},
+                length = {record[3]},
+                up_hill = {record[4]},
+                down_hill = {record[5]}
             WHERE
                 id = '{id}'
         """

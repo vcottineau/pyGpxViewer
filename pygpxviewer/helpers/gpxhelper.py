@@ -20,6 +20,7 @@
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
 import math
+import os
 from typing import Optional
 
 import gpxpy
@@ -69,6 +70,7 @@ class GpxHelper:
 
         Main properties are:
             * path: File system path
+            * mode: Traveling mode
             * points: Number of track points
             * length: Total distance in km
             * up_hill: Total ascent in m
@@ -79,6 +81,7 @@ class GpxHelper:
         """
         return (
             str(self._gpx_file),
+            self.get_gpx_mode(),
             self.gpx.get_points_no(),
             self.gpx.length_3d() / 1000,
             self.gpx.get_uphill_downhill()[0],
@@ -165,10 +168,10 @@ class GpxHelper:
         :type elevation: bool
         """
         if clean_attributes:
-            self._set_gpx_attributes()
+            self._clean_attributes()
 
         if clean_headers:
-            self._set_gpx_headers()
+            self._clean_headers()
 
         if simplify:
             self.gpx.simplify(5)
@@ -176,11 +179,32 @@ class GpxHelper:
         if elevation:
             self._set_gpx_elevations()
 
+        self._set_attributes()
+        self._save_gpx()
+
+    def get_gpx_mode(self) -> int:
+        """Get mode attributes of a gpx file."""
+        mode = self.gpx.keywords
+        if mode not in ["0", "1"]:
+            mode = "2"
+
+        return int(mode)
+
+    def set_gpx_mode(self, mode):
+        """Set mode attributes to a gpx file.
+
+        :param mode: Traveling mode
+        :type mode: str
+        """
+        self.gpx.keywords = str(mode)
+        self._save_gpx()
+
+    def _save_gpx(self):
         gpx_to_xml = self.gpx.to_xml()
         with open(self._gpx_file, 'w') as f:
             f.write(gpx_to_xml)
 
-    def _set_gpx_attributes(self) -> None:
+    def _clean_attributes(self) -> None:
         parser = etree.XMLParser(remove_blank_text=True)
 
         tree = etree.parse(self._gpx_file, parser)
@@ -190,7 +214,7 @@ class GpxHelper:
         root = tree.getroot()
 
         # Single occurrence
-        for node_name in [".//metadata", ".//type", ".//number", ".//cmt"]:
+        for node_name in [".//type", ".//number", ".//cmt"]:
             node = root.find(node_name, namespaces=root.nsmap)
             if node is not None:
                 node.getparent().remove(node)
@@ -205,7 +229,14 @@ class GpxHelper:
         tree.write(self._gpx_file, pretty_print=True)
         self._update = True
 
-    def _set_gpx_headers(self) -> None:
+    def _set_attributes(self) -> None:
+        _, _, _, length, up_hill, down_hill = self.get_gpx_details()
+
+        self.gpx.name = os.path.basename(self._gpx_file)
+        self.gpx.description = f"Length={round(length)}km, UpHill={round(up_hill)}m, DownHill={round(down_hill)}m"
+        self.gpx.bounds = self.gpx.get_bounds()
+
+    def _clean_headers(self) -> None:
         self.gpx.schema_locations = [
             "http://www.topografix.com/GPX/1/1",
             "http://www.topografix.com/GPX/1/1/gpx.xsd"

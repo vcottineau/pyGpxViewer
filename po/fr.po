@@ -1,12 +1,12 @@
 #
-# Vincent Cottineau <vcottineau@pm.me>, 2022.
+# Vincent Cottineau <vcottineau@pm.me>, 2022-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \"pygpxviewer\" 1.0\n"
 "Report-Msgid-Bugs-To: vcottineau@pm.me\n"
-"POT-Creation-Date: 2022-09-12 18:36+0200\n"
-"PO-Revision-Date: 2022-09-11 20:36+0200\n"
+"POT-Creation-Date: 2023-01-22 11:46+0100\n"
+"PO-Revision-Date: 2023-01-22 11:46+0100\n"
 "Last-Translator: Vincent Cottineau <vcottineau@pm.me>\n"
 "Language-Team: French <vcottineau@pm.me>\n"
 "Language: fr\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Generator: Gtranslator 40.0\n"
+"X-Generator: Gtranslator 42.0\n"
 
 #: data/ui/AppMenu.ui:16
 msgid "_Refresh"
@@ -36,24 +36,28 @@ msgstr "_À Propos"
 msgid "Path"
 msgstr "Chemin"
 
-#: data/ui/GpxColumnView.ui:36 data/ui/GpxDetailedView.ui:45
+#: data/ui/GpxColumnView.ui:36
+msgid "Mode"
+msgstr "Mode"
+
+#: data/ui/GpxColumnView.ui:53 data/ui/GpxDetailedView.ui:45
 msgid "Points (nb)"
 msgstr "Points (nb)"
 
-#: data/ui/GpxColumnView.ui:53 data/ui/GpxDetailedView.ui:71
+#: data/ui/GpxColumnView.ui:70 data/ui/GpxDetailedView.ui:71
 #: pygpxviewer/widgets/elevationprofile.py:83
 msgid "Length (km)"
 msgstr "Distance (km)"
 
-#: data/ui/GpxColumnView.ui:70 data/ui/GpxDetailedView.ui:53
+#: data/ui/GpxColumnView.ui:87 data/ui/GpxDetailedView.ui:53
 msgid "UpHill (m)"
 msgstr "Montée (m)"
 
-#: data/ui/GpxColumnView.ui:87 data/ui/GpxDetailedView.ui:79
+#: data/ui/GpxColumnView.ui:104 data/ui/GpxDetailedView.ui:79
 msgid "DownHill (m)"
 msgstr "Descente (m)"
 
-#: data/ui/GpxColumnView.ui:104
+#: data/ui/GpxColumnView.ui:121
 msgid "Actions"
 msgstr "Actions"
 
@@ -99,7 +103,7 @@ msgstr "Effacer"
 msgid "Show the current version of pygpxviewer"
 msgstr "Afficher la version courante de pygpxviewer"
 
-#: pygpxviewer/application.py:70
+#: pygpxviewer/application.py:71
 #, python-brace-format
 msgid "pygpxviewer {self._version}"
 msgstr "pygpxviewer {self._version}"
@@ -108,12 +112,12 @@ msgstr "pygpxviewer {self._version}"
 msgid "Select folder"
 msgstr "Dossier"
 
-#: pygpxviewer/helpers/downloadhelper.py:57
+#: pygpxviewer/helpers/downloadhelper.py:56
 #, python-brace-format
-msgid "Name: {name}, Size: {size} MB"
-msgstr "Nom: {name}, Taille: {size} MB"
+msgid "Folder: {folder}, Size: {size} MB"
+msgstr "Nom: {folder}, Taille: {size} MB"
 
-#: pygpxviewer/helpers/downloadhelper.py:86
+#: pygpxviewer/helpers/downloadhelper.py:85
 #, python-brace-format
 msgid "Files: {filenames}"
 msgstr "Fichiers: {filenames}"
@@ -133,6 +137,18 @@ msgstr "min: "
 #: pygpxviewer/widgets/elevationprofile.py:84
 msgid "Elevation (m)"
 msgstr "Altitude (m)"
+
+#: pygpxviewer/widgets/gpxcolumnview.py:134
+msgid "Hiking"
+msgstr "Randonnée"
+
+#: pygpxviewer/widgets/gpxcolumnview.py:134
+msgid "Cycling"
+msgstr "Vélo"
+
+#: pygpxviewer/widgets/gpxcolumnview.py:134
+msgid "Unknown"
+msgstr "Inconnu"
 
 #: pygpxviewer/widgets/windowsettings.py:46
 msgid "Settings"

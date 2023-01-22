@@ -97,7 +97,7 @@ class GpxDetailedView(Adw.Window):
         self._settings.bind("is-maximized", self, "maximized", Gio.SettingsBindFlags.DEFAULT)
         self._settings.bind("is-fullscreen", self, "fullscreened", Gio.SettingsBindFlags.DEFAULT)
 
-        _, points, length, up_hill, down_hill = self._gpx_helper.get_gpx_details()
+        _, mode, points, length, up_hill, down_hill = self._gpx_helper.get_gpx_details()
         self._points_label.set_text(str(points))
         self._length_label.set_text(str(round(length)))
         self._up_hill_label.set_text(str(round(up_hill)))

@@ -53,6 +53,10 @@ def build():
     cmd = ["mypy", "--strict-equality", "--ignore-missing-imports", "--disallow-incomplete-defs", "pygpxviewer"]
     call_with_output(cmd, echo_stdout=True)
 
+    click.echo("Setup meson...")
+    cmd = ["meson", "setup", "_build"]
+    call_with_output(cmd, echo_stdout=True)
+
     click.echo("Compile with meson...")
     cmd = ["meson", "compile", "-C", "_build"]
     call_with_output(cmd, echo_stdout=True)

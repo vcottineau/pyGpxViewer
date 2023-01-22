@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \"pygpxviewer\" 1.0\n"
 "Report-Msgid-Bugs-To: vcottineau@pm.me\n"
-"POT-Creation-Date: 2022-09-12 18:36+0200\n"
+"POT-Creation-Date: 2023-01-22 11:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,24 +37,28 @@ msgstr ""
 msgid "Path"
 msgstr ""
 
-#: data/ui/GpxColumnView.ui:36 data/ui/GpxDetailedView.ui:45
+#: data/ui/GpxColumnView.ui:36
+msgid "Mode"
+msgstr ""
+
+#: data/ui/GpxColumnView.ui:53 data/ui/GpxDetailedView.ui:45
 msgid "Points (nb)"
 msgstr ""
 
-#: data/ui/GpxColumnView.ui:53 data/ui/GpxDetailedView.ui:71
+#: data/ui/GpxColumnView.ui:70 data/ui/GpxDetailedView.ui:71
 #: pygpxviewer/widgets/elevationprofile.py:83
 msgid "Length (km)"
 msgstr ""
 
-#: data/ui/GpxColumnView.ui:70 data/ui/GpxDetailedView.ui:53
+#: data/ui/GpxColumnView.ui:87 data/ui/GpxDetailedView.ui:53
 msgid "UpHill (m)"
 msgstr ""
 
-#: data/ui/GpxColumnView.ui:87 data/ui/GpxDetailedView.ui:79
+#: data/ui/GpxColumnView.ui:104 data/ui/GpxDetailedView.ui:79
 msgid "DownHill (m)"
 msgstr ""
 
-#: data/ui/GpxColumnView.ui:104
+#: data/ui/GpxColumnView.ui:121
 msgid "Actions"
 msgstr ""
 
@@ -100,7 +104,7 @@ msgstr ""
 msgid "Show the current version of pygpxviewer"
 msgstr ""
 
-#: pygpxviewer/application.py:70
+#: pygpxviewer/application.py:71
 #, python-brace-format
 msgid "pygpxviewer {self._version}"
 msgstr ""
@@ -109,12 +113,12 @@ msgstr ""
 msgid "Select folder"
 msgstr ""
 
-#: pygpxviewer/helpers/downloadhelper.py:57
+#: pygpxviewer/helpers/downloadhelper.py:56
 #, python-brace-format
-msgid "Name: {name}, Size: {size} MB"
+msgid "Folder: {folder}, Size: {size} MB"
 msgstr ""
 
-#: pygpxviewer/helpers/downloadhelper.py:86
+#: pygpxviewer/helpers/downloadhelper.py:85
 #, python-brace-format
 msgid "Files: {filenames}"
 msgstr ""
@@ -133,6 +137,18 @@ msgstr ""
 
 #: pygpxviewer/widgets/elevationprofile.py:84
 msgid "Elevation (m)"
+msgstr ""
+
+#: pygpxviewer/widgets/gpxcolumnview.py:134
+msgid "Hiking"
+msgstr ""
+
+#: pygpxviewer/widgets/gpxcolumnview.py:134
+msgid "Cycling"
+msgstr ""
+
+#: pygpxviewer/widgets/gpxcolumnview.py:134
+msgid "Unknown"
 msgstr ""
 
 #: pygpxviewer/widgets/windowsettings.py:46
