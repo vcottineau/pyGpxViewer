@@ -47,7 +47,7 @@ class SQLiteHelperInMemory(SQLiteHelper):
 def sqlite_helper_with_record():
     sqlite_helper = SQLiteHelperInMemory()
     sqlite_helper.add_gpx_record(
-        ("path_01", 100, 25.0, 100.0, 100.0)
+        ("path_01", 0, 100, 25.0, 100.0, 100.0)
     )
     yield sqlite_helper
 
@@ -57,8 +57,8 @@ def sqlite_helper_with_records():
     sqlite_helper = SQLiteHelperInMemory()
     sqlite_helper.add_gpx_records(
         [
-            ("path_01", 100, 25.0, 100.0, 100.0),
-            ("path_02", 200, 50.0, 200.0, 200.0)
+            ("path_01", 0, 100, 25.0, 100.0, 100.0),
+            ("path_02", 0, 200, 50.0, 200.0, 200.0)
         ])
     yield sqlite_helper
 
@@ -82,19 +82,21 @@ class TestSQLiteHelper:
 
     def test_update_record(self, sqlite_helper_with_record):
         sqlite_helper_with_record.update_gpx_record(
-            1, ("path_01", 200, 50.0, 200.0, 200.0)
+            1, ("path_01", 0, 200, 50.0, 200.0, 200.0)
         )
         records = sqlite_helper_with_record.get_gpx_records()
         assert records[0][1] == "path_01"
-        assert records[0][2] == 200
-        assert records[0][3] == 50.0
-        assert records[0][4] == 200.0
+        assert records[0][2] == 0
+        assert records[0][3] == 200
+        assert records[0][4] == 50.0
         assert records[0][5] == 200.0
+        assert records[0][6] == 200.0
 
     def test_search_records(self, sqlite_helper_with_records):
         records = sqlite_helper_with_records.search_gpx_records("path_02")
         assert records[0][1] == "path_02"
-        assert records[0][2] == 200
-        assert records[0][3] == 50.0
-        assert records[0][4] == 200.0
+        assert records[0][2] == 0
+        assert records[0][3] == 200
+        assert records[0][4] == 50.0
         assert records[0][5] == 200.0
+        assert records[0][6] == 200.0

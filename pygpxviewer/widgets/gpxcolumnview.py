@@ -19,10 +19,12 @@
 #  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #  SOFTWARE.
+from gettext import gettext as _
 from typing import Optional, Tuple
 
 from gi.repository import Gio, GObject, Gtk, Pango
 
+from pygpxviewer.helpers.gpxhelper import GpxHelper
 from pygpxviewer.helpers.sqlitehelper import SQLiteHelper
 from pygpxviewer.threads.workers import WorkerUpdateRecord
 from pygpxviewer.widgets.gpxdetailedview import GpxDetailedView
@@ -35,18 +37,22 @@ class GpxItem(GObject.GObject):
 
     id = GObject.Property(type=int)
     path = GObject.Property(type=str)
+    mode = GObject.Property(type=int)
     points = GObject.Property(type=int)
     length = GObject.Property(type=float)
     up_hill = GObject.Property(type=float)
     down_hill = GObject.Property(type=float)
 
-    def __init__(self, id: int, path: str, points: int, length: float, up_hill: float, down_hill: float) -> None:
+    def __init__(self, id: int, path: str, mode: int, points: int,
+                 length: float, up_hill: float, down_hill: float) -> None:
         """Init method.
 
         :param id: SQLite database id
         :type id: int
         :param path: File system path
         :type path: str
+        :param mode: Traveling mode
+        :type mode: int
         :param points: Number of track points
         :type points: int
         :param length: Total distance in km
@@ -60,6 +66,7 @@ class GpxItem(GObject.GObject):
 
         self.id = id
         self.path = path
+        self.mode = mode
         self.points = points
         self.length = length
         self.up_hill = up_hill
@@ -80,6 +87,7 @@ class GpxColumnView(Gtk.ColumnView):
     _path_view_column = Gtk.Template.Child()
 
     _factory_path = Gtk.Template.Child()
+    _factory_mode = Gtk.Template.Child()
     _factory_points = Gtk.Template.Child()
     _factory_length = Gtk.Template.Child()
     _factory_up_hill = Gtk.Template.Child()
@@ -109,16 +117,24 @@ class GpxColumnView(Gtk.ColumnView):
         else:
             records = self._sqlitehelper.get_gpx_records()
         for record in records:
-            id, path, points, length, up_hill, down_hill = record
-            gpx_item = GpxItem(id, path, points, length, up_hill, down_hill)
+            id, path, mode, points, length, up_hill, down_hill = record
+            gpx_item = GpxItem(id, path, mode, points, length, up_hill, down_hill)
             self._list_store.append(gpx_item)
 
     def _setup_column_view(self):
-        self._factory_path.connect("bind", self._factory_bind, "path")
-        self._factory_points.connect("bind", self._factory_bind, "points")
-        self._factory_length.connect("bind", self._factory_bind, "length")
-        self._factory_up_hill.connect("bind", self._factory_bind, "up_hill")
-        self._factory_down_hill.connect("bind", self._factory_bind, "down_hill")
+        self._factory_path.connect("bind", self._factory_bind_label, "path")
+        self._factory_mode.connect("bind", self._factory_bind_dropdown, "mode")
+        self._factory_points.connect("bind", self._factory_bind_label, "points")
+        self._factory_length.connect("bind", self._factory_bind_label, "length")
+        self._factory_up_hill.connect("bind", self._factory_bind_label, "up_hill")
+        self._factory_down_hill.connect("bind", self._factory_bind_label, "down_hill")
+
+    @Gtk.Template.Callback()
+    def _factory_setup_dropdown(self, factory: Gtk.SignalListItemFactory, list_item: Gtk.ListItem) -> None:
+        modes = [_("Hiking"), _("Cycling"), _("Unknown")]
+        dropdown = Gtk.DropDown.new_from_strings(modes)
+        dropdown.connect("notify::selected", self._on_dropdown_mode_changed, list_item)
+        list_item.set_child(dropdown)
 
     @Gtk.Template.Callback()
     def _factory_setup_label(self, factory: Gtk.SignalListItemFactory, list_item: Gtk.ListItem) -> None:
@@ -145,14 +161,28 @@ class GpxColumnView(Gtk.ColumnView):
 
         list_item.set_child(box)
 
-    def _factory_bind(self, factory: Gtk.SignalListItemFactory, list_item: Gtk.ListItem, property_name: str) -> None:
+    def _factory_bind_dropdown(self, factory: Gtk.SignalListItemFactory, list_item: Gtk.ListItem,
+                               property_name: str) -> None:
+        dropdown = list_item.get_child()
+        item = list_item.get_item()
+
+        position = item.get_property(property_name)
+
+        if position not in [0, 1]:
+            position = 2
+
+        if position != dropdown.get_selected():
+            dropdown.set_selected(position)
+
+    def _factory_bind_label(self, factory: Gtk.SignalListItemFactory, list_item: Gtk.ListItem,
+                            property_name: str) -> None:
         label = list_item.get_child()
         item = list_item.get_item()
-        item.connect(f"notify::{property_name}", self._on_item_property_change, label)
+        # item.connect(f"notify::{property_name}", self._on_item_property_change, label)
         self._set_label_text(item, property_name, label)
 
-    def _on_item_property_change(self, item: GpxItem, gparamstring: GObject.ParamSpec, label: Gtk.Label) -> None:
-        self._set_label_text(item, gparamstring.name, label)
+    # def _on_item_property_change(self, item: GpxItem, gparamstring: GObject.ParamSpec, label: Gtk.Label) -> None:
+    #     self._set_label_text(item, gparamstring.name, label)
 
     def _set_label_text(self, item: GpxItem, property_name: str, label: Gtk.Label) -> None:
         if property_name == "path":
@@ -161,8 +191,23 @@ class GpxColumnView(Gtk.ColumnView):
             property_value = str(round(item.get_property(property_name)))
         label.set_text(property_value)
 
+    def _on_dropdown_mode_changed(self, dropdown: Gtk.DropDown, gparamstring: GObject.ParamSpec,
+                                  list_item: Gtk.ListItem) -> None:
+        selected_item = list_item.get_item()
+        selected_item.mode = dropdown.get_selected()
+
+        gpx_helper = GpxHelper(selected_item.path)
+        gpx_helper.set_gpx_mode(selected_item.mode)
+
+        record = (
+            selected_item.path, selected_item.mode, selected_item.points, selected_item.length,
+            selected_item.up_hill, selected_item.down_hill)
+
+        sqlite_helper = SQLiteHelper()
+        sqlite_helper.update_gpx_record(selected_item.id, record)
+
     def _on_button_view_clicked(self, button: Gtk.Button, list_item: Gtk.ListItem) -> None:
-        selected_item = self._get_selected_item(list_item)
+        selected_item = list_item.get_item()
         app_detailed_view = GpxDetailedView(selected_item.path)
         app_detailed_view.props.transient_for = self._window
         app_detailed_view.present()
@@ -171,7 +216,8 @@ class GpxColumnView(Gtk.ColumnView):
         raise NotImplementedError
 
     def _on_button_refresh_clicked(self, button: Gtk.Button, list_item: Gtk.ListItem) -> None:
-        selected_item = self._get_selected_item(list_item)
+        selected_item = list_item.get_item()
+
         self._window.set_sensitive(False)
         self._window.spinner.start()
 
@@ -179,15 +225,16 @@ class GpxColumnView(Gtk.ColumnView):
         thread.start()
 
     def _on_update_record_ended(self, selected_item: Gtk.ListItem, record: Tuple) -> None:
-        selected_item.points = record[1]
-        selected_item.length = record[2]
-        selected_item.up_hill = record[3]
-        selected_item.down_hill = record[4]
+        selected_item.mode = record[1]
+        selected_item.points = record[2]
+        selected_item.length = record[3]
+        selected_item.up_hill = record[4]
+        selected_item.down_hill = record[5]
 
         self._window.spinner.stop()
         self._window.set_sensitive(True)
 
-    def _get_selected_item(self, list_item: Gtk.ListItem) -> Gtk.ListItem:
-        position = list_item.get_position()
-        self._single_selection.set_selected(position)
-        return self._single_selection.get_selected_item()
+    # def _get_selected_item(self, list_item: Gtk.ListItem) -> Gtk.ListItem:
+    #     position = list_item.get_position()
+    #     self._single_selection.set_selected(position)
+    #     return self._single_selection.get_selected_item()
